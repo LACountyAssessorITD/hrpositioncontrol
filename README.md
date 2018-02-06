@@ -1,5 +1,5 @@
-# Position Control for Human Resource Management
-## USC Team Membmers
+# Position Control for Human Capital Management
+## USC Team Members
   * Mengyao (Elena) He, mengyaoh@usc.edu
   * Julia Lin, linjulia@usc.edu
   * Ann-Chie (Angela) Shao, annchies@usc.edu
