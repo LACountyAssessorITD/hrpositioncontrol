@@ -963,20 +963,7 @@
     //
     filterAllowedDropNodesInner: function ($draggedInner) {
       var opts = this.options;
-      // var $dragZone = $dragged.closest('.nodes').siblings().eq(0).find('.node:first').children('.employee');
-      // var $dragHier = $dragged.closest('table').find('.node');
       this.$chart.data('draggedInner', $draggedInner);
-        // .find('.node').each(function (index, node) {
-        //   if ($dragHier.index(node) === -1) {
-        //     if (opts.dropCriteria) {
-        //       if (opts.dropCriteria($dragged, $dragZone, $(node))) {
-        //         $(node).addClass('allowedDrop');
-        //       }
-        //     } else {
-        //       $(node).addClass('allowedDrop');
-        //     }
-        //   }
-        // });
     },
     //
     dragstartHandler: function (event) {
@@ -992,10 +979,6 @@
     //
     dragstartHandlerInner: function (event) {
       console.log("dragstartHandlerInner 1.1");
-      // // if users enable zoom or direction options
-      // if (this.$chart.css('transform') !== 'none') {
-      //   this.createGhostNode(event);
-      // }
       this.filterAllowedDropNodesInner($(event.target));
       this.isInnerNodeDragged = true;
     },
@@ -1015,9 +998,6 @@
 
       console.log("dragoverHandlerInner 2.1");
       event.preventDefault();
-      // if (!$(event.delegateTarget).is('.allowedDrop')) {
-      //   event.originalEvent.dataTransfer.dropEffect = 'none';
-      // }
     },
     //
     dragendHandler: function (event) {
@@ -1031,7 +1011,6 @@
       if (!this.isInnerNodeDragged) return;
 
       console.log("dragendHandlerInner 3.1");
-      // this.$chart.find('.allowedDrop').removeClass('allowedDrop');
     },
     //
     dropHandler: function (event) {
@@ -1103,17 +1082,6 @@
           .find('.bottomEdge').remove()
           .end().end().siblings().remove();
       }
-    },
-    // Swaps the name and title of the two given employees.
-    swapEmployee: function(empl1, empl2) {
-      var children1 = empl1.children;
-      var children2 = empl2.children;
-      console.log("swapEmpl " + typeof children1);
-      // for (int i=0; i<children1.length; ++i) {
-      //   var temp = children1[i].text();
-      //   children1[i].text(children2[i].text());
-      //   children2[i].text(temp);
-      // }
     },
     // TODO(angela5shao): take out employee dragging in #dropHandler
     dropHandlerInner: function (event) {
@@ -1250,9 +1218,7 @@
         .on('dragover', this.dragoverHandlerInner.bind(this))
         .on('dragend', this.dragendHandlerInner.bind(this))
         .on('drop', this.dropHandlerInner.bind(this));
-        // .on('touchstart', this.touchstartHandler.bind(this))
-        // .on('touchmove', this.touchmoveHandler.bind(this))
-        // .on('touchend', this.touchendHandler.bind(this));
+        // TODO(angela5shao): see if need to add/bind touch handlers
     },
     // create node
     createNode: function (data) {
