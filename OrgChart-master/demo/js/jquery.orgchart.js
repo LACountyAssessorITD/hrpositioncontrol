@@ -986,6 +986,20 @@
       if (dropEvent.isDefaultPrevented()) {
         return;
       }
+      // ADDED: shows red for changes 
+      if ($dragged.attr('class') === 'employee')
+      {
+        console.log("dragged an employee");
+        $dragged.children('.title').css("color", "red");
+        $dragged.children('.content').css("color", "red");
+      }
+      else
+      {
+        console.log("dragged a position (with employee)");
+        $dragged.children().children().children('.title').css("color", "red");
+        $dragged.children().children().children('.content').css("color", "red");
+        $dragged.children('.position').css("color", "red");
+      }
       // firstly, deal with the hierarchy of drop zone
       if (!$dropZone.closest('tr').siblings().length) { // if the drop zone is a leaf node
         $dropZone.append('<i class="edge verticalEdge bottomEdge fa"></i>')

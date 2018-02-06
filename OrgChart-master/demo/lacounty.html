@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>LA County Assessor's Office</title>
+  <link rel="icon" href="img/logo.png">
+  <link rel="stylesheet" href="css/font-awesome.min.css">
+  <link rel="stylesheet" href="css/jquery.orgchart.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="outercontainer">
+<h1>LA County Assessor's Office Org Chart</h1>
+  <div id="chart-container"></div>
+  <div id="button-container">
+    <button type="button">Search Position</button>
+    <button type="button">Search Employee</button>
+    <button type="button">Clear Position</button>
+    <button type="button">Finalize</button>
+  </div>
+  <script type="text/javascript" src="js/jquery.min.js"></script>
+  <script type="text/javascript" src="js/jquery.orgchart.js"></script>
+  <script type="text/javascript">
+    $(function() {
+
+    var datasource = {
+      'name': 'Lao Lao',
+      'title': 'general manager',
+      'position': 'position1',
+      'children': [
+        { 'name': 'Bo Miao', 'title': 'department manager', 'position': 'position2' },
+        { 'name': 'Su Miao', 'title': 'department manager', 'position': 'position2',
+          'children': [
+            { 'name': 'Tie Hua', 'title': 'senior engineer', 'position': 'position3' },
+            { 'name': 'Hei Hei', 'title': 'senior engineer', 'position': 'position3' }
+          ]
+        },
+        { 'name': 'Yu Jie', 'title': 'department manager', 'position': 'position4' },
+        { 'name': 'Yu Li', 'title': 'department manager', 'position': 'position4' },
+        { 'name': 'Hong Miao', 'title': 'department manager', 'position': 'position4' },
+        { 'name': 'Yu Wei', 'title': 'department manager', 'position': 'position4' },
+        { 'name': 'Chun Miao', 'title': 'department manager', 'position': 'position4' },
+        { 'name': 'Yu Tie', 'title': 'department manager', 'position': 'position4' }
+      ]
+    };
+
+    var nodeTemplate = function(data) {
+      return `
+        <div class="position">${data.position}
+          <div class="employee" draggable="true">
+            <div class="title">${data.name}</div>
+            <div class="content">${data.title}</div>
+          </div>
+        </div>
+      `;
+    };
+
+    var oc = $('#chart-container').orgchart({
+      'data' : datasource,
+      'nodeContent': 'title',
+      'nodeTemplate': nodeTemplate,
+      'draggable': true
+    });
+
+    // console output for drag and drop
+    oc.$chart.on('nodedrop.orgchart', function(event, extraParams) {
+      console.log('draggedNode:' + extraParams.draggedNode.children().children().children('.title').text()
+        + ', dragZone:' + extraParams.dragZone.children().children().children('.title').text()
+        + ', dropZone:' + extraParams.dropZone.children().children().children('.title').text()
+      );
+    });
+
+  });
+  </script>
+</div>
+</body>
+</html>

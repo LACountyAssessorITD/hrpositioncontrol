@@ -201,6 +201,24 @@
   border-color: rgba(68, 157, 68, 0.9);
 }
 
+/* ADDED: style for outer position div */
+.orgchart .node .position {
+  text-align: center;
+  font-size: 12px;
+  font-weight: bold;
+  line-height: 20px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #000;
+  border-radius: 4px 4px 0 0; 
+  border: 1px solid rgba(217, 83, 79, 0.8);
+}
+/* ADDED: style for employee div */
+.orgchart .node .employee {
+  margin: 3px;
+}
+
 .orgchart .node .title {
   text-align: center;
   font-size: 12px;
