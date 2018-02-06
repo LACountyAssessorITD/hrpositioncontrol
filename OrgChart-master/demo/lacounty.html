@@ -47,7 +47,7 @@
     var nodeTemplate = function(data) {
       return `
         <div class="position">${data.position}
-          <div class="employee" draggable="true">
+          <div class="employee" draggable="true"> <!--referenced as innerNode in .js file-->
             <div class="title">${data.name}</div>
             <div class="content">${data.title}</div>
           </div>

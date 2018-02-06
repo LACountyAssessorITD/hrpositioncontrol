@@ -37,6 +37,9 @@
       'zoominLimit': 7,
       'zoomoutLimit': 0.5
     };
+    // Always reset to false after each drag action. Since #dropHandlerInner is followed by #dropHandler, reset in
+    // #dropHandler
+    this.isInnerNodeDragged = false;  
   };
   //
   OrgChart.prototype = {
@@ -958,7 +961,28 @@
         });
     },
     //
+    filterAllowedDropNodesInner: function ($draggedInner) {
+      var opts = this.options;
+      // var $dragZone = $dragged.closest('.nodes').siblings().eq(0).find('.node:first').children('.employee');
+      // var $dragHier = $dragged.closest('table').find('.node');
+      this.$chart.data('draggedInner', $draggedInner);
+        // .find('.node').each(function (index, node) {
+        //   if ($dragHier.index(node) === -1) {
+        //     if (opts.dropCriteria) {
+        //       if (opts.dropCriteria($dragged, $dragZone, $(node))) {
+        //         $(node).addClass('allowedDrop');
+        //       }
+        //     } else {
+        //       $(node).addClass('allowedDrop');
+        //     }
+        //   }
+        // });
+    },
+    //
     dragstartHandler: function (event) {
+      if (this.isInnerNodeDragged) return;
+
+      console.log("dragstartHandler 1");
       // if users enable zoom or direction options
       if (this.$chart.css('transform') !== 'none') {
         this.createGhostNode(event);
@@ -966,18 +990,56 @@
       this.filterAllowedDropNodes($(event.target));
     },
     //
+    dragstartHandlerInner: function (event) {
+      console.log("dragstartHandlerInner 1.1");
+      // // if users enable zoom or direction options
+      // if (this.$chart.css('transform') !== 'none') {
+      //   this.createGhostNode(event);
+      // }
+      this.filterAllowedDropNodesInner($(event.target));
+      this.isInnerNodeDragged = true;
+    },
+    //
     dragoverHandler: function (event) {
+      if (this.isInnerNodeDragged) return;
+
+      console.log("dragoverHandler 2");
       event.preventDefault();
       if (!$(event.delegateTarget).is('.allowedDrop')) {
         event.originalEvent.dataTransfer.dropEffect = 'none';
       }
     },
     //
+    dragoverHandlerInner: function (event) {
+      if (!this.isInnerNodeDragged) return;
+
+      console.log("dragoverHandlerInner 2.1");
+      event.preventDefault();
+      // if (!$(event.delegateTarget).is('.allowedDrop')) {
+      //   event.originalEvent.dataTransfer.dropEffect = 'none';
+      // }
+    },
+    //
     dragendHandler: function (event) {
+      if (this.isInnerNodeDragged) return;
+
+      console.log("dragendHandler 3");
       this.$chart.find('.allowedDrop').removeClass('allowedDrop');
     },
     //
+    dragendHandlerInner: function (event) {
+      if (!this.isInnerNodeDragged) return;
+
+      console.log("dragendHandlerInner 3.1");
+      // this.$chart.find('.allowedDrop').removeClass('allowedDrop');
+    },
+    //
     dropHandler: function (event) {
+      if (this.isInnerNodeDragged) {
+        this.isInnerNodeDragged = false;
+        return;
+      }
+
       var $dropZone = $(event.delegateTarget);
       var $dragged = this.$chart.data('dragged');
       var $dragZone = $dragged.closest('.nodes').siblings().eq(0).children();
@@ -986,6 +1048,10 @@
       if (dropEvent.isDefaultPrevented()) {
         return;
       }
+      console.log("dropHandler| dragging " + $dragged.children('.title').text() + ": " 
+        + $dragZone.children('.title').text()
+        + " -> " + $dropZone.children('.title').text() );
+
       // ADDED: shows red for changes 
       if ($dragged.attr('class') === 'employee')
       {
@@ -1037,6 +1103,44 @@
           .find('.bottomEdge').remove()
           .end().end().siblings().remove();
       }
+    },
+    // Swaps the name and title of the two given employees.
+    swapEmployee: function(empl1, empl2) {
+      var children1 = empl1.children;
+      var children2 = empl2.children;
+      console.log("swapEmpl " + typeof children1);
+      // for (int i=0; i<children1.length; ++i) {
+      //   var temp = children1[i].text();
+      //   children1[i].text(children2[i].text());
+      //   children2[i].text(temp);
+      // }
+    },
+    // TODO(angela5shao): take out employee dragging in #dropHandler
+    dropHandlerInner: function (event) {
+      console.log("dropHandlerInner 4!!!");
+      if (!this.isInnerNodeDragged) return;
+
+      var $dropZone = $(event.delegateTarget);
+      var $dragged = this.$chart.data('draggedInner');
+      var $dragZone = $dragged.closest('.nodes').siblings().eq(0).children();
+
+      console.log("dropHandlerInner 4: " + $dragged.text() 
+        + " :: " + $dragZone.text() + " -> " + $dropZone.text());
+
+      // Swap the dragged employee with the employee being dropped onto
+      // TODO(angela5shao): modularize swapping and make it dynamic
+      var tempTitle = $dragged.children('.title').text();
+      $dragged.children('.title').text($dropZone.children('.title').text());
+      $dropZone.children('.title').text(tempTitle);
+      var tempContent = $dragged.children('.content').text();
+      $dragged.children('.content').text($dropZone.children('.content').text());
+      $dropZone.children('.content').text(tempContent);
+
+      $dragged.children('.title').css("color", "blue");
+      $dragged.children('.content').css("color", "blue");
+      $dropZone.children('.title').css("color", "blue");
+      $dropZone.children('.content').css("color", "blue");
+
     },
     //
     touchstartHandler: function (event) {
@@ -1140,6 +1244,16 @@
         .on('touchmove', this.touchmoveHandler.bind(this))
         .on('touchend', this.touchendHandler.bind(this));
     },
+    //
+    bindDragDropInner: function ($innerNode) {
+      $innerNode.on('dragstart', this.dragstartHandlerInner.bind(this))
+        .on('dragover', this.dragoverHandlerInner.bind(this))
+        .on('dragend', this.dragendHandlerInner.bind(this))
+        .on('drop', this.dropHandlerInner.bind(this));
+        // .on('touchstart', this.touchstartHandler.bind(this))
+        // .on('touchmove', this.touchmoveHandler.bind(this))
+        // .on('touchend', this.touchendHandler.bind(this));
+    },
     // create node
     createNode: function (data) {
       var that = this;
@@ -1193,6 +1307,9 @@
         this.touchMoved = false;
         this.touchTargetNode = null;
       }
+      // bind drag/drop handler for innerNode
+      this.bindDragDropInner($nodeDiv.children('.position').children('.employee'));
+
       // allow user to append dom modification after finishing node create of orgchart
       if (opts.createNode) {
         opts.createNode($nodeDiv, data);
