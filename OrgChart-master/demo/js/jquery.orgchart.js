@@ -1082,10 +1082,13 @@
           .find('.bottomEdge').remove()
           .end().end().siblings().remove();
       }
+
+      // Highlight the moved node (a position)
+      this.$chart.find('.focused').removeClass('focused');
+      $dragged.addClass('focused');
     },
     // TODO(angela5shao): take out employee dragging in #dropHandler
     dropHandlerInner: function (event) {
-      console.log("dropHandlerInner 4!!!");
       if (!this.isInnerNodeDragged) return;
 
       var $dropZone = $(event.delegateTarget);
@@ -1109,6 +1112,7 @@
       $dropZone.children('.title').css("color", "blue");
       $dropZone.children('.content').css("color", "blue");
 
+      // TODO(angela5shao): Highlight the moved node (an employee)
     },
     //
     touchstartHandler: function (event) {
