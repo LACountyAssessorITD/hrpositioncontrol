@@ -1517,4 +1517,16 @@
     return new OrgChart(this, opts).init();
   };
 
+  $('button').click(function() {
+    if (this.id == 'search-position-button') {
+      var $value = $('#search-position-input').val();
+      console.log("Search position button clicked! " + $value);
+    } else if (this.id == "search-employee-button") {
+
+    } else if (this.id == "clear-position-button") {
+      
+    } else if (this.id == "finalize-button") {
+      
+    }
+  });
 }));
