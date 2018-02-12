@@ -102,6 +102,9 @@
         this.bindZoom();
       }
 
+      // Initialize button with click functions
+      this.initButtons();
+
       return this;
     },
     //
@@ -1510,6 +1513,33 @@
       }, function () {
         $chartContainer.removeClass('canvasContainer');
       });
+    },
+
+    initButtons : function() {
+      var thisChart = this; // Needed for inner function below to access #this.init
+
+      $('button').click(function() {
+        if (this.id == 'search-position-button') {
+          var $value = $('#search-position-input').val();
+        } else if (this.id == "search-employee-button") {
+          console.log("Search employee button clicked!");
+
+          var jsonData = { 'name': 'Su Miao', 'title': 'department manager',
+            'children': [
+              { 'name': 'Tie Hua', 'title': 'senior engineer' },
+              { 'name': 'Hei Hei', 'title': 'senior engineer' }
+            ]
+          };
+
+          // Change data for the org chart
+          thisChart.init({ 'data': jsonData }); 
+        } else if (this.id == "clear-position-button") {
+          
+        } else if (this.id == "finalize-button") {
+          
+        }
+      });
+      console.log("initButtons");
     }
   };
 
@@ -1517,16 +1547,4 @@
     return new OrgChart(this, opts).init();
   };
 
-  $('button').click(function() {
-    if (this.id == 'search-position-button') {
-      var $value = $('#search-position-input').val();
-      console.log("Search position button clicked! " + $value);
-    } else if (this.id == "search-employee-button") {
-
-    } else if (this.id == "clear-position-button") {
-      
-    } else if (this.id == "finalize-button") {
-      
-    }
-  });
 }));
