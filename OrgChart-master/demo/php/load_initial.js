@@ -1,22 +1,35 @@
-<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script src="http://code.jquery.com/jquery-1.12.0.min.js"></script>
 <script type="text/javascript">
 $("document").ready(function(){
-  $(".js-ajax-php-json").submit(function(){
-    var data = {
-      "employee_id": "415748"
 
-    };
+  function get_top(){
 
-    $.ajax({
-      type: "POST",
-      dataType: "json",
-      url: "pick_data.php", //Relative or absolute path to response.php file
-      data: data,
-      success: function(results) {
+      var result_array = [];
+            $.ajax({
+                url:"../php/pick_data.php",
+                type: "POST",
+                dataType: "json",
+                data: {
+                    employee_id: 415748
+                },
+                success:function(results){
 
-      }
-    });
-    return false;
-  });
+                    var size = results.length;
+
+                for (var i = 0; i < size; i++) {
+                    alert(results[i]);
+                }
+                },
+                error: function(xhr, status, error){
+                    // alert("Fail to connect to the server when trying to retrieve report types");
+                     alert(status);
+                },
+                async:false
+            });
+  }
+
+
+
 });
 </script>
+

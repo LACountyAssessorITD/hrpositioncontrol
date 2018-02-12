@@ -29,10 +29,8 @@ else{
  echo "connect";
 }
 
-$stmt_employee="SELECT * FROM dbo.EMPLOYEE WHERE (EMPLOYEE_ID IN (SELECT EMPLOYEE_ID FROM dbo.EMPLOYEE_POSITION WHERE POSN_ID IN (SELECT POSN_ID FROM dbo.POSITION WHERE HOME_UNIT_CD= (SELECT HOME_UNIT_CD FROM dbo.POSITION WHERE POSN_ID=(SELECT POSN_ID FROM dbo.EMPLOYEE_POSITION WHERE EMPLOYEE_ID=$employee_id_initial)))))";
-//$stmt_position_employee="SELECT * FROM dbo.EMPLOYEE_POSITION WHERE POSN_ID IN (SELECT POSN_ID FROM dbo.POSITION WHERE HOME_UNIT_CD=10222)";
-//$stmt_employee="SELECT * FROM dbo.employee WHERE (employee_id IN (SELECT EMPLOYEE_ID FROM dbo.EMPLOYEE_POSITION WHERE POSN_ID IN (SELECT POSN_ID FROM dbo.POSITION WHERE HOME_UNIT_CD=10222)))";
-
+$stmt_employee="SELECT * from dbo.EMPLOYEE_POSITION where (POSN_ID IN (select POSN_ID from dbo.position where HOME_UNIT_CD = (select HOME_UNIT_CD from dbo.position where( POSN_ID = (SELECT POSN_ID FROM dbo.EMPLOYEE_POSITION WHERE (employee_id = 415748)) ))))
+";
 
 $stmt = sqlsrv_query( $conn, $stmt_employee);
 if($stmt===false){
@@ -40,7 +38,7 @@ if($stmt===false){
 }else{
 	$result=array();
 	while($row = sqlsrv_fetch_array($stmt)) {
-    	$result[] = $row["EMPLOYEE_ID"].", ".$row["PRIM_UNIT_CD"].",".$row["supervisor_id"];
+    	$result[] = $row["employee_id"].", ".$row["POSN_ID"];
 	}
 	echo json_encode($result);
 }
