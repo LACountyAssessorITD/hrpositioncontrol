@@ -1,5 +1,5 @@
-<script src="http://code.jquery.com/jquery-1.12.0.min.js"></script>
-<script type="text/javascript">
+
+
 $("document").ready(function(){
 
   function get_top(){
@@ -31,5 +31,5 @@ $("document").ready(function(){
 
 
 });
-</script>
+
 
