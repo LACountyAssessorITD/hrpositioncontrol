@@ -1539,7 +1539,6 @@
           
         }
       });
-      console.log("initButtons");
     }
   };
 
