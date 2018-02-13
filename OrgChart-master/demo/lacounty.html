@@ -26,35 +26,71 @@
     <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.1.js"></script>
     <script type="text/javascript">
     $(document).ready(function(){
-
-        // function get_top(){
-          console.log('document ready');
-          //var result_array = [];
-          $.ajax({
-
-            url:"php/pick_data.php",
-            type: "POST",
-            dataType: "json",
-            data: {
+         var myData= {
               'employee_id': '415748'
-            },
-            success:function(results){
+            };
+         $.ajax({
 
-              var size = results.length;
-              alert (results);
-              //console.log(results);
-              for (var i = 0; i < size; i++) {
+           url: "php/pick_position_data.php",
+           data: myData,
+           type: 'POST',
+           dataType: "json",
+           success: function(output) {
+               var size = output.length;
+               alert (output);
+
+              //for (var i = 0; i < size; i++) {
                 //alert('result: ' + results[i]);
 
-              }
-
-            },
+             // }
+                  runindex2();
+           },
             error: function(xhr, status, error){
-alert (error);
-                        alert('status: ' + status);
-                      },
-                      async:false
-                    });
+                alert (error);
+                alert('status: ' + status);
+            },
+            async:false
+          });
+
+        function runindex2() {
+            $.ajax({
+               url: 'php/pick_data.php',
+               data: myData,
+               type: 'POST',
+               dataType: "json",
+               success: function(output) {
+                   var size = output.length;
+                   alert (output);
+
+                   runindex3();
+               },
+                error: function(xhr, status, error){
+                alert (error);
+                alert('status: ' + status);
+                },
+                async:false
+            });
+        }
+
+        function runindex3() {
+            $.ajax({
+               url: 'php/pick_relation.php',
+               data: myData,
+               type: 'POST',
+               dataType: "json",
+               success: function(output) {
+                  var size = output.length;
+                  alert (output);
+               },
+               error: function(xhr, status, error){
+               alert (error);
+               alert('status: ' + status);
+              },
+              async:false
+            });
+        }
+
+      });
         // };
     // });
 
@@ -107,7 +143,7 @@ alert (error);
     //     );
     // });
 
-  });
+
 </script>
 </div>
 </body>
