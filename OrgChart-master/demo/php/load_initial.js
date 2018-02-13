@@ -1,12 +1,11 @@
 
+$(document).ready(function(){
 
-$("document").ready(function(){
-
-  function get_top(){
+console.log('ready');
 
       var result_array = [];
             $.ajax({
-                url:"../php/pick_data.php",
+                url:"pick_data.php",
                 type: "POST",
                 dataType: "json",
                 data: {
@@ -26,7 +25,7 @@ $("document").ready(function(){
                 },
                 async:false
             });
-  }
+
 
 
 
