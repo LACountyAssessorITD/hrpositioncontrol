@@ -102,6 +102,9 @@
         this.bindZoom();
       }
 
+      // Initialize button with click functions
+      this.initButtons();
+
       return this;
     },
     //
@@ -1082,10 +1085,13 @@
           .find('.bottomEdge').remove()
           .end().end().siblings().remove();
       }
+
+      // Highlight the moved node (a position)
+      this.$chart.find('.focused').removeClass('focused');
+      $dragged.addClass('focused');
     },
     // TODO(angela5shao): take out employee dragging in #dropHandler
     dropHandlerInner: function (event) {
-      console.log("dropHandlerInner 4!!!");
       if (!this.isInnerNodeDragged) return;
 
       var $dropZone = $(event.delegateTarget);
@@ -1109,6 +1115,7 @@
       $dropZone.children('.title').css("color", "blue");
       $dropZone.children('.content').css("color", "blue");
 
+      // TODO(angela5shao): Highlight the moved node (an employee)
     },
     //
     touchstartHandler: function (event) {
@@ -1505,6 +1512,32 @@
         $chartContainer.removeClass('canvasContainer');
       }, function () {
         $chartContainer.removeClass('canvasContainer');
+      });
+    },
+
+    initButtons : function() {
+      var thisChart = this; // Needed for inner function below to access #this.init
+
+      $('button').click(function() {
+        if (this.id == 'search-position-button') {
+          var $value = $('#search-position-input').val();
+        } else if (this.id == "search-employee-button") {
+          console.log("Search employee button clicked!");
+
+          var jsonData = { 'name': 'Su Miao', 'title': 'department manager',
+            'children': [
+              { 'name': 'Tie Hua', 'title': 'senior engineer' },
+              { 'name': 'Hei Hei', 'title': 'senior engineer' }
+            ]
+          };
+
+          // Change data for the org chart
+          thisChart.init({ 'data': jsonData }); 
+        } else if (this.id == "clear-position-button") {
+          
+        } else if (this.id == "finalize-button") {
+          
+        }
       });
     }
   };

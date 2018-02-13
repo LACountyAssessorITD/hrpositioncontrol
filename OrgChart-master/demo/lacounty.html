@@ -14,11 +14,11 @@
 <h1>LA County Assessor's Office Org Chart</h1>
   <div id="chart-container"></div>
   <div id="button-container">
-    <button type="button">Search Position</button>
-    <button type="button">Search Employee</button>
-    <button type="button">Clear Position</button>
-    <button type="button">Finalize</button>
-
+      <button id="search-position-button" type="button">Search Position</button>
+      <input id="search-position-input" type="text" placeholder="Search position..">
+      <button id="search-employee-button" type="button">Search Employee</button>
+      <button id="clear-position-button" type="button">Clear Position</button>
+      <button id="finalize-button" type="button">Finalize</button>
   </div>
   <div id="edit-panel">
     <span id="chart-state-panel" class="radio-panel">
@@ -42,14 +42,16 @@
     <button type="button" id="btn-delete-nodes">Delete</button>
     <button type="button" id="btn-reset">Reset</button>
   </div>
+
   <script type="text/javascript" src="js/jquery.min.js"></script>
   <script type="text/javascript" src="js/jquery.orgchart.js"></script>
   <script type="text/javascript" src="js/html2canvas.min.js"></script>
+  <script type="text/javascript" src="js/hover.js"></script>
+<!--   <script type="text/javascript" src="http://code.jquery.com/jquery-1.12.0.min.js"></script>
+  <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.1.js"></script> -->
   <script type="text/javascript">
-    $(function() {
-
+    $(document).ready(function(){
       
-
     var datasource = {
       'name': 'Lao Lao',
       'title': 'general manager',
@@ -100,7 +102,9 @@
       'chartClass': 'edit-state',
       'createNode': function($node, data) {
         $node[0].id = getId();
-      }
+      },
+      'pan' : true,
+      'zoom': true
     });
 
     //edit chart script
@@ -234,17 +238,122 @@
       $('#node-type-panel').find('input').prop('checked', false);
     });
 
-    // console output for drag and drop
+    //
+         var myData= {
+              'employee_id': '415748'
+            };
+         $.ajax({
+
+           url: "php/pick_position_data.php",
+           data: myData,
+           type: 'POST',
+           dataType: "json",
+           success: function(output) {
+               var size = output.length;
+               alert (output);
+
+              //for (var i = 0; i < size; i++) {
+                //alert('result: ' + results[i]);
+
+             // }
+                  runindex2();
+           },
+            error: function(xhr, status, error){
+                alert (error);
+                alert('status: ' + status);
+            },
+            async:false
+          });
+
+        function runindex2() {
+            $.ajax({
+               url: 'php/pick_data.php',
+               data: myData,
+               type: 'POST',
+               dataType: "json",
+               success: function(output) {
+                   var size = output.length;
+                   alert (output);
+
+                   runindex3();
+               },
+                error: function(xhr, status, error){
+                alert (error);
+                alert('status: ' + status);
+                },
+                async:false
+            });
+        }
+
+        function runindex3() {
+            $.ajax({
+               url: 'php/pick_relation.php',
+               data: myData,
+               type: 'POST',
+               dataType: "json",
+               success: function(output) {
+                  var size = output.length;
+                  alert (output);
+               },
+               error: function(xhr, status, error){
+               alert (error);
+               alert('status: ' + status);
+              },
+              async:false
+            });
+        }
+
+      //   var datasource = {
+      //     'name': 'Lao Lao',
+      //     'title': 'general manager',
+      //     'position': 'position1',
+      //     'children': [
+      //     { 'name': 'Bo Miao', 'title': 'department manager', 'position': 'position2' },
+      //     { 'name': 'Su Miao', 'title': 'department manager', 'position': 'position2',
+      //     'children': [
+      //     { 'name': 'Tie Hua', 'title': 'senior engineer', 'position': 'position3' },
+      //     { 'name': 'Hei Hei', 'title': 'senior engineer', 'position': 'position3' }
+      //     ]
+      //   },
+      //   { 'name': 'Yu Jie', 'title': 'department manager', 'position': 'position4' },
+      //   { 'name': 'Yu Li', 'title': 'department manager', 'position': 'position4' },
+      //   { 'name': 'Hong Miao', 'title': 'department manager', 'position': 'position4' },
+      //   { 'name': 'Yu Wei', 'title': 'department manager', 'position': 'position4' },
+      //   { 'name': 'Chun Miao', 'title': 'department manager', 'position': 'position4' },
+      //   { 'name': 'Yu Tie', 'title': 'department manager', 'position': 'position4' }
+      //   ]
+      // };
+
+      // var nodeTemplate = function(data) {
+      //   return `
+      //   <div class="position">${data.position}
+      //     <div class="employee" draggable="true"> <!--referenced as innerNode in .js file-->
+      //       <div class="title">${data.name}</div>
+      //       <div class="content">${data.title}</div>
+      //     </div>
+      //   </div>
+      //   `;
+      // };
+
+      // var oc = $('#chart-container').orgchart({
+      //   'data' : datasource,
+      //   'nodeContent': 'title',
+      //   'nodeTemplate': nodeTemplate,
+      //   'draggable': true,
+      //   'pan': true,
+      //   'zoom': true
+      // });
+
+    //console output for drag and drop
     oc.$chart.on('nodedrop.orgchart', function(event, extraParams) {
       console.log('draggedNode:' + extraParams.draggedNode.children().children().children('.title').text()
         + ', dragZone:' + extraParams.dragZone.children().children().children('.title').text()
         + ', dropZone:' + extraParams.dropZone.children().children().children('.title').text()
-      );
+        );
     });
-
   });
+
   </script>
-  <script type="text/javascript" src="js/hover.js"></script>
 </div>
 </body>
 </html>
