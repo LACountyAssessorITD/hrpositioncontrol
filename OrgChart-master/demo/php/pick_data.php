@@ -44,9 +44,9 @@ if($stmt===false){
 		$myobject->home_unit_cd=$row["PRIM_UNIT_CD"];
 		$myobject->supervisor_id=$row["SUPERVISOR_ID"];
 
-		$myjson=json_encode($myobject);
+		//$myjson=json_encode($myobject);
 		//echo $myjson;
-    	$result[] = $myjson;
+    	$result[] = $myobject;
 	}
 	echo json_encode($result);
 }
