@@ -1553,7 +1553,7 @@
       return;
     } else {
       var $chart = $('.orgchart');
-      // disalbe the expand/collapse feture
+      // disable the expand/collapse feture
       $chart.addClass('noncollapsable');
       // distinguish the matched nodes and the unmatched nodes according to the given key word
       $chart.find('.node').filter(function(index, node) {

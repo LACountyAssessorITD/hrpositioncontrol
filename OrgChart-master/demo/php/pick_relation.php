@@ -40,9 +40,9 @@ if($stmt===false){
 		$myobject->position_id=$row["POSN_ID"];
 		$myobject->employee_id=$row["EMPLOYEE_ID"];
 
-		$myjson=json_encode($myobject);
+		//$myjson=json_encode($myobject);
 
-    	$result[] = $myjson;
+    	$result[] = $myobject;
 	}
 	echo json_encode($result);
 }
