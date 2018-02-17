@@ -215,7 +215,7 @@
   border: 1px solid rgba(217, 83, 79, 0.8);
 }
 /* ADDED: style for employee div */
-.orgchart .node .employee {
+.orgchart .node  {
   margin: 3px;
 }
 
@@ -452,4 +452,39 @@
 
 .orgchart.l2r .node.slide-left, .orgchart.r2l .node.slide-left {
   transform: translateX(-40px);
+}
+
+.employee {
+    position: relative;
+    padding: 5px;
+}
+
+.employee .tooltiptext {
+    visibility: hidden;
+    background-color: rgba(217, 83, 79, 0.8);
+    color: #fff;
+    text-align: left;
+    border-radius: 4px;
+    padding: 4px;
+    white-space: initial;
+    line-height: 18px;
+    font-size: 12px;
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
+}
+
+.employee:hover .tooltiptext {
+    visibility: visible;
+    position: relative;
+    display: inline-block;
+
+}
+
+.tooltiptext .EmployeeId{
+  font-size: 12px;
+  font-weight: bold;
+  height: 20px;
+  line-height: 20px;
+  color: #222;
 }
