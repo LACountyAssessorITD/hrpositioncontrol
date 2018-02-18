@@ -78,18 +78,6 @@ function myOrgchart(datasource) {
       }
     });
 
-    $('input[name="chart-state"]').on('click', function() {
-      $('.orgchart').toggleClass('edit-state', this.value !== 'view');
-      $('#edit-panel').toggleClass('edit-state', this.value === 'view');
-      if ($(this).val() === 'edit') {
-        $('.orgchart').find('tr').removeClass('hidden')
-          .find('td').removeClass('hidden')
-          .find('.node').removeClass('slide-up slide-down slide-right slide-left');
-      } else {
-        $('#btn-reset').trigger('click');
-      }
-    });
-
     $('input[name="node-type"]').on('click', function() {
       var $this = $(this);
       if ($this.val() === 'parent') {
