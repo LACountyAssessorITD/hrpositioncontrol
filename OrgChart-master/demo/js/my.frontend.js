@@ -1,4 +1,5 @@
 function myOrgchart(datasource) {
+  var datasource=datasource;
     // var datasource = {
     //   'name': 'Lao Lao',
     //   'title': 'general manager',
@@ -27,12 +28,12 @@ function myOrgchart(datasource) {
     var nodeTemplate = function(data) {
       return '<div class="position">' + data.position +
           '<div class="employee" draggable="true"> <!--referenced as innerNode in .js file-->' +
-            '<div class="title">' + data.name + '</div>' +
-            '<div class="content">' + data.title + '</div>' +
+            '<div class="title">' + data.title + '</div>' +
+            '<div class="content">' + data.name + '</div>' +
             '<span class="tooltiptext">' +
-             'Employee ID:  <span class="EmployeeId">' + data.name + '</span> <br>' +
-              'Position Status Code: ACCTG<br>' +
-              'Position Action Code: ORG<br>' +
+             'Home Unit Code:  <span class="ttcontent">' + data.unit_cd + '</span> <br>' +
+              'Hire Department: <span class="ttcontent">' +  data.hire + '</span> <br>' +
+              'Pay Location: <span class="ttcontent">' + data.pay_lctn + '</span> <br>' +
             '</span>' +
           '</div>' +
         '</div>';
