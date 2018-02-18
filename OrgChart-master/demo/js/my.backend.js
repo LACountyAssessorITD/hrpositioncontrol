@@ -65,7 +65,7 @@ $(document).ready(function(){
 
      var position_head_id=get_position(head_id, relation);
      var head_unit_cd=get_home_unit_cd(head_id, employee);
-      var head_employee={'name':head_id, 'title': head_unit_cd,'position':position_head_id , 'children':[]};
+      var head_employee={'name':head_id, 'title': head_unit_cd,'position':position_head_id ,'children':[]};
       var head_child=get_children(head_id, employee);
       for (var i=0;i<head_child.length; i++){
         var single_child=get_data_helper(head_child[i],position,employee, relation);

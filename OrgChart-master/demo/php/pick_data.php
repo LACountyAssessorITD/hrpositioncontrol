@@ -43,7 +43,6 @@ if($stmt===false){
 		$myobject->employee_id=$row["EMPLOYEE_ID"];
 		$myobject->home_unit_cd=$row["PRIM_UNIT_CD"];
 		$myobject->supervisor_id=$row["SUPERVISOR_ID"];
-		$myobject->orig_hire_dt=$row["ORIG_HIRE_DT"];
 
 		//$myjson=json_encode($myobject);
 		//echo $myjson;

@@ -472,8 +472,6 @@
     /* Position the tooltip */
     position: absolute;
     z-index: 1;
-    width: 121px;
-    overflow:auto;
 }
 
 .employee:hover .tooltiptext {
