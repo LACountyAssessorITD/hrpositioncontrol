@@ -30,10 +30,10 @@ function myOrgchart(datasource) {
           '<div class="employee" draggable="true"> <!--referenced as innerNode in .js file-->' +
             '<div class="title">' + data.title + '</div>' +
             '<div class="content">' + data.name + '</div>' +
-            '<span class="tooltiptext">' +
-             'Home Unit Code:  <span class="ttcontent">' + data.unit_cd + '</span> <br>' +
-              'Hire Department: <span class="ttcontent">' +  data.hire + '</span> <br>' +
-              'Pay Location: <span class="ttcontent">' + data.pay_lctn + '</span> <br>' +
+            '<div class="tooltiptext">' +
+             'Home Unit Code:  <span class="unit_code">' + data.unit_cd + '</span> <br>' +
+              'Hire Department: <span class="hire">' +  data.hire + '</span> <br>' +
+              'Pay Location: <span class="pay_lctn">' + data.pay_lctn + '</span> <br>' +
             '</span>' +
           '</div>' +
         '</div>';
@@ -64,6 +64,14 @@ function myOrgchart(datasource) {
       'chartClass': 'edit-state',
       'createNode': function($node, data) {
         $node[0].id = getId();
+        var secondMenuIcon = $('<i>', {
+          'class': 'fa fa-info-circle second-menu-icon',
+          click: function() {
+            $(this).siblings('.second-menu').toggle();
+          }
+        });
+        var secondMenu = '<div class="second-menu"> Salary: ' + data.salary + '<br>Sub Title: '+data.sub_title_cd+'</div>';
+        $node.append(secondMenuIcon).append(secondMenu);
       }
     });
 

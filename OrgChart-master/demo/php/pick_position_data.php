@@ -39,7 +39,8 @@ if($stmt===false){
 		$myobject= new \stdClass();
 		$myobject->position_id=$row["POSN_ID"];
 		$myobject->home_unit_cd=$row["HOME_UNIT_CD"];
-
+		$myobject->salary_maximum_am=$row["SALARY_MAXIMUM_AM"];
+		$myobject->sub_title_cd=$row["SUB_TITLE_CD"];
 		//$myjson=json_encode($myobject);
 
     	$result[] = $myobject;
