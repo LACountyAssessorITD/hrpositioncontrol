@@ -26,24 +26,32 @@
   <div id="edit-panel">
     <div>
       <input type="text" id="search-key-word">
-      <button type="button" id="btn-search-node">Search</button>
+      <button type="button" id="btn-search-node">Search in Chart</button>
       <button type="button" id="btn-cancel">Cancel</button>
     </div>
 
-    <label class="selected-node-group">selected node:</label>
+    <label class="selected-node-group">Selected Position:</label>
     <input type="text" id="selected-node" class="selected-node-group" readonly>
-    <label>new employee:</label>
-    <!-- <ul id="new-nodelist">
-      <li><input type="text" class="new-node"></li>
-    </ul> -->
-    <input type="text" id="get-employee-input">
-    <button type="button" id="btn-get-employee">Get Employee</button>
-    <label>new position:</label>
-    <!-- <ul id="new-nodelist">
-      <li><input type="text" class="new-node"></li>
-    </ul> -->
-    <input type="text" id="get-position-input">
-    <button type="button" id="btn-get-position">Get Position</button>
+    <div>
+      <label>Employee ID:</label>
+      <!-- <ul id="new-nodelist">
+        <li><input type="text" class="new-node"></li>
+      </ul> -->
+      <input type="text" id="get-employee-input">
+      <button type="button" id="btn-get-employee">Get Employee</button>
+    </div>
+    <div>
+      <label>Position ID:</label>
+      <input type="text" id="get-position-input">
+      <button type="button" id="btn-get-position">Get Position</button>
+      <span id="node-type-panel" class="radio-panel">
+        <input type="radio" name="node-type" id="rd-child" value="children"><label for="rd-child">Child</label>
+        <input type="radio" name="node-type" id="rd-sibling" value="siblings"><label for="rd-sibling">Sibling</label>
+      </span>
+      <button type="button" id="btn-add-position">Add Position</button>
+      <button type="button" id="btn-delete-position">Delete Position</button>
+    </div>
+    
     <i class="fa fa-plus-circle btn-inputs" id="btn-add-input"></i>
     <i class="fa fa-minus-circle btn-inputs" id="btn-remove-input"></i>
     <span id="node-type-panel" class="radio-panel">

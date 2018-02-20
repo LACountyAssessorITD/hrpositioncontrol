@@ -117,7 +117,7 @@ function myOrgchart(datasource) {
       }
     });
 
-    $('#btn-add-nodes').on('click', function() {
+    $('#btn-add-position').on('click', function() {
       var $chartContainer = $('#chart-container');
       var nodeVals = [];
       $('#new-nodelist').find('.new-node').each(function(index, item) {
@@ -182,7 +182,7 @@ function myOrgchart(datasource) {
       }
     });
 
-    $('#btn-delete-nodes').on('click', function() {
+    $('#btn-delete-position').on('click', function() {
       var $node = $('#selected-node').data('node');
       if (!$node) {
         alert('Please select one node in orgchart');
@@ -269,23 +269,38 @@ function myOrgchart(datasource) {
     });
 
     // Button for getting (retrieving) employee from database
-    $('#btn-get-employee').on('click', function() {
-      console.log("btn-get-employee clicked: " + $('#get-employee-input').val());
-      console.log("retrievedEmpl: " + this.$chart.data('retrievedEmployee'));
-
-      employee = getEmployee($('#get-employee-input').val());
+    function getEmployeeAndSetFlags(employeeId) {
+      var employee = getEmployee(employeeId);
       if (employee != null) {
         retrievedEmployee = employee;
+      }
+    }
+
+    $('#btn-get-employee').on('click', function() {
+      getEmployeeAndSetFlags($('#get-employee-input').val());
+    });
+
+    $('#get-employee-input').on('keyup', function(event) {
+      if (event.which === 13) {
+        getEmployeeAndSetFlags(this.value);
       }
     });
 
     // Button for getting (retrieving) position from database
-    $('#btn-get-position').on('click', function() {
-      console.log("btn-get-position clicked: " + $('#get-position-input').val());
-
-      position = getPosition($('#get-position-input').val());
+    function getPositionAndSetFlags(positionId) {
+      var position = getPosition(positionId);
       if (position != null) {
         retrievedPosition = position;
+      }
+    }
+
+    $('#btn-get-position').on('click', function() {
+      getPositionAndSetFlags($('#get-position-input').val());
+    });
+
+    $('#get-position-input').on('keyup', function(event) {
+      if (event.which === 13) {
+        getPositionAndSetFlags(this.value);
       }
     });
 };
