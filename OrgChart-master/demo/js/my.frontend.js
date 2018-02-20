@@ -188,6 +188,21 @@ function createUI(datasource) {
       $('#selected-node').val('').data('node', null);
     });
 
+    $('#btn-clear-position').on('click', function() {
+      var $node = $('#selected-node').data('node');
+      if (!$node) {
+        alert('Please select one node in orgchart');
+        return;
+      } else if ($node[0] === $('.orgchart').find('.node:first')[0]) {
+        if (!window.confirm('Are you sure you want to clear the whole chart?')) {
+          return;
+        }
+      }
+
+      $node.find('.title').text('');
+      $node.find('.content').text('');
+    });
+
     $('#btn-reset').on('click', function() {
       $('.orgchart').find('.focused').removeClass('focused');
       $('#selected-node').val('');
