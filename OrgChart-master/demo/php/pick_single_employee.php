@@ -36,20 +36,17 @@ if($stmt===false){
    echo "sbsbssbsbbsbs";
 }else{
 	$result=array();
-	while($row = sqlsrv_fetch_array($stmt)) {
 
-		$myobject= new \stdClass();
-		$myobject->employee_id=$row["EMPLOYEE_ID"];
-		$myobject->home_unit_cd=$row["PRIM_UNIT_CD"];
-		$myobject->supervisor_id=$row["SUPERVISOR_ID"];
-		$myobject->orig_hire_dt=$row["ORIG_HIRE_DT"];
-		$myobject->pay_lctn_cd=$row["PAY_LCTN_CD"];
-		$myobject->title_cd=$row["TITLE_CD"];
+	$row = sqlsrv_fetch_array($stmt);
+	$myobject= new \stdClass();
+	$myobject->employee_id=$row["EMPLOYEE_ID"];
+	$myobject->home_unit_cd=$row["PRIM_UNIT_CD"];
+	$myobject->supervisor_id=$row["SUPERVISOR_ID"];
+	$myobject->orig_hire_dt=$row["ORIG_HIRE_DT"];
+	$myobject->pay_lctn_cd=$row["PAY_LCTN_CD"];
+	$myobject->title_cd=$row["TITLE_CD"];
 
-		//$myjson=json_encode($myobject);
-		//echo $myjson;
-    	$result[] = $myobject;
-	}
+
 
 	sqlsrv_free_stmt($stmt);
 
@@ -71,7 +68,7 @@ if($stmt===false){
  	// }
 
 
-	echo json_encode($result);
+	echo json_encode($myobject);
 }
 
 
