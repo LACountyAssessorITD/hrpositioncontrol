@@ -87,18 +87,6 @@ function myOrgchart(datasource) {
       }
     });
 
-    $('input[name="chart-state"]').on('click', function() {
-      $('.orgchart').toggleClass('edit-state', this.value !== 'view');
-      $('#edit-panel').toggleClass('edit-state', this.value === 'view');
-      if ($(this).val() === 'edit') {
-        $('.orgchart').find('tr').removeClass('hidden')
-          .find('td').removeClass('hidden')
-          .find('.node').removeClass('slide-up slide-down slide-right slide-left');
-      } else {
-        $('#btn-reset').trigger('click');
-      }
-    });
-
     $('input[name="node-type"]').on('click', function() {
       var $this = $(this);
       if ($this.val() === 'parent') {
@@ -212,5 +200,74 @@ function myOrgchart(datasource) {
         + ', dragZone:' + extraParams.dragZone.children().children().children('.title').text()
         + ', dropZone:' + extraParams.dropZone.children().children().children('.title').text()
         );
+    });
+
+    // Search for an employee by employee ID
+    function searchEmployee(keyWord) {
+      if(!keyWord.length) {
+        window.alert('Please type key word firstly.');
+        return;
+      } else {
+        var $chart = $('.orgchart');
+        // disable the expand/collapse feture
+        $chart.addClass('noncollapsable');
+        // distinguish the matched nodes and the unmatched nodes according to the given key word
+        $chart.find('.node').filter(function(index, node) {
+            return $(node).text().toLowerCase().indexOf(keyWord) > -1;
+          }).addClass('matched')
+          .closest('table').parents('table').find('tr:first').find('.node').addClass('retained');
+        // hide the unmatched nodes
+        $chart.find('.matched,.retained').each(function(index, node) {
+          $(node).removeClass('slide-up')
+            .closest('.nodes').removeClass('hidden')
+            .siblings('.lines').removeClass('hidden');
+          var $unmatched = $(node).closest('table').parent().siblings().find('.node:first:not(.matched,.retained)')
+            .closest('table').parent().addClass('hidden');
+          $unmatched.parent().prev().children().slice(1, $unmatched.length * 2 + 1).addClass('hidden');
+        });
+        // hide the redundant descendant nodes of the matched nodes
+        $chart.find('.matched').each(function(index, node) {
+          if (!$(node).closest('tr').siblings(':last').find('.matched').length) {
+            $(node).closest('tr').siblings().addClass('hidden');
+          }
+        });
+      }
+    };
+
+    function clearSearchResult() {
+      $('.orgchart').removeClass('noncollapsable')
+        .find('.node').removeClass('matched retained')
+        .end().find('.hidden').removeClass('hidden')
+        .end().find('.slide-up, .slide-left, .slide-right').removeClass('slide-up slide-right slide-left');
+    }
+
+    // Buttons and input for searching within the UI
+    $('#btn-search-node').on('click', function() {
+      console.log("Search: " + $('#search-key-word').val());
+      searchEmployee($('#search-key-word').val());
+    });
+
+    $('#btn-cancel').on('click', function() {
+      clearSearchResult();
+    });
+
+    $('#search-key-word').on('keyup', function(event) {
+      if (event.which === 13) {
+        searchEmployee(this.value);
+      } else if (event.which === 8 && this.value.length === 0) {
+        clearSearchResult();
+      }
+    });
+
+    // Button for getting (retrieving) employee from database
+    $('#btn-get-employee').on('click', function() {
+      console.log("btn-get-employee clicked: " + $('#get-employee-input').val());
+      var employee = getEmployee($('#get-employee-input').val());
+    });
+
+    // Button for getting (retrieving) position from database
+    $('#btn-get-position').on('click', function() {
+      console.log("btn-get-position clicked: " + $('#get-position-input').val());
+      var position = getPosition($('#get-position-input').val());
     });
 };
