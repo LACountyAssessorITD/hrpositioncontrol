@@ -64,8 +64,7 @@ function connectDatabase(){
   });
   }
 
-  return datasource;
-}
+
 
 
   function get_data(position,employee, relation){
@@ -201,7 +200,8 @@ function connectDatabase(){
       // console.log("kkkk");
       return children;
   }
-
+  return datasource;
+}
 
 // Gets employee with |employee_id|
 function getEmployee(employee_id) {
@@ -210,5 +210,24 @@ function getEmployee(employee_id) {
 
 // Gets position with |position_id|
 function getPosition(position_id) {
+  var myData= {
+          'position_id': position_id
+        };
+
+  $.ajax({
+      url: "php/pick_single_position.php",
+      data: myData,
+      type: 'POST',
+      dataType: "json",
+      success: function(output) {
+        alert ('success: output=' + output);
+
+      },
+      error: function(xhr, status, error){
+        alert ('error: error=' + error + '; status=' + status);
+      },
+      async:false
+    });
+
 
 };

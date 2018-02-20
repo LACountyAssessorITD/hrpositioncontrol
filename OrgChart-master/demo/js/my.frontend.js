@@ -271,6 +271,7 @@ function createUI(datasource) {
 
     // Button for getting (retrieving) position from database
     function getPositionAndSetFlags(positionId) {
+      console.log("hhhh");
       var position = getPosition(positionId);
       if (position != null) {
         retrievedPosition = position;
