@@ -252,7 +252,7 @@ function createUI(datasource) {
     });
 
     // Button for getting (retrieving) employee from database
-    function getEmployeeAndSetFlags(employeeId) {
+    function getEmployeeAndSetFlag(employeeId) {
       var employee = getEmployee(employeeId);
       if (!employee) {
         retrievedEmployee = employee;
@@ -262,18 +262,17 @@ function createUI(datasource) {
     }
 
     $('#btn-get-employee').on('click', function() {
-      getEmployeeAndSetFlags($('#get-employee-input').val());
+      getEmployeeAndSetFlag($('#get-employee-input').val());
     });
 
     $('#get-employee-input').on('keyup', function(event) {
       if (event.which === 13) {
-        getEmployeeAndSetFlags(this.value);
+        getEmployeeAndSetFlag(this.value);
       }
     });
 
     // Button for getting (retrieving) position from database
-    function getPositionAndSetFlags(positionId) {
-      console.log("hhhh");
+    function getPositionAndSetFlag(positionId) {
       var position = getPosition(positionId);
       if (!position) {
         retrievedPosition = position;
@@ -283,12 +282,12 @@ function createUI(datasource) {
     }
 
     $('#btn-get-position').on('click', function() {
-      getPositionAndSetFlags($('#get-position-input').val());
+      getPositionAndSetFlag($('#get-position-input').val());
     });
 
     $('#get-position-input').on('keyup', function(event) {
       if (event.which === 13) {
-        getPositionAndSetFlags(this.value);
+        getPositionAndSetFlag(this.value);
       }
     });
 };
