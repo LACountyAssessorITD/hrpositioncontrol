@@ -200,3 +200,13 @@ $(document).ready(function(){
   }
   myOrgchart(datasource);
 });
+
+// Gets employee with |employee_id|
+function getEmployee(employee_id) {
+
+};
+
+// Gets position with |position_id|
+function getPosition(position_id) {
+
+};
