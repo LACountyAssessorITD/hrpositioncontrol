@@ -107,7 +107,13 @@ function createUI(datasource) {
       }
 
       var $chartContainer = $('#chart-container');
-      var nodeVals = retrievedPosition;
+
+      // make nodeVals into an array so it doesn't break the code
+      var nodeVals = [];
+      nodeVals.push(retrievedPosition);
+
+      console.log("retrivedPosition: id=" + retrievedPosition.position_id);
+      console.log("btn add position: nodeVals.length=" + nodeVals.length);
 
       var $node = $('#selected-node').data('node');
       if (!nodeVals.length) {
@@ -155,7 +161,8 @@ function createUI(datasource) {
         if (!hasChild) {
           var rel = nodeVals.length > 1 ? '110' : '100';
           oc.addChildren($node, nodeVals.map(function (item) {
-              return { 'name': item, 'relationship': rel, 'id': getId() };
+              // return { 'name': item, 'relationship': rel, 'id': getId() }; CHANGED
+              return { 'name': '', 'relationship': rel, 'id': getId(), 'title': '', 'position': item.position_id };
             }));
         } else {
           oc.addSiblings($node.closest('tr').siblings('.nodes').find('.node:first'), nodeVals.map(function (item) {
@@ -254,8 +261,9 @@ function createUI(datasource) {
     // Button for getting (retrieving) employee from database
     function getEmployeeAndSetFlag(employeeId) {
       var employee = getEmployee(employeeId);
+      retrievedEmployee = (employee != null);
       if (employee) {
-        retrievedEmployee = employee;
+        getEmployeeSuccess = true;
       } else {
         alert('The employee ID is not found.');
       }
@@ -274,6 +282,7 @@ function createUI(datasource) {
     // Button for getting (retrieving) position from database
     function getPositionAndSetFlag(positionId) {
       var position = getPosition(positionId);
+      getPositionSuccess = (position != null);
       if (position) {
         retrievedPosition = position;
       } else {
