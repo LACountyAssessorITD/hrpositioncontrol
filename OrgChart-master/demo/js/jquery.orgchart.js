@@ -1091,6 +1091,7 @@
       $dragged.addClass('focused');
     },
     // TODO(angela5shao): take out employee dragging in #dropHandler
+    //updated for more info(Elena)
     dropHandlerInner: function (event) {
       if (!this.isInnerNodeDragged) return;
 
@@ -1098,9 +1099,10 @@
       var $dragged = this.$chart.data('draggedInner');
       var $dragZone = $dragged.closest('.nodes').siblings().eq(0).children();
 
-      console.log("dropHandlerInner 4: " + $dragged.text() 
-        + " :: " + $dragZone.text() + " -> " + $dropZone.text());
+      // console.log("dropHandlerInner 4: " + $dragged.text() 
+      //   + " :: " + $dragZone.text() + " -> " + $dropZone.text());
 
+      // console.log("dragZone: " + $dragZone.text() + " -> dropZone: " + $dropZone.text());
       // Swap the dragged employee with the employee being dropped onto
       // TODO(angela5shao): modularize swapping and make it dynamic
       var tempTitle = $dragged.children('.title').text();
@@ -1109,6 +1111,17 @@
       var tempContent = $dragged.children('.content').text();
       $dragged.children('.content').text($dropZone.children('.content').text());
       $dropZone.children('.content').text(tempContent);
+
+
+      var tempUnitCode=$dragged.children('div.tooltiptext').find('span.unit_code').text();
+      $dragged.children('div.tooltiptext').find('span.unit_code').text($dropZone.children('div.tooltiptext').find('span.unit_code').text());
+      $dropZone.children('div.tooltiptext').find('span.unit_code').text(tempUnitCode);
+      var temphire=$dragged.children('div.tooltiptext').find('span.hire').text();
+      $dragged.children('div.tooltiptext').find('span.hire').text($dropZone.children('div.tooltiptext').find('span.hire').text());
+      $dropZone.children('div.tooltiptext').find('span.hire').text(temphire);
+      var tempPayLoc=$dragged.children('div.tooltiptext').find('span.pay_lctn').text();
+      $dragged.children('div.tooltiptext').find('span.pay_lctn').text($dropZone.children('div.tooltiptext').find('span.pay_lctn').text());
+      $dropZone.children('div.tooltiptext').find('span.pay_lctn').text(tempPayLoc);
 
       $dragged.children('.title').css("color", "blue");
       $dragged.children('.content').css("color", "blue");

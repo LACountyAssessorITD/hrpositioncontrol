@@ -472,6 +472,8 @@
     /* Position the tooltip */
     position: absolute;
     z-index: 1;
+    width: 121px;
+    overflow:auto;
 }
 
 .employee:hover .tooltiptext {
@@ -481,10 +483,10 @@
 
 }
 
-.tooltiptext .EmployeeId{
+.tooltiptext .unit_code, .hire, .pay_lctn{
   font-size: 12px;
   font-weight: bold;
   height: 20px;
-  line-height: 20px;
-  color: #222;
+  line-height: 18px;
+  color: #fff;
 }
