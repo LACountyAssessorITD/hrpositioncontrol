@@ -193,6 +193,39 @@ function createUI(datasource) {
       $('#node-type-panel').find('input').prop('checked', false);
     });
 
+    $('#btn-add-employee').on('click', function() {
+      if (!getEmployeeSuccess) {
+        alert('Please search for a valid employee.');
+        return;
+      }
+
+      var $chartContainer = $('#chart-container');
+
+      // make nodeVals into an array so it doesn't break the code
+      var nodeVals = [];
+      nodeVals.push(retrievedEmployee);
+
+      var $node = $('#selected-node').data('node');
+      if (!nodeVals.length) {
+        alert('Please input value for new node');
+        return;
+      }
+
+      $node[0].employee.title = "title1";
+      $node[0].employee.content =  "content1";
+
+      
+        // var hasChild = $node.parent().attr('colspan') > 0 ? true : false;
+        // if (!hasChild) {
+        //   var rel = nodeVals.length > 1 ? '110' : '100';
+        //   oc.addChildren($node, nodeVals.map(function (item) {
+        //       // return { 'name': item, 'relationship': rel, 'id': getId() }; CHANGED
+        //       return { 'name': '', 'relationship': rel, 'id': getId(), 'title': '', 'position': item.position_id };
+        //     }));
+        // } 
+      
+    });
+
     //console output for drag and drop
     oc.$chart.on('nodedrop.orgchart', function(event, extraParams) {
       console.log('draggedNode:' + extraParams.draggedNode.children().children().children('.title').text()
