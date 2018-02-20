@@ -217,7 +217,12 @@ function getEmployee(employee_id) {
       type: 'POST',
       dataType: "json",
       success: function(output) {
-        alert ('success: output=' + output);
+        // if (output.employee_id){
+        //   alert ('success: valid employee');
+        // }
+        // else{
+        //   alert ('employee doesn\'t exist');
+        // }
         employee = output;
       },
       error: function(xhr, status, error){
@@ -244,7 +249,12 @@ function getPosition(position_id) {
       type: 'POST',
       dataType: "json",
       success: function(output) {
-        alert ('success: output=' + output);
+        // if (output.position_id){
+        //   alert ('success: valid position');
+        // }
+        // else{
+        //   alert ('position doesn\'t exist');
+        // }
         position = output;
       },
       error: function(xhr, status, error){

@@ -25,7 +25,7 @@ function createUI(datasource) {
     };
 
     var nodeTemplate = function(data) {
-      return '<div class="position">' + data.position +
+      return '<div class="position"><span class="position_id">' + data.position + '</span>' +
           '<div class="employee" draggable="true"> <!--referenced as innerNode in .js file-->' +
             '<div class="title">' + data.title + '</div>' +
             '<div class="content">' + data.name + '</div>' +
@@ -33,7 +33,7 @@ function createUI(datasource) {
              'Home Unit Code:  <span class="unit_code">' + data.unit_cd + '</span> <br>' +
               'Hire Department: <span class="hire">' +  data.hire + '</span> <br>' +
               'Pay Location: <span class="pay_lctn">' + data.pay_lctn + '</span> <br>' +
-            '</span>' +
+            '</div>' +
           '</div>' +
         '</div>';
     };
@@ -70,7 +70,7 @@ function createUI(datasource) {
     //edit chart script
     oc.$chartContainer.on('click', '.node', function() {
       var $this = $(this);
-      $('#selected-node').val($this.find('.title').text()).data('node', $this);
+      $('#selected-node').val($this.find('.position_id').text()).data('node', $this);
     });
 
     oc.$chartContainer.on('click', '.orgchart', function(event) {
@@ -101,6 +101,8 @@ function createUI(datasource) {
     });
 
     $('#btn-add-position').on('click', function() {
+      // check if position exists
+      getPositionAndSetFlag($('#get-position-input').val());
       if (!getPositionSuccess) {
         alert('Please search for a valid position.');
         return;
@@ -112,8 +114,8 @@ function createUI(datasource) {
       var nodeVals = [];
       nodeVals.push(retrievedPosition);
 
-      console.log("retrivedPosition: id=" + retrievedPosition.position_id);
-      console.log("btn add position: nodeVals.length=" + nodeVals.length);
+      // console.log("retrivedPosition: id=" + retrievedPosition.position_id);
+      // console.log("btn add position: nodeVals.length=" + nodeVals.length);
 
       var $node = $('#selected-node').data('node');
       if (!nodeVals.length) {
@@ -194,6 +196,9 @@ function createUI(datasource) {
     });
 
     $('#btn-add-employee').on('click', function() {
+      // check if employee exists
+      getEmployeeAndSetFlag($('#get-employee-input').val());
+
       if (!getEmployeeSuccess) {
         alert('Please search for a valid employee.');
         return;
@@ -211,19 +216,13 @@ function createUI(datasource) {
         return;
       }
 
-      $node[0].employee.title = "title1";
-      $node[0].employee.content =  "content1";
+      if ($node.find('.title').text() !== ''){
+        alert('cannot add employee to filled position');
+        return;
+      }
 
-      
-        // var hasChild = $node.parent().attr('colspan') > 0 ? true : false;
-        // if (!hasChild) {
-        //   var rel = nodeVals.length > 1 ? '110' : '100';
-        //   oc.addChildren($node, nodeVals.map(function (item) {
-        //       // return { 'name': item, 'relationship': rel, 'id': getId() }; CHANGED
-        //       return { 'name': '', 'relationship': rel, 'id': getId(), 'title': '', 'position': item.position_id };
-        //     }));
-        // } 
-      
+      $node.find('.title').text(nodeVals[0].home_unit_cd);
+      $node.find('.content').text(nodeVals[0].employee_id);
     });
 
     //console output for drag and drop
@@ -294,17 +293,17 @@ function createUI(datasource) {
     // Button for getting (retrieving) employee from database
     function getEmployeeAndSetFlag(employeeId) {
       var employee = getEmployee(employeeId);
-      retrievedEmployee = (employee != null);
-      if (employee) {
+      if (employee.employee_id) {
         getEmployeeSuccess = true;
+        retrievedEmployee = employee;
       } else {
         alert('The employee ID is not found.');
       }
     }
 
-    $('#btn-get-employee').on('click', function() {
-      getEmployeeAndSetFlag($('#get-employee-input').val());
-    });
+    // $('#btn-get-employee').on('click', function() {
+    //   // getEmployeeAndSetFlag($('#get-employee-input').val());
+    // });
 
     $('#get-employee-input').on('keyup', function(event) {
       if (event.which === 13) {
@@ -315,17 +314,17 @@ function createUI(datasource) {
     // Button for getting (retrieving) position from database
     function getPositionAndSetFlag(positionId) {
       var position = getPosition(positionId);
-      getPositionSuccess = (position != null);
-      if (position) {
+      if (position.position_id) {
+        getPositionSuccess = true;
         retrievedPosition = position;
       } else {
         alert('The position ID is not found.');
       }
     }
 
-    $('#btn-get-position').on('click', function() {
-      getPositionAndSetFlag($('#get-position-input').val());
-    });
+    // $('#btn-get-position').on('click', function() {
+    //   getPositionAndSetFlag($('#get-position-input').val());
+    // });
 
     $('#get-position-input').on('keyup', function(event) {
       if (event.which === 13) {
