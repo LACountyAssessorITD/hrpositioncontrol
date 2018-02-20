@@ -1,4 +1,4 @@
-$(document).ready(function(){
+function connectDatabase(){
      var myData= {
           'employee_id': '415748'
         };
@@ -23,8 +23,6 @@ $(document).ready(function(){
       async:false
     });
 
-
-
   function runindex2(position_data) {
     console.log('runindex2');
     $.ajax({
@@ -46,6 +44,7 @@ $(document).ready(function(){
 
   function runindex3(position_data,employee_data) {
     console.log('runindex3');
+
     $.ajax({
      url: 'php/pick_relation.php',
      data: myData,
@@ -64,6 +63,10 @@ $(document).ready(function(){
     async:false
   });
   }
+
+  return datasource;
+}
+
 
   function get_data(position,employee, relation){
      var head_id=myData['employee_id'];
@@ -198,8 +201,7 @@ $(document).ready(function(){
       // console.log("kkkk");
       return children;
   }
-  myOrgchart(datasource);
-});
+
 
 // Gets employee with |employee_id|
 function getEmployee(employee_id) {
