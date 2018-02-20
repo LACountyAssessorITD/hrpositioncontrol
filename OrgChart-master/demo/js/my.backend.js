@@ -205,6 +205,28 @@ function connectDatabase(){
 
 // Gets employee with |employee_id|
 function getEmployee(employee_id) {
+   var myData= {
+          'employee_id': employee_id
+        };
+
+  var employee = null;
+
+  $.ajax({
+      url: "php/pick_single_employee.php",
+      data: myData,
+      type: 'POST',
+      dataType: "json",
+      success: function(output) {
+        alert ('success: output=' + output);
+        employee = output;
+      },
+      error: function(xhr, status, error){
+        alert ('error: error=' + error + '; status=' + status);
+      },
+      async:false
+    });
+
+  return employee;
 
 };
 
