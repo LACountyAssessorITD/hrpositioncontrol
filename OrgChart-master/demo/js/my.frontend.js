@@ -27,16 +27,16 @@ function createUI(datasource) {
 
     var nodeTemplate = function(data) {
       return '<div class="position"><span class="position_id">' + data.position + '</span>' +
-      '<div class="employee" draggable="true"> <!--referenced as innerNode in .js file-->' +
-      '<div class="title">' + data.title + '</div>' +
-      '<div class="content">' + data.name + '</div>' +
-      '<div class="tooltiptext">' +
-      'Home Unit Code:  <span class="unit_code">' + data.unit_cd + '</span> <br>' +
-      'Hire Department: <span class="hire">' +  data.hire + '</span> <br>' +
-      'Pay Location: <span class="pay_lctn">' + data.pay_lctn + '</span> <br>' +
-      '</div>' +
-      '</div>' +
-      '</div>';
+          '<div class="employee" draggable="true"> <!--referenced as innerNode in .js file-->' +
+            '<div class="title">' + data.title + '</div>' +
+            '<div class="content">' + data.name + '</div>' +
+            '<div class="tooltiptext">' +
+             'Home Unit Code:  <span class="unit_code">' + data.unit_cd + '</span> <br>' +
+              'Hire Department: <span class="hire">' +  data.hire + '</span> <br>' +
+              'Pay Location: <span class="pay_lctn">' + data.pay_lctn + '</span> <br>' +
+            '</div>' +
+          '</div>' +
+        '</div>';
     };
 
     var oc = $('#chart-container').orgchart({
@@ -251,7 +251,7 @@ function createUI(datasource) {
 
       $node.find('.title').text(nodeVals[0].home_unit_cd);
       $node.find('.content').text(nodeVals[0].employee_id);
-    });
+    };
 
     // Search for an employee by employee ID
     function searchEmployee(keyWord) {
