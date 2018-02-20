@@ -75,6 +75,15 @@ function myOrgchart(datasource) {
       }
     });
 
+    // Shows whether employee or position desired is found in database
+    var getEmployeeSuccess = false;
+    var getPositionSuccess = false;
+
+    // If |getEmployeeSuccess| is true, this is the retrieved employee
+    var retrievedEmployee;
+    // If |getPositionSuccess| is true, this is the retrieved position
+    var retrievedPosition;
+
     //edit chart script
     oc.$chartContainer.on('click', '.node', function() {
       var $this = $(this);
@@ -262,12 +271,21 @@ function myOrgchart(datasource) {
     // Button for getting (retrieving) employee from database
     $('#btn-get-employee').on('click', function() {
       console.log("btn-get-employee clicked: " + $('#get-employee-input').val());
-      var employee = getEmployee($('#get-employee-input').val());
+      console.log("retrievedEmpl: " + this.$chart.data('retrievedEmployee'));
+
+      employee = getEmployee($('#get-employee-input').val());
+      if (employee != null) {
+        retrievedEmployee = employee;
+      }
     });
 
     // Button for getting (retrieving) position from database
     $('#btn-get-position').on('click', function() {
       console.log("btn-get-position clicked: " + $('#get-position-input').val());
-      var position = getPosition($('#get-position-input').val());
+
+      position = getPosition($('#get-position-input').val());
+      if (position != null) {
+        retrievedPosition = position;
+      }
     });
 };
