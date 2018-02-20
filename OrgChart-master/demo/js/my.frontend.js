@@ -108,7 +108,7 @@ function createUI(datasource) {
 
       var $chartContainer = $('#chart-container');
       var nodeVals = retrievedPosition;
-      
+
       var $node = $('#selected-node').data('node');
       if (!nodeVals.length) {
         alert('Please input value for new node');
@@ -254,7 +254,7 @@ function createUI(datasource) {
     // Button for getting (retrieving) employee from database
     function getEmployeeAndSetFlag(employeeId) {
       var employee = getEmployee(employeeId);
-      if (!employee) {
+      if (employee) {
         retrievedEmployee = employee;
       } else {
         alert('The employee ID is not found.');
@@ -274,7 +274,7 @@ function createUI(datasource) {
     // Button for getting (retrieving) position from database
     function getPositionAndSetFlag(positionId) {
       var position = getPosition(positionId);
-      if (!position) {
+      if (position) {
         retrievedPosition = position;
       } else {
         alert('The position ID is not found.');
