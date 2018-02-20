@@ -75,10 +75,11 @@
 <script type="text/javascript">
   // run when the page is loaded
   $(document).ready(function(){
+    // call my.backend.js code
     var datasource = connectDatabase();
     if (datasource){
+      // call my.frontend.js code
       createUI(datasource);
-
     }
     else{
       console.log('data source is empty');

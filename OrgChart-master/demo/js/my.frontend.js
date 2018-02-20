@@ -1,4 +1,5 @@
 function createUI(datasource) {
+    // Sample json data structure
     // var datasource = {
     //   'name': 'Lao Lao',
     //   'title': 'general manager',
@@ -26,16 +27,16 @@ function createUI(datasource) {
 
     var nodeTemplate = function(data) {
       return '<div class="position"><span class="position_id">' + data.position + '</span>' +
-          '<div class="employee" draggable="true"> <!--referenced as innerNode in .js file-->' +
-            '<div class="title">' + data.title + '</div>' +
-            '<div class="content">' + data.name + '</div>' +
-            '<div class="tooltiptext">' +
-             'Home Unit Code:  <span class="unit_code">' + data.unit_cd + '</span> <br>' +
-              'Hire Department: <span class="hire">' +  data.hire + '</span> <br>' +
-              'Pay Location: <span class="pay_lctn">' + data.pay_lctn + '</span> <br>' +
-            '</div>' +
-          '</div>' +
-        '</div>';
+      '<div class="employee" draggable="true"> <!--referenced as innerNode in .js file-->' +
+      '<div class="title">' + data.title + '</div>' +
+      '<div class="content">' + data.name + '</div>' +
+      '<div class="tooltiptext">' +
+      'Home Unit Code:  <span class="unit_code">' + data.unit_cd + '</span> <br>' +
+      'Hire Department: <span class="hire">' +  data.hire + '</span> <br>' +
+      'Pay Location: <span class="pay_lctn">' + data.pay_lctn + '</span> <br>' +
+      '</div>' +
+      '</div>' +
+      '</div>';
     };
 
     var oc = $('#chart-container').orgchart({
@@ -56,6 +57,14 @@ function createUI(datasource) {
         var secondMenu = '<div class="second-menu"> Salary: ' + data.salary + '<br>Sub Title: '+data.sub_title_cd+'</div>';
         $node.append(secondMenuIcon).append(secondMenu);
       }
+    });
+
+    //console output for drag and drop
+    oc.$chart.on('nodedrop.orgchart', function(event, extraParams) {
+      console.log('draggedNode:' + extraParams.draggedNode.children().children().children('.title').text()
+        + ', dragZone:' + extraParams.dragZone.children().children().children('.title').text()
+        + ', dropZone:' + extraParams.dropZone.children().children().children('.title').text()
+        );
     });
 
     // Shows whether employee or position desired is found in database
@@ -108,14 +117,14 @@ function createUI(datasource) {
         return;
       }
 
+      // reset position flag
+      getPositionSuccess = false;
+
       var $chartContainer = $('#chart-container');
 
       // make nodeVals into an array so it doesn't break the code
       var nodeVals = [];
       nodeVals.push(retrievedPosition);
-
-      // console.log("retrivedPosition: id=" + retrievedPosition.position_id);
-      // console.log("btn add position: nodeVals.length=" + nodeVals.length);
 
       var $node = $('#selected-node').data('node');
       if (!nodeVals.length) {
@@ -156,8 +165,8 @@ function createUI(datasource) {
           return;
         }
         oc.addSiblings($node, nodeVals.map(function (item) {
-            return { 'name': item, 'relationship': '110', 'id': getId() };
-          }));
+          return { 'name': item, 'relationship': '110', 'id': getId() };
+        }));
       } else {
         var hasChild = $node.parent().attr('colspan') > 0 ? true : false;
         if (!hasChild) {
@@ -168,8 +177,8 @@ function createUI(datasource) {
             }));
         } else {
           oc.addSiblings($node.closest('tr').siblings('.nodes').find('.node:first'), nodeVals.map(function (item) {
-              return { 'name': item, 'relationship': '110', 'id': getId() };
-            }));
+            return { 'name': item, 'relationship': '110', 'id': getId() };
+          }));
         }
       }
     });
@@ -219,9 +228,11 @@ function createUI(datasource) {
         return;
       }
 
+      // reset flag
+      getEmployeeSuccess = false;
+
       var $chartContainer = $('#chart-container');
 
-      // make nodeVals into an array so it doesn't break the code
       var nodeVals = [];
       nodeVals.push(retrievedEmployee);
 
@@ -236,16 +247,10 @@ function createUI(datasource) {
         return;
       }
 
+      // TODO: look at #btn-add-position code and see if need to cover those edge cases
+
       $node.find('.title').text(nodeVals[0].home_unit_cd);
       $node.find('.content').text(nodeVals[0].employee_id);
-    });
-
-    //console output for drag and drop
-    oc.$chart.on('nodedrop.orgchart', function(event, extraParams) {
-      console.log('draggedNode:' + extraParams.draggedNode.children().children().children('.title').text()
-        + ', dragZone:' + extraParams.dragZone.children().children().children('.title').text()
-        + ', dropZone:' + extraParams.dropZone.children().children().children('.title').text()
-        );
     });
 
     // Search for an employee by employee ID
@@ -259,16 +264,16 @@ function createUI(datasource) {
         $chart.addClass('noncollapsable');
         // distinguish the matched nodes and the unmatched nodes according to the given key word
         $chart.find('.node').filter(function(index, node) {
-            return $(node).text().toLowerCase().indexOf(keyWord) > -1;
-          }).addClass('matched')
-          .closest('table').parents('table').find('tr:first').find('.node').addClass('retained');
+          return $(node).text().toLowerCase().indexOf(keyWord) > -1;
+        }).addClass('matched')
+        .closest('table').parents('table').find('tr:first').find('.node').addClass('retained');
         // hide the unmatched nodes
         $chart.find('.matched,.retained').each(function(index, node) {
           $(node).removeClass('slide-up')
-            .closest('.nodes').removeClass('hidden')
-            .siblings('.lines').removeClass('hidden');
+          .closest('.nodes').removeClass('hidden')
+          .siblings('.lines').removeClass('hidden');
           var $unmatched = $(node).closest('table').parent().siblings().find('.node:first:not(.matched,.retained)')
-            .closest('table').parent().addClass('hidden');
+          .closest('table').parent().addClass('hidden');
           $unmatched.parent().prev().children().slice(1, $unmatched.length * 2 + 1).addClass('hidden');
         });
         // hide the redundant descendant nodes of the matched nodes
@@ -282,9 +287,9 @@ function createUI(datasource) {
 
     function clearSearchResult() {
       $('.orgchart').removeClass('noncollapsable')
-        .find('.node').removeClass('matched retained')
-        .end().find('.hidden').removeClass('hidden')
-        .end().find('.slide-up, .slide-left, .slide-right').removeClass('slide-up slide-right slide-left');
+      .find('.node').removeClass('matched retained')
+      .end().find('.hidden').removeClass('hidden')
+      .end().find('.slide-up, .slide-left, .slide-right').removeClass('slide-up slide-right slide-left');
     }
 
     // Buttons and input for searching within the UI
@@ -316,10 +321,6 @@ function createUI(datasource) {
       }
     }
 
-    // $('#btn-get-employee').on('click', function() {
-    //   // getEmployeeAndSetFlag($('#get-employee-input').val());
-    // });
-
     $('#get-employee-input').on('keyup', function(event) {
       if (event.which === 13) {
         getEmployeeAndSetFlag(this.value);
@@ -337,13 +338,9 @@ function createUI(datasource) {
       }
     }
 
-    // $('#btn-get-position').on('click', function() {
-    //   getPositionAndSetFlag($('#get-position-input').val());
-    // });
-
     $('#get-position-input').on('keyup', function(event) {
       if (event.which === 13) {
         getPositionAndSetFlag(this.value);
       }
     });
-};
+  };
