@@ -24,7 +24,7 @@ $(document).ready(function(){
     });
 
 
-    
+
   function runindex2(position_data) {
     console.log('runindex2');
     $.ajax({
