@@ -214,6 +214,8 @@ function getPosition(position_id) {
           'position_id': position_id
         };
 
+  var position = null;
+
   $.ajax({
       url: "php/pick_single_position.php",
       data: myData,
@@ -221,7 +223,7 @@ function getPosition(position_id) {
       dataType: "json",
       success: function(output) {
         alert ('success: output=' + output);
-
+        position = output;
       },
       error: function(xhr, status, error){
         alert ('error: error=' + error + '; status=' + status);
@@ -229,5 +231,5 @@ function getPosition(position_id) {
       async:false
     });
 
-
+  return position;
 };

@@ -101,14 +101,14 @@ function createUI(datasource) {
     });
 
     $('#btn-add-position').on('click', function() {
+      if (!getPositionSuccess) {
+        alert('Please search for a valid position.');
+        return;
+      }
+
       var $chartContainer = $('#chart-container');
-      var nodeVals = [];
-      $('#new-nodelist').find('.new-node').each(function(index, item) {
-        var validVal = item.value.trim();
-        if (validVal.length) {
-          nodeVals.push(validVal);
-        }
-      });
+      var nodeVals = retrievedPosition;
+      
       var $node = $('#selected-node').data('node');
       if (!nodeVals.length) {
         alert('Please input value for new node');
@@ -254,8 +254,10 @@ function createUI(datasource) {
     // Button for getting (retrieving) employee from database
     function getEmployeeAndSetFlags(employeeId) {
       var employee = getEmployee(employeeId);
-      if (employee != null) {
+      if (!employee) {
         retrievedEmployee = employee;
+      } else {
+        alert('The employee ID is not found.');
       }
     }
 
@@ -273,8 +275,10 @@ function createUI(datasource) {
     function getPositionAndSetFlags(positionId) {
       console.log("hhhh");
       var position = getPosition(positionId);
-      if (position != null) {
+      if (!position) {
         retrievedPosition = position;
+      } else {
+        alert('The position ID is not found.');
       }
     }
 
