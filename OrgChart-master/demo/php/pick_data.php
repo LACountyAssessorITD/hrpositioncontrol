@@ -8,7 +8,7 @@ with the SQL Server database username and password.
 */
 
 
-$employee_id_initial=$_POST["employee_id"];
+$employee_id_initial=415748;//$_POST["employee_id"];
 
 $Servername='Assessor';
 $connection_info=array('UID'=>'zhdllwyc',
@@ -39,6 +39,7 @@ if($stmt===false){
 }else{
 	$result=array();
 	while($row = sqlsrv_fetch_array($stmt)) {
+
 		$myobject= new \stdClass();
 		$myobject->employee_id=$row["EMPLOYEE_ID"];
 		$myobject->home_unit_cd=$row["PRIM_UNIT_CD"];
@@ -51,9 +52,29 @@ if($stmt===false){
 		//echo $myjson;
     	$result[] = $myobject;
 	}
+
+	sqlsrv_free_stmt($stmt);
+
+
+ 	// foreach($result as $item) {
+
+		// $titlecd=(string)$item->title_cd;
+		// echo $titlecd;
+ 	//     $stmt_title="SELECT * FROM dbo.TITLE WHERE (TITLE_CD=$titlecd)";
+ 	// 	$stmt1 = sqlsrv_query( $conn, $stmt_title);
+  // 		if($stmt1===false){
+  //   		echo "sbsbssbsbbsbsssssssssssssss";
+		// }else{
+		// 	//$row_title = sqlsrv_fetch_array($stmt1);
+		// 	//$item->title_cd=$row_title["TITL_SHORT_DD"];
+	 // 	}
+
+ 	// 	sqlsrv_free_stmt($stmt1);
+ 	// }
+
+
 	echo json_encode($result);
 }
-
 
 
 

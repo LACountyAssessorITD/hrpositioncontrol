@@ -1,5 +1,4 @@
-function myOrgchart(datasource) {
-  var datasource=datasource;
+function createUI(datasource) {
     // var datasource = {
     //   'name': 'Lao Lao',
     //   'title': 'general manager',
@@ -38,22 +37,6 @@ function myOrgchart(datasource) {
           '</div>' +
         '</div>';
     };
-    // var nodeTemplate = function(data) {
-    //   return `
-    //     <div class="position">${data.position}
-    //       <div class="employee" draggable="true"> <!--referenced as innerNode in .js file-->
-    //         <div class="title">${data.name}</div>
-    //         <div class="content">${data.title}</div>
-    //         <span class="tooltiptext">
-    //          Employee ID:  <span class="EmployeeId"> ${data.EmployeeId} </span> <br>
-    //           Position Status Code: ACCTG<br>
-    //           Position Action Code: ORG<br>
-    //           Function Code: CD53
-    //         </span>
-    //       </div>
-    //     </div>
-    //   `;
-    // };
 
     var oc = $('#chart-container').orgchart({
       'data' : datasource,
