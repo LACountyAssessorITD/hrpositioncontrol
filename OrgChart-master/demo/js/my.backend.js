@@ -65,12 +65,12 @@ function get_data(position,employee, relation){
  var position_head_id=get_position(head_id, relation);
  var head_unit_cd=get_home_unit_cd(head_id, employee);
  var head_orig_hire_dt=get_orig_hire_dt(head_id,employee);
- var head_pay_lctn_dt=get_pay_lctn_cd(head_id, employee);
- var head_title_cd=get_tile_cd(head_id, employee);
+ var head_pay_lctn_cd=get_pay_lctn_cd(head_id, employee);
+ var head_title_cd=get_title_cd(head_id, employee);
  var head_salary_maximum_am =get_salary_maximum_am(position_head_id,position);
  var head_sub_title_cd =get_sub_title_cd(position_head_id,position);
  var head_employee={'name':head_id, 'title':head_title_cd,'unit_cd': head_unit_cd,'hire':head_orig_hire_dt,
- 'pay_lctn':head_pay_lctn_dt,'position':position_head_id, 'salary':head_salary_maximum_am, 'sub_title_cd': head_sub_title_cd,'children':[]};
+ 'pay_lctn':head_pay_lctn_cd,'position':position_head_id, 'salary':head_salary_maximum_am, 'sub_title_cd': head_sub_title_cd,'children':[]};
  var head_child=get_children(head_id, employee);
  for (var i=0;i<head_child.length; i++){
   var single_child=get_data_helper(head_child[i],position,employee, relation);
@@ -84,12 +84,12 @@ function get_data_helper(employee_id,position,employee, relation){
  var position_current_id=get_position(employee_id, relation);
  var current_unit_cd=get_home_unit_cd(employee_id, employee);
  var current_orig_hire_dt=get_orig_hire_dt(employee_id,employee);
- var current_pay_lctn_dt=get_pay_lctn_cd(employee_id, employee);
- var current_title_cd =get_tile_cd(employee_id, employee);
+ var current_pay_lctn_cd=get_pay_lctn_cd(employee_id, employee);
+ var current_title_cd =get_title_cd(employee_id, employee);
  var current_salary_maximum_am =get_salary_maximum_am(position_current_id,position);
  var current_sub_title_cd =get_sub_title_cd(position_current_id,position);
  var current_employee={'name':employee_id,'title':current_title_cd,'unit_cd': current_unit_cd,'hire':current_orig_hire_dt,
- 'pay_lctn':current_pay_lctn_dt,'position':position_current_id,'salary':current_salary_maximum_am,'sub_title_cd': current_sub_title_cd, };
+ 'pay_lctn':current_pay_lctn_cd,'position':position_current_id,'salary':current_salary_maximum_am,'sub_title_cd': current_sub_title_cd, };
  var current_child=get_children(employee_id, employee);
  if(current_child.length==0){
         return current_employee;
@@ -155,7 +155,7 @@ function get_pay_lctn_cd(employee_id, employee){
 }
 }
 
-function get_tile_cd(employee_id, employee){
+function get_title_cd(employee_id, employee){
  for (var i=0; i<employee.length;i++){
 
   if(employee[i]['employee_id'].toString().trim()==employee_id.toString().trim()){

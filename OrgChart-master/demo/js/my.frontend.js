@@ -173,7 +173,7 @@ function createUI(datasource) {
           var rel = nodeVals.length > 1 ? '110' : '100';
           oc.addChildren($node, nodeVals.map(function (item) {
               // return { 'name': item, 'relationship': rel, 'id': getId() }; CHANGED
-              return { 'name': '', 'relationship': rel, 'id': getId(), 'title': '', 'position': item.position_id };
+              return { 'name': '', 'relationship': rel, 'id': getId(), 'title': '', 'unit_cd': '', 'hire': '', 'pay_lctn': '', 'position': item.position_id,'salary': item.salary_maximum_am,'sub_title_cd': item.sub_title_cd };
             }));
         } else {
           oc.addSiblings($node.closest('tr').siblings('.nodes').find('.node:first'), nodeVals.map(function (item) {
@@ -210,6 +210,9 @@ function createUI(datasource) {
 
       $node.find('.title').text('');
       $node.find('.content').text('');
+      $node.find('.unit_code').text('');
+      $node.find('.hire').text('');
+      $node.find('.pay_lctn').text('');
     });
 
     $('#btn-reset').on('click', function() {
@@ -249,8 +252,11 @@ function createUI(datasource) {
 
       // TODO: look at #btn-add-position code and see if need to cover those edge cases
 
-      $node.find('.title').text(nodeVals[0].home_unit_cd);
+      $node.find('.title').text(nodeVals[0].title_cd);
       $node.find('.content').text(nodeVals[0].employee_id);
+      $node.find('.unit_code').text(nodeVals[0].home_unit_cd);
+      $node.find('.hire').text(nodeVals[0].orig_hire_dt);
+      $node.find('.pay_lctn').text(nodeVals[0].pay_lctn_cd);
     });
 
     // Search for an employee by employee ID
