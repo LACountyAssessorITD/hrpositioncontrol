@@ -251,7 +251,7 @@ function createUI(datasource) {
 
       $node.find('.title').text(nodeVals[0].home_unit_cd);
       $node.find('.content').text(nodeVals[0].employee_id);
-    };
+    });
 
     // Search for an employee by employee ID
     function searchEmployee(keyWord) {
