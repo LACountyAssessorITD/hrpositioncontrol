@@ -265,3 +265,7 @@ function getPosition(position_id) {
 
   return position;
 };
+
+function addTransaction(employee_id, src_pos_id, dest_pos_id, src_supervisor_id, dest_supervisor_id) {
+  
+}
