@@ -1104,6 +1104,9 @@
       // Send transactions to backend for tracking
       addTransaction($dragged.children('.employee_id').text(), $dragged.children('.position_id').text(), $dragged.children('.position_id').text(),
         this.dragStartSupervisorId, $dropZone.parent().children('.supervisor_id').text());
+      console.log("dropHandler TRANSACTION: " + $dragged.children('.employee_id').text() + "; " + 
+        $dragged.children('.position_id').text() + "; " + $dragged.children('.position_id').text()
+         + "; " + this.dragStartSupervisorId + "; " + $dropZone.parent().children('.supervisor_id').text());
     },
 
     // TODO(angela5shao): take out employee dragging in #dropHandler
@@ -1149,8 +1152,14 @@
       // Send transactions to backend for tracking
       addTransaction($dragged.children('.employee_id').text(), this.dragStartPositionId, $dropZone.children('.position_id').text(),
         this.dragStartSupervisorId, $dropZone.parent().children('.supervisor_id').text());
+      console.log("dropHandlerInner TRANSACTION: " + $dragged.children('.employee_id').text() + "; " + 
+        this.dragStartPositionId + "; " + $dropZone.children('.position_id').text()
+         + "; " + this.dragStartSupervisorId + "; " + $dropZone.parent().children('.supervisor_id').text());
       addTransaction($dropZone.children('.employee_id').text(), $dropZone.children('.position_id').text(), this.dragStartPositionId,
         $dropZone.parent().children('.supervisor_id').text(), this.dragStartSupervisorId);
+      console.log("dropHandlerInner TRANSACTION: " + $dropZone.children('.employee_id').text() + "; " + 
+        $dropZone.children('.position_id').text() + "; " + this.dragStartPositionId
+         + "; " +$dropZone.parent().children('.supervisor_id').text() + "; " + this.dragStartSupervisorId);
     },
     //
     touchstartHandler: function (event) {
