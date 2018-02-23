@@ -1,4 +1,5 @@
 function createUI(datasource) {
+    // Sample json data structure
     // var datasource = {
     //   'name': 'Lao Lao',
     //   'title': 'general manager',
@@ -58,6 +59,14 @@ function createUI(datasource) {
       }
     });
 
+    //console output for drag and drop
+    oc.$chart.on('nodedrop.orgchart', function(event, extraParams) {
+      console.log('draggedNode:' + extraParams.draggedNode.children().children().children('.title').text()
+        + ', dragZone:' + extraParams.dragZone.children().children().children('.title').text()
+        + ', dropZone:' + extraParams.dropZone.children().children().children('.title').text()
+        );
+    });
+
     // Shows whether employee or position desired is found in database
     var getEmployeeSuccess = false;
     var getPositionSuccess = false;
@@ -108,14 +117,14 @@ function createUI(datasource) {
         return;
       }
 
+      // reset position flag
+      getPositionSuccess = false;
+
       var $chartContainer = $('#chart-container');
 
       // make nodeVals into an array so it doesn't break the code
       var nodeVals = [];
       nodeVals.push(retrievedPosition);
-
-      // console.log("retrivedPosition: id=" + retrievedPosition.position_id);
-      // console.log("btn add position: nodeVals.length=" + nodeVals.length);
 
       var $node = $('#selected-node').data('node');
       if (!nodeVals.length) {
@@ -156,20 +165,20 @@ function createUI(datasource) {
           return;
         }
         oc.addSiblings($node, nodeVals.map(function (item) {
-            return { 'name': item, 'relationship': '110', 'id': getId() };
-          }));
+          return { 'name': item, 'relationship': '110', 'id': getId() };
+        }));
       } else {
         var hasChild = $node.parent().attr('colspan') > 0 ? true : false;
         if (!hasChild) {
           var rel = nodeVals.length > 1 ? '110' : '100';
           oc.addChildren($node, nodeVals.map(function (item) {
               // return { 'name': item, 'relationship': rel, 'id': getId() }; CHANGED
-              return { 'name': '', 'relationship': rel, 'id': getId(), 'title': '', 'position': item.position_id };
+              return { 'name': '', 'relationship': rel, 'id': getId(), 'title': '', 'unit_cd': '', 'hire': '', 'pay_lctn': '', 'position': item.position_id,'salary': item.salary_maximum_am,'sub_title_cd': item.sub_title_cd };
             }));
         } else {
           oc.addSiblings($node.closest('tr').siblings('.nodes').find('.node:first'), nodeVals.map(function (item) {
-              return { 'name': item, 'relationship': '110', 'id': getId() };
-            }));
+            return { 'name': item, 'relationship': '110', 'id': getId() };
+          }));
         }
       }
     });
@@ -201,6 +210,9 @@ function createUI(datasource) {
 
       $node.find('.title').text('');
       $node.find('.content').text('');
+      $node.find('.unit_code').text('');
+      $node.find('.hire').text('');
+      $node.find('.pay_lctn').text('');
     });
 
     $('#btn-reset').on('click', function() {
@@ -219,9 +231,11 @@ function createUI(datasource) {
         return;
       }
 
+      // reset flag
+      getEmployeeSuccess = false;
+
       var $chartContainer = $('#chart-container');
 
-      // make nodeVals into an array so it doesn't break the code
       var nodeVals = [];
       nodeVals.push(retrievedEmployee);
 
@@ -236,16 +250,13 @@ function createUI(datasource) {
         return;
       }
 
-      $node.find('.title').text(nodeVals[0].home_unit_cd);
-      $node.find('.content').text(nodeVals[0].employee_id);
-    });
+      // TODO: look at #btn-add-position code and see if need to cover those edge cases
 
-    //console output for drag and drop
-    oc.$chart.on('nodedrop.orgchart', function(event, extraParams) {
-      console.log('draggedNode:' + extraParams.draggedNode.children().children().children('.title').text()
-        + ', dragZone:' + extraParams.dragZone.children().children().children('.title').text()
-        + ', dropZone:' + extraParams.dropZone.children().children().children('.title').text()
-        );
+      $node.find('.title').text(nodeVals[0].title_cd);
+      $node.find('.content').text(nodeVals[0].employee_id);
+      $node.find('.unit_code').text(nodeVals[0].home_unit_cd);
+      $node.find('.hire').text(nodeVals[0].orig_hire_dt);
+      $node.find('.pay_lctn').text(nodeVals[0].pay_lctn_cd);
     });
 
     // Search for an employee by employee ID
@@ -259,16 +270,16 @@ function createUI(datasource) {
         $chart.addClass('noncollapsable');
         // distinguish the matched nodes and the unmatched nodes according to the given key word
         $chart.find('.node').filter(function(index, node) {
-            return $(node).text().toLowerCase().indexOf(keyWord) > -1;
-          }).addClass('matched')
-          .closest('table').parents('table').find('tr:first').find('.node').addClass('retained');
+          return $(node).text().toLowerCase().indexOf(keyWord) > -1;
+        }).addClass('matched')
+        .closest('table').parents('table').find('tr:first').find('.node').addClass('retained');
         // hide the unmatched nodes
         $chart.find('.matched,.retained').each(function(index, node) {
           $(node).removeClass('slide-up')
-            .closest('.nodes').removeClass('hidden')
-            .siblings('.lines').removeClass('hidden');
+          .closest('.nodes').removeClass('hidden')
+          .siblings('.lines').removeClass('hidden');
           var $unmatched = $(node).closest('table').parent().siblings().find('.node:first:not(.matched,.retained)')
-            .closest('table').parent().addClass('hidden');
+          .closest('table').parent().addClass('hidden');
           $unmatched.parent().prev().children().slice(1, $unmatched.length * 2 + 1).addClass('hidden');
         });
         // hide the redundant descendant nodes of the matched nodes
@@ -282,9 +293,9 @@ function createUI(datasource) {
 
     function clearSearchResult() {
       $('.orgchart').removeClass('noncollapsable')
-        .find('.node').removeClass('matched retained')
-        .end().find('.hidden').removeClass('hidden')
-        .end().find('.slide-up, .slide-left, .slide-right').removeClass('slide-up slide-right slide-left');
+      .find('.node').removeClass('matched retained')
+      .end().find('.hidden').removeClass('hidden')
+      .end().find('.slide-up, .slide-left, .slide-right').removeClass('slide-up slide-right slide-left');
     }
 
     // Buttons and input for searching within the UI
@@ -316,10 +327,6 @@ function createUI(datasource) {
       }
     }
 
-    // $('#btn-get-employee').on('click', function() {
-    //   // getEmployeeAndSetFlag($('#get-employee-input').val());
-    // });
-
     $('#get-employee-input').on('keyup', function(event) {
       if (event.which === 13) {
         getEmployeeAndSetFlag(this.value);
@@ -337,13 +344,18 @@ function createUI(datasource) {
       }
     }
 
-    // $('#btn-get-position').on('click', function() {
-    //   getPositionAndSetFlag($('#get-position-input').val());
-    // });
-
     $('#get-position-input').on('keyup', function(event) {
       if (event.which === 13) {
         getPositionAndSetFlag(this.value);
       }
     });
-};
+  };
+  
+// change listener for select head drop-down list
+$('#select-head').on('change', function() { 
+  console.log('select list: ' + $('#select-head').val());
+});
+
+$('#btn-display-new-head').on('click', function() { 
+  console.log('Display button: ' + $('#select-head').val());
+});
