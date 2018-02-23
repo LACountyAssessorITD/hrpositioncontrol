@@ -53,7 +53,15 @@
       <button type="button" id="btn-clear-position">Clear Position</button>
       <!-- <button type="button" id="btn-delete-position">Delete Position</button> -->
     </div>
-
+    <div>
+      <label>Select Organization Head (employee ID): </label><br/>
+      <select id="select-head" size="6">
+        <option value="" selected="selected">- Please select a head -</option>
+        <option value="281083">281083</option>
+        <option value="415748">415748</option>
+      </select>
+      <button type="button" id="btn-display-new-head">Display</button>
+    </div>
     <!-- <i class="fa fa-plus-circle btn-inputs" id="btn-add-input"></i>
     <i class="fa fa-minus-circle btn-inputs" id="btn-remove-input"></i>
     <span id="node-type-panel" class="radio-panel">
@@ -76,7 +84,7 @@
   // run when the page is loaded
   $(document).ready(function(){
     // call my.backend.js code
-    var datasource = connectDatabase();
+    var datasource = connectDatabase('415748');
     if (datasource){
       // call my.frontend.js code
       createUI(datasource);

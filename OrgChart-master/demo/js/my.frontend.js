@@ -350,3 +350,12 @@ function createUI(datasource) {
       }
     });
   };
+  
+// change listener for select head drop-down list
+$('#select-head').on('change', function() { 
+  console.log('select list: ' + $('#select-head').val());
+});
+
+$('#btn-display-new-head').on('click', function() { 
+  console.log('Display button: ' + $('#select-head').val());
+});

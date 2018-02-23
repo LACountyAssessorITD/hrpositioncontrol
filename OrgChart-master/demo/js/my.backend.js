@@ -1,6 +1,7 @@
-function connectDatabase(){
+function connectDatabase(orgchart_head_id){
  var myData= {
-  'employee_id': '415748'
+  // 'employee_id': '415748'
+  'employee_id': orgchart_head_id
 };
 
 var datasource;
