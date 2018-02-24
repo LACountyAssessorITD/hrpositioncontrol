@@ -47,6 +47,7 @@ function runindex3(position_data,employee_data) {
    type: 'POST',
    dataType: "json",
    success: function(output) {
+    alert ('runindex3 success: output=' + output);
     datasource=get_data(position_data,employee_data,output);
     },
     error: function(xhr, status, error){
@@ -185,8 +186,7 @@ function get_children(employee_id, employee){
           }
       return children;
     }
-    return datasource;
-  }
+
 
 // Gets employee with |employee_id|
 function getEmployee(employee_id) {
@@ -237,6 +237,9 @@ function getPosition(position_id) {
   return position;
 };
 
+  return datasource;
+} // end of connectDatabase function
+
 function addTransaction(employee_id, src_pos_id, dest_pos_id, src_supervisor_id, dest_supervisor_id) {
-  
+
 }

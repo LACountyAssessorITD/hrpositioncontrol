@@ -86,7 +86,7 @@ function createUI(datasource) {
       if (!$(event.target).closest('.node').length) {
         $('#selected-node').val('');
       }
-    }); 
+    });
 
 
     $('input[name="node-type"]').on('click', function() {
@@ -352,16 +352,18 @@ function createUI(datasource) {
     });
 
     // change listener for select head drop-down list
-    $('#select-head').on('change', function() { 
+    $('#select-head').on('change', function() {
       console.log('select list: ' + $('#select-head').val());
       var selected_head_id = $('#select-head').val();
-      var updated_datasource = connectDatabase(selected_head_id);
-      var opts = oc.opts;
-      opts.data = updated_datasource;
-      oc.init(opts);
+      if (selected_head_id) {
+        var updated_datasource = connectDatabase(selected_head_id);
+        var opts = oc.opts;
+        opts.data = updated_datasource;
+        oc.init(opts);
+      }
     });
 
-    $('#btn-display-new-head').on('click', function() { 
+    $('#btn-display-new-head').on('click', function() {
       console.log('Display button clicked');
     });
   };

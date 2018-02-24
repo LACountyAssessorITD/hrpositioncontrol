@@ -53,15 +53,21 @@
       <button type="button" id="btn-clear-position">Clear Position</button>
       <!-- <button type="button" id="btn-delete-position">Delete Position</button> -->
     </div>
-    <div>
+    <div style="display: inline">
       <label>Select Organization Head (employee ID): </label><br/>
       <select id="select-head" size="6">
         <option value="" selected="selected">- Please select a head -</option>
-        <option value="281083">281083</option>
         <option value="415748">415748</option>
+        <option value="281082">281082</option>
+        <option value="412797">412797</option>
       </select>
-      <button type="button" id="btn-display-new-head">Display</button>
     </div>
+      <div class="head-info" style="display: inline-block">
+        <label>ORG_CODE: <span id="org_code"></span><br></label>
+        <label>PAYNAME: <span id="payname"></span><br></label>
+        <label>Manager: <span id="manager"></span><br></label>
+        <button type="button" id="btn-display-new-head">Display</button>
+      </div>
     <!-- <i class="fa fa-plus-circle btn-inputs" id="btn-add-input"></i>
     <i class="fa fa-minus-circle btn-inputs" id="btn-remove-input"></i>
     <span id="node-type-panel" class="radio-panel">
