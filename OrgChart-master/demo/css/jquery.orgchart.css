@@ -211,7 +211,7 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   color: #000;
-  border-radius: 4px 4px 0 0; 
+  border-radius: 4px 4px 0 0;
   border: 1px solid rgba(217, 83, 79, 0.8);
 }
 /* ADDED: style for employee div */
@@ -230,7 +230,7 @@
   white-space: nowrap;
   background-color: rgba(217, 83, 79, 0.8);
   color: #fff;
-  border-radius: 4px 4px 0 0; 
+  border-radius: 4px 4px 0 0;
 }
 
 .orgchart.b2t .node .title {
@@ -466,7 +466,7 @@
     text-align: left;
     border-radius: 4px;
     padding: 4px;
-    white-space: initial;
+    white-space: pre-wrap;
     line-height: 18px;
     font-size: 12px;
     /* Position the tooltip */
