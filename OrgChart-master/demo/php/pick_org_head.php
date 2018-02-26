@@ -8,7 +8,7 @@ with the SQL Server database username and password.
 */
 
 
-$employee_id_initial=$_POST["employee_id"];
+
 
 $Servername='Assessor';
 $connection_info=array('UID'=>'zhdllwyc',
@@ -28,47 +28,34 @@ if ($conn===false){
 }
 
 
-$stmt_employee="SELECT DISTINCT MgrEmpNo FROM dbo.tblPayLoc$ WHERE (MgrEmpNo <> '')";
+$stmt_employee="SELECT  DISTINCT dbo.tblPayLoc$.MgrEmpNo,
+        dbo.EMPLOYEE.EMPL_FIRST_NM,
+		dbo.EMPLOYEE.EMPL_LAST_NM
+ FROM   dbo.tblPayLoc$
+        INNER JOIN dbo.EMPLOYEE
+        ON dbo.EMPLOYEE.EMPLOYEE_ID =
+           dbo.tblPayLoc$.MgrEmpNo";
 
 
 $stmt = sqlsrv_query( $conn, $stmt_employee);
 if($stmt===false){
    echo "sbsbssbsbbsbs";
 }else{
+
+
 	$result=array();
+	while($row = sqlsrv_fetch_array($stmt)) {
+		$myobject= new \stdClass();
+		$myobject->employee_id=$row["MgrEmpNo"];
+		$myobject->first_name=$row["EMPL_FIRST_NM"];
+		$myobject->last_name=$row["EMPL_LAST_NM"];
 
-	$row = sqlsrv_fetch_array($stmt);
-	$myobject= new \stdClass();
-	$myobject->name=$row["EMPLOYEE_ID"];
-	$myobject->home_unit_cd=$row["PRIM_UNIT_CD"];
-	$myobject->supervisor_id=$row["SUPERVISOR_ID"];
-	$myobject->orig_hire_dt=$row["ORIG_HIRE_DT"];
-	$myobject->pay_lctn_cd=$row["PAY_LCTN_CD"];
-	$myobject->title_cd=$row["TITLE_CD"];
-
-
-
-	sqlsrv_free_stmt($stmt);
+    	$result[] = $myobject;
+	}
+	echo json_encode($result);
 
 
- 	// foreach($result as $item) {
 
-		// $titlecd=(string)$item->title_cd;
-		// echo $titlecd;
- 	//     $stmt_title="SELECT * FROM dbo.TITLE WHERE (TITLE_CD=$titlecd)";
- 	// 	$stmt1 = sqlsrv_query( $conn, $stmt_title);
-  // 		if($stmt1===false){
-  //   		echo "sbsbssbsbbsbsssssssssssssss";
-		// }else{
-		// 	//$row_title = sqlsrv_fetch_array($stmt1);
-		// 	//$item->title_cd=$row_title["TITL_SHORT_DD"];
-	 // 	}
-
- 	// 	sqlsrv_free_stmt($stmt1);
- 	// }
-
-
-	echo json_encode($myobject);
 }
 
 

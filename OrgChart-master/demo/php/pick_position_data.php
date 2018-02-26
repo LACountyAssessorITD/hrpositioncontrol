@@ -25,9 +25,9 @@ if ($conn===false){
 	die(print_r(sqlsrv_errors(),true));
 
 }
-
-$stmt_employee="SELECT * FROM dbo.position WHERE (HOME_UNIT_CD = (SELECT HOME_UNIT_CD from dbo.position WHERE POSN_ID = (SELECT POSN_ID from dbo.EMPLOYEE_POSITION WHERE( EMPLOYEE_ID = $employee_id_initial))))
-";
+$stmt_employee="(SELECT * FROM dbo.position WHERE (HOME_UNIT_CD IN (SELECT HOME_UNIT_CD from dbo.position WHERE POSN_ID IN (SELECT POSN_ID from dbo.EMPLOYEE_POSITION WHERE(EMPLOYEE_ID IN (SELECT EMPLOYEE_ID FROM dbo.EMPLOYEE WHERE SUPERVISOR_ID=$employee_id_initial)))))) UNION (SELECT * FROM dbo.POSITION WHERE POSN_ID = (SELECT POSN_ID from dbo.EMPLOYEE_POSITION WHERE EMPLOYEE_ID=$employee_id_initial ))";
+//$stmt_employee="SELECT * FROM dbo.position WHERE (HOME_UNIT_CD = (SELECT HOME_UNIT_CD from dbo.position WHERE POSN_ID = (SELECT POSN_ID from dbo.EMPLOYEE_POSITION WHERE( EMPLOYEE_ID = $employee_id_initial))))
+//";
 
 $stmt = sqlsrv_query( $conn, $stmt_employee);
 if($stmt===false){
