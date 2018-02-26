@@ -59,6 +59,9 @@ function createUI(datasource) {
       }
     });
 
+    // set up head list
+    setupHeadList();
+
     //console output for drag and drop
     oc.$chart.on('nodedrop.orgchart', function(event, extraParams) {
       console.log('draggedNode:' + extraParams.draggedNode.children().children().children('.title').text()
@@ -351,15 +354,39 @@ function createUI(datasource) {
       }
     });
 
-    // change listener for select head drop-down list
-    $('#select-head').on('change', function() {
-      console.log('select list: ' + $('#select-head').val());
-      updateOrgchart($('#select-head').val());
-    });
+    // set up org head dropdown-list
+    function setupHeadList() {
 
-    $('#btn-display-new-head').on('click', function() {
-      updateOrgchart($('#select-head').val());
-    });
+        var heads = getOrgHead();
+
+        if (!heads) {
+          alert ('list of org heads is empty');
+          return;
+        }
+
+        var $dropdown = $('#select-head');
+
+        for (var i=0;i<heads.length; i++){
+          console.log(heads[i]['employee_id'] + ' first name:' + heads[i]['first_name'] + ' last name: ' + heads[i]['last_name']);
+          var employee_id = heads[i]['employee_id'].toString().trim();
+          var first_name = heads[i]['first_name'].toString().trim();
+          var last_name = heads[i]['last_name'].toString().trim();
+          var option = '<option value="' + employee_id + '">'
+          + heads[i]['employee_id'] + ' ' + first_name + ' ' + last_name
+          + '</option>';
+          $dropdown.append(option);
+        }
+
+        // change listener for select head drop-down list
+        $('#select-head').on('change', function() {
+          console.log('select list: ' + $('#select-head').val());
+          updateOrgchart($('#select-head').val());
+        });
+
+        $('#btn-display-new-head').on('click', function() {
+          updateOrgchart($('#select-head').val());
+        });
+    }
 
     // updates orgchart with new datasource
     function updateOrgchart(selected_head_id){

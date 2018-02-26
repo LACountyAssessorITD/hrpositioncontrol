@@ -238,6 +238,30 @@ function getPosition(position_id) {
   return position;
 };
 
+// Gets head info
+function getOrgHead() {
+
+  var heads;
+
+  $.ajax({
+    url: "php/pick_org_head.php",
+    data: null,
+    type: 'POST',
+    dataType: "json",
+    success: function(output) {
+        alert ('getOrgHead output:' + output);
+        heads = output;
+      },
+      error: function(xhr, status, error){
+        alert ('error: error=' + error + '; status=' + status);
+      },
+      async:false
+    });
+
+    return heads;
+
+}
+
 function addTransaction(employee_id, src_pos_id, dest_pos_id, src_supervisor_id, dest_supervisor_id) {
 
 }
