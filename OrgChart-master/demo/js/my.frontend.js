@@ -1,33 +1,33 @@
 function createUI(datasource) {
     //Sample json data structure
-    var datasource = {
-      'name': 'Lao Lao',
-      'title': 'general manager',
-      'position': 'position1',
-      'children': [
-        { 'name': '', 'title': '', 'position': 'position2' },
-        { 'name': 'Su Miao', 'title': 'department manager', 'position': 'position3',
-          'children': [
-            { 'name': 'Tie Hua', 'title': 'senior engineer', 'EmployeeId':'900','position': 'position4' },
-            { 'name': 'Hei Hei', 'title': 'senior engineer', 'position': 'position5',
-             'children': [
-             { 'name': 'Tie Hua', 'title': 'senior engineer', 'EmployeeId':'900','position': 'position4' },
-             { 'name': 'Hei Hei', 'title': 'senior engineer', 'position': 'position5',
-              'children': [
-              { 'name': 'Tie Hua', 'title': 'senior engineer', 'EmployeeId':'900','position': 'position4' },
-              { 'name': 'Hei Hei', 'title': 'senior engineer', 'position': 'position5' }
-            ]}
-            ]}
-          ]
-        },
-        { 'name': 'Yu Jie', 'title': 'department manager', 'position': 'position4' },
-        { 'name': 'Yu Li', 'title': 'department manager', 'position': 'position4' },
-        { 'name': 'Hong Miao', 'title': 'department manager', 'position': 'position4' },
-        { 'name': 'Yu Wei', 'title': 'department manager', 'position': 'position4' },
-        { 'name': 'Chun Miao', 'title': 'department manager', 'position': 'position4' },
-        { 'name': 'Yu Tie', 'title': 'department manager', 'position': 'position4' }
-      ]
-    };
+    // var datasource = {
+    //   'name': 'Lao Lao',
+    //   'title': 'general manager',
+    //   'position': 'position1',
+    //   'children': [
+    //     { 'name': '', 'title': '', 'position': 'position2' },
+    //     { 'name': 'Su Miao', 'title': 'department manager', 'position': 'position3',
+    //       'children': [
+    //         { 'name': 'Tie Hua', 'title': 'senior engineer', 'EmployeeId':'900','position': 'position4' },
+    //         { 'name': 'Hei Hei', 'title': 'senior engineer', 'position': 'position5',
+    //          'children': [
+    //          { 'name': 'Tie Hua', 'title': 'senior engineer', 'EmployeeId':'900','position': 'position4' },
+    //          { 'name': 'Hei Hei', 'title': 'senior engineer', 'position': 'position5',
+    //           'children': [
+    //           { 'name': 'Tie Hua', 'title': 'senior engineer', 'EmployeeId':'900','position': 'position4' },
+    //           { 'name': 'Hei Hei', 'title': 'senior engineer', 'position': 'position5' }
+    //         ]}
+    //         ]}
+    //       ]
+    //     },
+    //     { 'name': 'Yu Jie', 'title': 'department manager', 'position': 'position4' },
+    //     { 'name': 'Yu Li', 'title': 'department manager', 'position': 'position4' },
+    //     { 'name': 'Hong Miao', 'title': 'department manager', 'position': 'position4' },
+    //     { 'name': 'Yu Wei', 'title': 'department manager', 'position': 'position4' },
+    //     { 'name': 'Chun Miao', 'title': 'department manager', 'position': 'position4' },
+    //     { 'name': 'Yu Tie', 'title': 'department manager', 'position': 'position4' }
+    //   ]
+    // };
 
     var getId = function() {
       return (new Date().getTime()) * 1000 + Math.floor(Math.random() * 1001);
