@@ -9,7 +9,15 @@ function createUI(datasource) {
     //     { 'name': 'Su Miao', 'title': 'department manager', 'position': 'position3',
     //       'children': [
     //         { 'name': 'Tie Hua', 'title': 'senior engineer', 'EmployeeId':'900','position': 'position4' },
-    //         { 'name': 'Hei Hei', 'title': 'senior engineer', 'position': 'position5' }
+    //         { 'name': 'Hei Hei', 'title': 'senior engineer', 'position': 'position5',
+    //          'children': [
+    //          { 'name': 'Tie Hua', 'title': 'senior engineer', 'EmployeeId':'900','position': 'position4' },
+    //          { 'name': 'Hei Hei', 'title': 'senior engineer', 'position': 'position5',
+    //           'children': [
+    //           { 'name': 'Tie Hua', 'title': 'senior engineer', 'EmployeeId':'900','position': 'position4' },
+    //           { 'name': 'Hei Hei', 'title': 'senior engineer', 'position': 'position5' }
+    //         ]}
+    //         ]}
     //       ]
     //     },
     //     { 'name': 'Yu Jie', 'title': 'department manager', 'position': 'position4' },
@@ -46,6 +54,10 @@ function createUI(datasource) {
       'draggable': true,
       'parentNodeSymbol': 'fa-th-large',
       'chartClass': 'edit-state',
+
+      //only work in chrome 
+      'exportButton': true,
+      'exportFilename': 'MyOrgChart',
       'createNode': function($node, data) {
         $node[0].id = getId();
         var secondMenuIcon = $('<i>', {

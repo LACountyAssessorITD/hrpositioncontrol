@@ -4,6 +4,14 @@
     .orgchart .node { width: 150px; }
     .orgchart .node .title { height: 30px; line-height: 30px; }
     .orgchart .node .title .symbol { margin-top: 1px; }
+    #department{
+      width: 500px;
+      float: left;
+    }
+    #edit{
+      width: calc(100% - 500px);
+      float: left;
+    }
     #edit-panel {
       position: relative;
       left: 10px;
@@ -15,9 +23,11 @@
       color: #fff;
       background-color: rgba(217, 83, 79, 0.5);
     }
+
+    .row {margin-bottom: 10px;}
     #edit-panel .btn-inputs { font-size: 24px; }
     #edit-panel.edit-state>:not(#chart-state-panel) { display: none; }
-    #edit-panel label { font-weight: bold; }
+    #edit-panel label { font-weight: bold; text-align: right;}
     #edit-panel.edit-parent-node .selected-node-group { display: none; }
     #chart-state-panel, #selected-node, #btn-remove-input { margin-right: 20px; }
     #edit-panel button {
@@ -26,7 +36,7 @@
       display: inline-block;
       padding: 6px 12px;
       margin-bottom: 0;
-      line-height: 1.42857143;
+      line-height: 1.0;
       text-align: center;
       white-space: nowrap;
       vertical-align: middle;

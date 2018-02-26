@@ -24,61 +24,75 @@
       <button id="finalize-button" type="button">Finalize</button>
     </div>  -->
   <div id="edit-panel">
-    <div>
-      <input type="text" id="search-key-word">
-      <button type="button" id="btn-search-node">Search in Chart</button>
-      <button type="button" id="btn-cancel">Cancel</button>
-    </div>
-
-    <label class="selected-node-group">Selected Position:</label>
-    <input type="text" id="selected-node" class="selected-node-group" readonly>
-    <div>
-      <label>Employee ID:</label>
-      <!-- <ul id="new-nodelist">
-        <li><input type="text" class="new-node"></li>
-      </ul> -->
-      <input type="text" id="get-employee-input">
-      <!-- <button type="button" id="btn-get-employee">Get Employee</button> -->
-      <button type="button" id="btn-add-employee">Add Employee</button>
-    </div>
-    <div>
-      <label>Position ID:</label>
-      <input type="text" id="get-position-input">
-      <!-- <button type="button" id="btn-get-position">Get Position</button> -->
+    <div id ="edit">
+      <div class="row">
+        <label>Search in Current Chart:</label>
+        <input type="text" id="search-key-word">
+        <button type="button" id="btn-search-node">Search</button>
+        <button type="button" id="btn-cancel">Cancel</button>
+      </div>
+      
+      <div class="row">
+      <label class="selected-node-group">Selected Position:</label>
+      <input type="text" id="selected-node" class="selected-node-group" readonly>
+      </div>
+     
+      <div class="row">
+        <label>Employee ID:</label>
+        <!-- <ul id="new-nodelist">
+          <li><input type="text" class="new-node"></li>
+        </ul> -->
+        <input type="text" id="get-employee-input">
+        <!-- <button type="button" id="btn-get-employee">Get Employee</button> -->
+        <button type="button" id="btn-add-employee">Add Employee</button>
+      </div>
+      
+      <div class="row">
+        <label>Position ID:</label>
+        <input type="text" id="get-position-input">
+        <!-- <button type="button" id="btn-get-position">Get Position</button> -->
+        <span id="node-type-panel" class="radio-panel">
+          <input type="radio" name="node-type" id="rd-child" value="children"><label for="rd-child">Child</label>
+          <!-- <input type="radio" name="node-type" id="rd-sibling" value="siblings"><label for="rd-sibling">Sibling</label> -->
+        </span>
+        <button type="button" id="btn-add-position">Add Position</button>
+        <button type="button" id="btn-clear-position">Clear Position</button>
+        <button type="button" id="btn-delete-position">Delete Position</button>
+      </div>
+     
+  <!--       <div class="head-info" style="display: inline-block">
+          <label>ORG_CODE: <span id="org_code"></span><br></label>
+          <label>PAYNAME: <span id="payname"></span><br></label>
+          <label>Manager: <span id="manager"></span><br></label>
+          <button type="button" id="btn-display-new-head">Display/Refresh</button>
+        </div> -->
+      <!-- <i class="fa fa-plus-circle btn-inputs" id="btn-add-input"></i>
+      <i class="fa fa-minus-circle btn-inputs" id="btn-remove-input"></i>
       <span id="node-type-panel" class="radio-panel">
+        <input type="radio" name="node-type" id="rd-parent" value="parent"><label for="rd-parent">Parent(root)</label>
         <input type="radio" name="node-type" id="rd-child" value="children"><label for="rd-child">Child</label>
-        <!-- <input type="radio" name="node-type" id="rd-sibling" value="siblings"><label for="rd-sibling">Sibling</label> -->
+        <input type="radio" name="node-type" id="rd-sibling" value="siblings"><label for="rd-sibling">Sibling</label>
       </span>
-      <button type="button" id="btn-add-position">Add Position</button>
-      <button type="button" id="btn-clear-position">Clear Position</button>
-      <button type="button" id="btn-delete-position">Delete Position</button>
-    </div>
-    <div style="display: inline">
-      <label>Select Organization Head (employee ID): </label><br/>
-      <select id="select-head" size="6">
-        <option value="" selected="selected">- Please select a head -</option>
-        <option value="415748">415748</option>
-      </select>
-    </div>
-<!--       <div class="head-info" style="display: inline-block">
-        <label>ORG_CODE: <span id="org_code"></span><br></label>
-        <label>PAYNAME: <span id="payname"></span><br></label>
-        <label>Manager: <span id="manager"></span><br></label>
-        <button type="button" id="btn-display-new-head">Display/Refresh</button>
-      </div> -->
-    <!-- <i class="fa fa-plus-circle btn-inputs" id="btn-add-input"></i>
-    <i class="fa fa-minus-circle btn-inputs" id="btn-remove-input"></i>
-    <span id="node-type-panel" class="radio-panel">
-      <input type="radio" name="node-type" id="rd-parent" value="parent"><label for="rd-parent">Parent(root)</label>
-      <input type="radio" name="node-type" id="rd-child" value="children"><label for="rd-child">Child</label>
-      <input type="radio" name="node-type" id="rd-sibling" value="siblings"><label for="rd-sibling">Sibling</label>
-    </span>
-    <button type="button" id="btn-add-nodes">Add</button>
-    <button type="button" id="btn-delete-nodes">Delete</button>
-    <button type="button" id="btn-reset">Reset</button> -->
+      <button type="button" id="btn-add-nodes">Add</button>
+      <button type="button" id="btn-delete-nodes">Delete</button>
+      <button type="button" id="btn-reset">Reset</button> -->
+    </div> <!-- edit -->
+    <div id ="department">
+      <div class="row" style="display: inline">
+          <label>Select Organization Head (employee ID): </label><br/>
+          <select id="select-head" size="10">
+            <option value="" selected="selected">- Please select a head -</option>
+            <option value="415748">415748</option>
+          </select>
+      </div>
+    </div> <!-- department -->
   </div> <!-- edit panel -->
 </div> <!-- outer container -->
 
+<!-- needed for ie -->
+<script type="text/javascript" src="js/es6-promise.auto.js"></script>
+
+<script type="text/javascript" src="js/jspdf.min.js"></script>
 <script type="text/javascript" src="js/jquery.min.js"></script>
 <script type="text/javascript" src="js/jquery.orgchart.js"></script>
 <script type="text/javascript" src="js/html2canvas.min.js"></script>
@@ -94,7 +108,9 @@
       createUI(datasource);
     }
     else{
-      console.log('data source is empty');
+      //may hard code datasource fot testing 
+      createUI(datasource);
+      console.log('error loding database');
     }
   });
 </script>
