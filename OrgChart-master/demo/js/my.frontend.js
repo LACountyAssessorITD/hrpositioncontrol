@@ -34,7 +34,7 @@ function createUI(datasource) {
     };
 
     var nodeTemplate = function(data) {
-      return '<div class="position"><span class="position_id">' + data.position + '</span>' +
+      return '<div class="position"><div class="position_id">' + data.position + '</div>' +
           '<div class="employee" draggable="true"> <!--referenced as innerNode in .js file-->' +
             '<div class="title">' + data.title + '</div>' +
             '<div class="content">' + data.name + '</div>' +
@@ -58,6 +58,7 @@ function createUI(datasource) {
       //only work in chrome 
       'exportButton': true,
       'exportFilename': 'MyOrgChart',
+      'exportFileextension': 'pdf',
       'createNode': function($node, data) {
         $node[0].id = getId();
         var secondMenuIcon = $('<i>', {
@@ -379,7 +380,7 @@ function createUI(datasource) {
         var $dropdown = $('#select-head');
 
         for (var i=0;i<heads.length; i++){
-          console.log(heads[i]['employee_id'] + ' first name:' + heads[i]['first_name'] + ' last name: ' + heads[i]['last_name']);
+          // console.log(heads[i]['employee_id'] + ' first name:' + heads[i]['first_name'] + ' last name: ' + heads[i]['last_name']);
           var employee_id = heads[i]['employee_id'].toString().trim();
           var first_name = heads[i]['first_name'].toString().trim();
           var last_name = heads[i]['last_name'].toString().trim();

@@ -249,7 +249,7 @@ function getOrgHead() {
     type: 'POST',
     dataType: "json",
     success: function(output) {
-        alert ('getOrgHead output:' + output);
+        // alert ('getOrgHead output:' + output);
         heads = output;
       },
       error: function(xhr, status, error){
@@ -263,5 +263,9 @@ function getOrgHead() {
 }
 
 function addTransaction(employee_id, src_pos_id, dest_pos_id, src_supervisor_id, dest_supervisor_id) {
-
+    // var myData= {
+    //   'position_id': position_id
+    // };
+    console.log ('addTransaction(' + 
+      employee_id+','+src_pos_id+','+dest_pos_id+','+src_supervisor_id+','+dest_supervisor_id + ');');
 }

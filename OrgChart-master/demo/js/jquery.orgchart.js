@@ -1000,7 +1000,7 @@
     dragoverHandler: function (event) {
       if (this.isInnerNodeDragged) return;
 
-      console.log("dragoverHandler 2");
+      // console.log("dragoverHandler 2");
       event.preventDefault();
       if (!$(event.delegateTarget).is('.allowedDrop')) {
         event.originalEvent.dataTransfer.dropEffect = 'none';
@@ -1010,7 +1010,7 @@
     dragoverHandlerInner: function (event) {
       if (!this.isInnerNodeDragged) return;
 
-      console.log("dragoverHandlerInner 2.1");
+      // console.log("dragoverHandlerInner 2.1");
       event.preventDefault();
     },
     //
@@ -1041,20 +1041,20 @@
       if (dropEvent.isDefaultPrevented()) {
         return;
       }
-      console.log("dropHandler| dragging " + $dragged.children('.title').text() + ": " 
-        + $dragZone.children('.title').text()
-        + " -> " + $dropZone.children('.title').text() );
+      console.log("dropHandler| dragging " + $dragged.find('.content').text() + ": from supervisor " 
+        + $dragZone.find('.content').text()
+        + " -> supervisor " + $dropZone.find('.content').text() );
 
       // ADDED: shows red for changes 
       if ($dragged.attr('class') === 'employee')
       {
-        console.log("dragged an employee");
+        // console.log("dragged an employee");
         $dragged.children('.title').css("color", "red");
         $dragged.children('.content').css("color", "red");
       }
       else
       {
-        console.log("dragged a position (with employee)");
+        // console.log("dragged a position (with employee)");
         $dragged.children().children().children('.title').css("color", "red");
         $dragged.children().children().children('.content').css("color", "red");
         $dragged.children('.position').css("color", "red");
@@ -1102,11 +1102,15 @@
       $dragged.addClass('focused');
 
       // Send transactions to backend for tracking
-      addTransaction($dragged.children('.employee_id').text(), $dragged.children('.position_id').text(), $dragged.children('.position_id').text(),
-        this.dragStartSupervisorId, $dropZone.parent().children('.supervisor_id').text());
-      console.log("dropHandler TRANSACTION: " + $dragged.children('.employee_id').text() + "; " + 
-        $dragged.children('.position_id').text() + "; " + $dragged.children('.position_id').text()
-         + "; " + this.dragStartSupervisorId + "; " + $dropZone.parent().children('.supervisor_id').text());
+      var employee_id = $dragged.find('.content').text();
+      var src_pos_id = $dragged.find('.position_id').text();
+      var dest_pos_id = $dragged.find('.position_id').text(); // only different if dragged employee
+      var src_supervisor_id = $dragZone.find('.content').text();
+      var dest_supervisor_id = $dropZone.find('.content').text();
+      addTransaction(employee_id, src_pos_id, dest_pos_id, src_supervisor_id, dest_supervisor_id);
+      // console.log("dropHandler TRANSACTION: " + employee_id + "; " + 
+      //   src_pos_id + "; " + dest_pos_id
+      //    + "; " + src_supervisor_id + "; " + dest_supervisor_id);
     },
 
     // TODO(angela5shao): take out employee dragging in #dropHandler
@@ -1114,12 +1118,33 @@
     dropHandlerInner: function (event) {
       if (!this.isInnerNodeDragged) return;
 
+      //drop employee
       var $dropZone = $(event.delegateTarget);
+      //drop supervisor
+      var $dropSupervisor = $dropZone.closest('.nodes').siblings().eq(0).children();
+      //current employee
       var $dragged = this.$chart.data('draggedInner');
+      //current supervisor
       var $dragZone = $dragged.closest('.nodes').siblings().eq(0).children();
 
-      console.log("dropHandlerInner 4: " + $dragged.text() 
-        + " :: " + $dragZone.text() + " -> " + $dropZone.text());
+      var employee1 = {
+        'employee_id': $dragged.find('.content').text(),
+        'src_pos_id': $dragged.siblings(".position_id").text(),
+        'dest_pos_id':  $dropZone.siblings(".position_id").text(),
+        'src_supervisor_id': $dragZone.find('.content').text(),
+        'dest_supervisor_id': $dropSupervisor.find('.content').text()
+      }
+      var employee2 = {
+        'employee_id': $dropZone.find('.content').text(),
+        'src_pos_id': $dropZone.siblings(".position_id").text(),
+        'dest_pos_id': $dragged.siblings(".position_id").text(),
+        'src_supervisor_id':  $dropSupervisor.find('.content').text(),
+        'dest_supervisor_id': $dragZone.find('.content').text()
+      }
+
+      // console.log("dropHandlerInner 4: " + $dragged.text() 
+      //   + " :: " + $dragZone.text() + " -> " + $dropZone.text());
+      // console.log('$dropSupervisor=' + $dropSupervisor.text());
 
       // console.log("dragZone: " + $dragZone.text() + " -> dropZone: " + $dropZone.text());
       // Swap the dragged employee with the employee being dropped onto
@@ -1131,6 +1156,10 @@
       $dragged.children('.content').text($dropZone.children('.content').text());
       $dropZone.children('.content').text(tempContent);
 
+
+      // var tempposi = $dragged.siblings(".position_id").text();
+      // var tempposi2 = $dropZone.siblings(".position_id").text();
+      // console.log('hahhaha' + tempposi+"jjjj"+tempposi2);
 
       var tempUnitCode=$dragged.children('div.tooltiptext').find('span.unit_code').text();
       $dragged.children('div.tooltiptext').find('span.unit_code').text($dropZone.children('div.tooltiptext').find('span.unit_code').text());
@@ -1150,16 +1179,10 @@
       // TODO(angela5shao): Highlight the moved node (an employee)
 
       // Send transactions to backend for tracking
-      addTransaction($dragged.children('.employee_id').text(), this.dragStartPositionId, $dropZone.children('.position_id').text(),
-        this.dragStartSupervisorId, $dropZone.parent().children('.supervisor_id').text());
-      console.log("dropHandlerInner TRANSACTION: " + $dragged.children('.employee_id').text() + "; " + 
-        this.dragStartPositionId + "; " + $dropZone.children('.position_id').text()
-         + "; " + this.dragStartSupervisorId + "; " + $dropZone.parent().children('.supervisor_id').text());
-      addTransaction($dropZone.children('.employee_id').text(), $dropZone.children('.position_id').text(), this.dragStartPositionId,
-        $dropZone.parent().children('.supervisor_id').text(), this.dragStartSupervisorId);
-      console.log("dropHandlerInner TRANSACTION: " + $dropZone.children('.employee_id').text() + "; " + 
-        $dropZone.children('.position_id').text() + "; " + this.dragStartPositionId
-         + "; " +$dropZone.parent().children('.supervisor_id').text() + "; " + this.dragStartSupervisorId);
+      addTransaction(employee1.employee_id, employee1.src_pos_id, employee1.dest_pos_id, 
+        employee1.src_supervisor_id, employee1.dest_supervisor_id);
+      addTransaction(employee2.employee_id, employee2.src_pos_id, employee2.dest_pos_id, 
+        employee2.src_supervisor_id, employee2.dest_supervisor_id);
     },
     //
     touchstartHandler: function (event) {
