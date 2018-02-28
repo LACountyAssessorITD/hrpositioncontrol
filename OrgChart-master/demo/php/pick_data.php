@@ -47,6 +47,8 @@ if($stmt===false){
 		$myobject->orig_hire_dt=$row["ORIG_HIRE_DT"];
 		$myobject->pay_lctn_cd=$row["PAY_LCTN_CD"];
 		$myobject->title_cd=$row["TITLE_CD"];
+		$myobject->first_name=$row["EMPL_FIRST_NM"];
+		$myobject->last_name=$row["EMPL_LAST_NM"];
 
 		//$myjson=json_encode($myobject);
 		//echo $myjson;
