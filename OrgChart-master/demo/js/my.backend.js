@@ -71,7 +71,11 @@ function get_data(position,employee, relation){
  var head_title_cd=get_title_cd(head_id, employee);
  var head_salary_maximum_am =get_salary_maximum_am(position_head_id,position);
  var head_sub_title_cd =get_sub_title_cd(position_head_id,position);
- var head_employee={'name':head_id, 'title':head_title_cd,'unit_cd': head_unit_cd,'hire':head_orig_hire_dt,
+ var head_first_name =get_first(head_id, employee);
+
+ var head_last_name =get_last(head_id,employee);
+ var head_name=head_id+' '+head_first_name+' '+head_last_name;
+ var head_employee={'name':head_name , 'title':head_title_cd,'unit_cd': head_unit_cd,'hire':head_orig_hire_dt,
  'pay_lctn':head_pay_lctn_cd,'position':position_head_id, 'salary':head_salary_maximum_am, 'sub_title_cd': head_sub_title_cd,'children':[]};
  var head_child=get_children(head_id, employee);
  for (var i=0;i<head_child.length; i++){
@@ -90,7 +94,11 @@ function get_data_helper(employee_id,position,employee, relation){
  var current_title_cd =get_title_cd(employee_id, employee);
  var current_salary_maximum_am =get_salary_maximum_am(position_current_id,position);
  var current_sub_title_cd =get_sub_title_cd(position_current_id,position);
- var current_employee={'name':employee_id,'title':current_title_cd,'unit_cd': current_unit_cd,'hire':current_orig_hire_dt,
+ var current_pay_lctn_cd=get_pay_lctn_cd(employee_id, employee);
+ var current_first_name =get_first(employee_id, employee);
+ var current_last_name =get_last(employee_id, employee);
+ var current_name=employee_id+" "+current_first_name+" "+current_last_name;
+ var current_employee={'name':current_name,'title':current_title_cd,'unit_cd': current_unit_cd,'hire':current_orig_hire_dt,
  'pay_lctn':current_pay_lctn_cd,'position':position_current_id,'salary':current_salary_maximum_am,'sub_title_cd': current_sub_title_cd, };
  var current_child=get_children(employee_id, employee);
  if(current_child.length==0){
@@ -127,6 +135,26 @@ function get_data_helper(employee_id,position,employee, relation){
     }
   }
 }
+
+   function get_first(employee_id, employee){
+      for (var i=0; i<employee.length;i++){
+
+        if( employee[i]['employee_id'].toString().trim()==employee_id.toString().trim()){
+
+          return employee[i]['first_name'].toString().trim();
+        }
+      }
+   }
+
+    function get_last(employee_id, employee){
+      for (var i=0; i<employee.length;i++){
+
+        if( employee[i]['employee_id'].toString().trim()==employee_id.toString().trim()){
+
+          return employee[i]['last_name'].toString().trim();
+        }
+      }
+   }
 
 function get_salary_maximum_am(position_id, position){
 
@@ -263,9 +291,37 @@ function getOrgHead() {
 }
 
 function addTransaction(employee_id, src_pos_id, dest_pos_id, src_supervisor_id, dest_supervisor_id) {
-    // var myData= {
-    //   'position_id': position_id
-    // };
-    console.log ('addTransaction(' + 
-      employee_id+','+src_pos_id+','+dest_pos_id+','+src_supervisor_id+','+dest_supervisor_id + ');');
+     var currentdate = new Date(); 
+     var datetime =currentdate.getDate() + "/"
+                + (currentdate.getMonth()+1)  + "/" 
+                + currentdate.getFullYear() + " @ "  
+                + currentdate.getHours() + ":"  
+                + currentdate.getMinutes() + ":" 
+                + currentdate.getSeconds();
+     var myData= {
+       'employee_id': employee_id,
+       'src_pos_id': src_pos_id,
+       'dest_pos_id': dest_pos_id,
+       'src_supervisor_id': src_supervisor_id,
+       'dest_supervisor_id': dest_supervisor_id,
+       'time':datetime
+     };
+
+    $.ajax({
+    url: "php/insert_transaction.php",
+    data: myData,
+    type: 'POST',
+    dataType: "text",
+    success: function(output) {
+         alert ('gettransaction output:' + output);
+       
+      },
+      error: function(xhr, status, error){
+        alert ('error: error=' + error + '; status=' + status);
+      },
+      async:false
+    });
+
+    
+    
 }
