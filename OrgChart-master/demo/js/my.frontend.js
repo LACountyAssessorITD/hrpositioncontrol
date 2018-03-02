@@ -198,6 +198,12 @@ function createUI(datasource) {
           }));
         }
       }
+
+      // Send transactions to backend for tracking
+      var src_pos_id = retrievedPosition['position_id'].text();
+      var dest_supervisor_id = $node.children('.position_id').text(;
+      addTransaction(null, src_pos_id, src_pos_id, null , dest_supervisor_id);
+      console.log("Add Position TRANSACTION: " + src_pos_id + ", " + dest_supervisor_id);
     });
 
     $('#btn-delete-position').on('click', function() {
@@ -212,6 +218,13 @@ function createUI(datasource) {
       }
       oc.removeNodes($node);
       $('#selected-node').val('').data('node', null);
+
+      var employee_id = $node.find('.content').text('');
+      var src_pos_id = $node.children('.position_id').text('');
+      var src_supervisor_id = $node.find('.supervisor_id').text('');
+      addTransaction(employee_id, src_pos_id, null, src_supervisor_id, null);
+      addTransaction(null, src_pos_id, null, src_supervisor_id, null);
+      console.log("Delete Position TRANSACTION: " + employee_id + ", " + src_pos_id + ", " + src_supervisor_id);
     });
 
     $('#btn-clear-position').on('click', function() {
@@ -230,6 +243,12 @@ function createUI(datasource) {
       $node.find('.unit_code').text('');
       $node.find('.hire').text('');
       $node.find('.pay_lctn').text('');
+
+      var employee_id =$node.find('.content').text('');
+      var src_pos_id = $node.children('.position_id').text('');
+      var src_supervisor_id = $node.find('.supervisor_id').text('');
+      addTransaction(employee_id, src_pos_id, null, src_supervisor_id, null);
+      console.log("Clear Position TRANSACTION: " + employee_id + ", " + src_pos_id + ", " + src_supervisor_id);
     });
 
     $('#btn-reset').on('click', function() {
@@ -352,7 +371,7 @@ function createUI(datasource) {
 
     // Button for getting (retrieving) position from database
     function getPositionAndSetFlag(positionId) {
-      var position = getPosition(positionId);
+      var position = getVacantPosition(positionId);
       if (position.position_id) {
         getPositionSuccess = true;
         retrievedPosition = position;

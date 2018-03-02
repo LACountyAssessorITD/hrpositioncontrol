@@ -242,7 +242,7 @@ return employee;
 };
 
 // Gets position with |position_id|
-function getPosition(position_id) {
+function getVacantPosition(position_id) {
   var myData= {
     'position_id': position_id
   };
