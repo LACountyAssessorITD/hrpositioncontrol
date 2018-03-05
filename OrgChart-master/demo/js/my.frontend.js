@@ -55,7 +55,7 @@ function createUI(datasource) {
       'parentNodeSymbol': 'fa-th-large',
       'chartClass': 'edit-state',
 
-      //only work in chrome 
+      //only work in chrome
       'exportButton': true,
       'exportFilename': 'MyOrgChart',
       'exportFileextension': 'pdf',
@@ -128,9 +128,9 @@ function createUI(datasource) {
 
     $('#btn-add-position').on('click', function() {
       // check if position exists
-      getPositionAndSetFlag($('#get-position-input').val());
+      getPositionAndSetFlag($('#get-position-input').val().trim());
       if (!getPositionSuccess) {
-        alert('Please search for a valid position.');
+        // alert('Please search for a valid position.');
         return;
       }
 
@@ -194,14 +194,16 @@ function createUI(datasource) {
             }));
         } else {
           oc.addSiblings($node.closest('tr').siblings('.nodes').find('.node:first'), nodeVals.map(function (item) {
-            return { 'name': item, 'relationship': '110', 'id': getId() };
+            // return { 'name': item, 'relationship': '110', 'id': getId() }; CHANGED
+            return { 'name': '', 'relationship': '110', 'id': getId(), 'title': '', 'unit_cd': '', 'hire': '', 'pay_lctn': '', 'position': item.position_id,'salary': item.salary_maximum_am,'sub_title_cd': item.sub_title_cd };
           }));
         }
       }
 
+
       // Send transactions to backend for tracking
       var src_pos_id = retrievedPosition['position_id'].text();
-      var dest_supervisor_id = $node.children('.position_id').text(;
+      var dest_supervisor_id = $node.children('.position_id').text();
       addTransaction(null, src_pos_id, src_pos_id, null , dest_supervisor_id);
       console.log("Add Position TRANSACTION: " + src_pos_id + ", " + dest_supervisor_id);
     });
@@ -371,12 +373,25 @@ function createUI(datasource) {
 
     // Button for getting (retrieving) position from database
     function getPositionAndSetFlag(positionId) {
+      // check if position exists
+      var existPosition = checkPositionExists(positionId);
+
+      if (!existPosition.position_id) {
+        getPositionSuccess = false;
+        alert('The position ID does not exist.');
+        return;
+      }
+
+      // check if position is filled
       var position = getVacantPosition(positionId);
+
       if (position.position_id) {
         getPositionSuccess = true;
         retrievedPosition = position;
-      } else {
-        alert('The position ID is not found.');
+      }
+      else {
+        getPositionSuccess = false;
+        alert('Cannot add filled position.');
       }
     }
 

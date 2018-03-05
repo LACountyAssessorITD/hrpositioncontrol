@@ -12,7 +12,7 @@ $.ajax({
   type: 'POST',
   dataType: "json",
   success: function(output) {
-    alert ('success: output=' + output);
+    console.log ('success: output=' + output);
     runindex2(output);
   },
   error: function(xhr, status, error){
@@ -28,7 +28,7 @@ function runindex2(position_data) {
    type: 'POST',
    dataType: "json",
    success: function(output) {
-    alert ('runindex2 success: output=' + output);
+    console.log ('runindex2 success: output=' + output);
     runindex3(position_data,output);
   },
   error: function(xhr, status, error){
@@ -47,7 +47,7 @@ function runindex3(position_data,employee_data) {
    type: 'POST',
    dataType: "json",
    success: function(output) {
-    alert ('runindex3 success: output=' + output);
+    console.log ('runindex3 success: output=' + output);
     datasource=get_data(position_data,employee_data,output);
     },
     error: function(xhr, status, error){
@@ -250,6 +250,31 @@ function getVacantPosition(position_id) {
   var position = null;
 
   $.ajax({
+    url: "php/pick_position_vacant.php",
+    data: myData,
+    type: 'POST',
+    dataType: "json",
+    success: function(output) {
+        position = output;
+      },
+      error: function(xhr, status, error){
+        alert ('error: error=' + error + '; status=' + status);
+      },
+      async:false
+    });
+
+  return position;
+};
+
+// check if position exists in POSITION
+function checkPositionExists(position_id) {
+  var myData= {
+    'position_id': position_id
+  };
+
+  var position = null;
+
+  $.ajax({
     url: "php/pick_single_position.php",
     data: myData,
     type: 'POST',
@@ -291,12 +316,12 @@ function getOrgHead() {
 }
 
 function addTransaction(employee_id, src_pos_id, dest_pos_id, src_supervisor_id, dest_supervisor_id) {
-     var currentdate = new Date(); 
+     var currentdate = new Date();
      var datetime =currentdate.getDate() + "/"
-                + (currentdate.getMonth()+1)  + "/" 
-                + currentdate.getFullYear() + " @ "  
-                + currentdate.getHours() + ":"  
-                + currentdate.getMinutes() + ":" 
+                + (currentdate.getMonth()+1)  + "/"
+                + currentdate.getFullYear() + " @ "
+                + currentdate.getHours() + ":"
+                + currentdate.getMinutes() + ":"
                 + currentdate.getSeconds();
      var myData= {
        'employee_id': employee_id,
@@ -313,8 +338,8 @@ function addTransaction(employee_id, src_pos_id, dest_pos_id, src_supervisor_id,
     type: 'POST',
     dataType: "text",
     success: function(output) {
-         alert ('gettransaction output:' + output);
-       
+         console.log ('gettransaction output:' + output);
+
       },
       error: function(xhr, status, error){
         alert ('error: error=' + error + '; status=' + status);
@@ -322,6 +347,6 @@ function addTransaction(employee_id, src_pos_id, dest_pos_id, src_supervisor_id,
       async:false
     });
 
-    
-    
+
+
 }
