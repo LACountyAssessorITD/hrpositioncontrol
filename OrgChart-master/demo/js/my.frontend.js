@@ -202,8 +202,8 @@ function createUI(datasource) {
 
 
       // Send transactions to backend for tracking
-      var src_pos_id = retrievedPosition['position_id'].text();
-      var dest_supervisor_id = $node.children('.position_id').text();
+      var src_pos_id = retrievedPosition['position_id'].trim();
+      var dest_supervisor_id = $node.find('.position_id').text();
       addTransaction(null, src_pos_id, src_pos_id, null , dest_supervisor_id);
       console.log("Add Position TRANSACTION: " + src_pos_id + ", " + dest_supervisor_id);
     });
