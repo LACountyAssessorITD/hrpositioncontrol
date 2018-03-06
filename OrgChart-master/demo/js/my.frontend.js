@@ -218,15 +218,18 @@ function createUI(datasource) {
           return;
         }
       }
-      oc.removeNodes($node);
-      $('#selected-node').val('').data('node', null);
 
-      var employee_id = $node.find('.content').text('');
-      var src_pos_id = $node.children('.position_id').text('');
-      var src_supervisor_id = $node.find('.supervisor_id').text('');
+      // add transaction before removing nodes because we need data('node')
+      var employee_id = $node.find('.content').text().split(' ')[0]; // get the id part but not the names part
+      var src_pos_id = $node.find('.position_id').text();
+      var src_supervisor_id = $node.closest('.nodes').siblings().eq(0).children().find('.position_id').text();
       addTransaction(employee_id, src_pos_id, null, src_supervisor_id, null);
       addTransaction(null, src_pos_id, null, src_supervisor_id, null);
       console.log("Delete Position TRANSACTION: " + employee_id + ", " + src_pos_id + ", " + src_supervisor_id);
+
+      // remove nodes and set data('node') to null
+      oc.removeNodes($node);
+      $('#selected-node').val('').data('node', null);
     });
 
     $('#btn-clear-position').on('click', function() {
