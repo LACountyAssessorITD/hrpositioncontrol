@@ -243,17 +243,18 @@ function createUI(datasource) {
         }
       }
 
-      $node.find('.title').text('');
-      $node.find('.content').text('');
-      $node.find('.unit_code').text('');
-      $node.find('.hire').text('');
-      $node.find('.pay_lctn').text('');
-
+      // add transaction before removing employee because we need the data
       var employee_id =$node.find('.content').text();
       var src_pos_id = $node.find('.position_id').text();
       var src_supervisor_id = $node.closest('.nodes').siblings().eq(0).children().find('.position_id').text();
       addTransaction(employee_id, src_pos_id, null, src_supervisor_id, null);
       console.log("Clear Position TRANSACTION: " + employee_id + ", " + src_pos_id + ", " + src_supervisor_id);
+
+      $node.find('.title').text('');
+      $node.find('.content').text('');
+      $node.find('.unit_code').text('');
+      $node.find('.hire').text('');
+      $node.find('.pay_lctn').text('');
     });
 
     $('#btn-reset').on('click', function() {
