@@ -55,7 +55,7 @@ function createUI(datasource) {
       'parentNodeSymbol': 'fa-th-large',
       'chartClass': 'edit-state',
 
-      //only work in chrome 
+      //only work in chrome
       'exportButton': true,
       'exportFilename': 'MyOrgChart',
       'exportFileextension': 'pdf',
@@ -128,9 +128,9 @@ function createUI(datasource) {
 
     $('#btn-add-position').on('click', function() {
       // check if position exists
-      getPositionAndSetFlag($('#get-position-input').val());
+      getPositionAndSetFlag($('#get-position-input').val().trim());
       if (!getPositionSuccess) {
-        alert('Please search for a valid position.');
+        // alert('Please search for a valid position.');
         return;
       }
 
@@ -194,14 +194,16 @@ function createUI(datasource) {
             }));
         } else {
           oc.addSiblings($node.closest('tr').siblings('.nodes').find('.node:first'), nodeVals.map(function (item) {
-            return { 'name': item, 'relationship': '110', 'id': getId() };
+            // return { 'name': item, 'relationship': '110', 'id': getId() }; CHANGED
+            return { 'name': '', 'relationship': '110', 'id': getId(), 'title': '', 'unit_cd': '', 'hire': '', 'pay_lctn': '', 'position': item.position_id,'salary': item.salary_maximum_am,'sub_title_cd': item.sub_title_cd };
           }));
         }
       }
 
+
       // Send transactions to backend for tracking
-      var src_pos_id = retrievedPosition['position_id'].text();
-      var dest_supervisor_id = $node.children('.position_id').text(;
+      var src_pos_id = retrievedPosition['position_id'].trim();
+      var dest_supervisor_id = $node.find('.position_id').text();
       addTransaction(null, src_pos_id, src_pos_id, null , dest_supervisor_id);
       console.log("Add Position TRANSACTION: " + src_pos_id + ", " + dest_supervisor_id);
     });
@@ -216,15 +218,18 @@ function createUI(datasource) {
           return;
         }
       }
-      oc.removeNodes($node);
-      $('#selected-node').val('').data('node', null);
 
-      var employee_id = $node.find('.content').text('');
-      var src_pos_id = $node.children('.position_id').text('');
-      var src_supervisor_id = $node.find('.supervisor_id').text('');
+      // add transaction before removing nodes because we need data('node')
+      var employee_id = $node.find('.content').text();
+      var src_pos_id = $node.find('.position_id').text();
+      var src_supervisor_id = $node.closest('.nodes').siblings().eq(0).children().find('.position_id').text();
       addTransaction(employee_id, src_pos_id, null, src_supervisor_id, null);
       addTransaction(null, src_pos_id, null, src_supervisor_id, null);
       console.log("Delete Position TRANSACTION: " + employee_id + ", " + src_pos_id + ", " + src_supervisor_id);
+
+      // remove nodes and set data('node') to null
+      oc.removeNodes($node);
+      $('#selected-node').val('').data('node', null);
     });
 
     $('#btn-clear-position').on('click', function() {
@@ -238,17 +243,18 @@ function createUI(datasource) {
         }
       }
 
+      // add transaction before removing employee because we need the data
+      var employee_id =$node.find('.content').text();
+      var src_pos_id = $node.find('.position_id').text();
+      var src_supervisor_id = $node.closest('.nodes').siblings().eq(0).children().find('.position_id').text();
+      addTransaction(employee_id, src_pos_id, null, src_supervisor_id, null);
+      console.log("Clear Position TRANSACTION: " + employee_id + ", " + src_pos_id + ", " + src_supervisor_id);
+
       $node.find('.title').text('');
       $node.find('.content').text('');
       $node.find('.unit_code').text('');
       $node.find('.hire').text('');
       $node.find('.pay_lctn').text('');
-
-      var employee_id =$node.find('.content').text('');
-      var src_pos_id = $node.children('.position_id').text('');
-      var src_supervisor_id = $node.find('.supervisor_id').text('');
-      addTransaction(employee_id, src_pos_id, null, src_supervisor_id, null);
-      console.log("Clear Position TRANSACTION: " + employee_id + ", " + src_pos_id + ", " + src_supervisor_id);
     });
 
     $('#btn-reset').on('click', function() {
@@ -286,13 +292,18 @@ function createUI(datasource) {
         return;
       }
 
-      // TODO: look at #btn-add-position code and see if need to cover those edge cases
-
       $node.find('.title').text(nodeVals[0].title_cd);
       $node.find('.content').text(nodeVals[0].employee_id);
       $node.find('.unit_code').text(nodeVals[0].home_unit_cd);
       $node.find('.hire').text(nodeVals[0].orig_hire_dt);
       $node.find('.pay_lctn').text(nodeVals[0].pay_lctn_cd);
+
+      // transaction for add employee
+      var employee_id = $node.find('.content').text().trim();
+      var dest_pos_id = $node.find('.position_id').text().trim();
+      var dest_supervisor_id = $node.closest('.nodes').siblings().eq(0).children().find('.position_id').text();
+      addTransaction(employee_id, null, dest_pos_id, null, dest_supervisor_id);
+      console.log("Add Employee TRANSACTION: " + employee_id + ", " + dest_pos_id + ", " + dest_supervisor_id);
     });
 
     // Search for an employee by employee ID
@@ -371,12 +382,25 @@ function createUI(datasource) {
 
     // Button for getting (retrieving) position from database
     function getPositionAndSetFlag(positionId) {
+      // check if position exists
+      var existPosition = checkPositionExists(positionId);
+
+      if (!existPosition.position_id) {
+        getPositionSuccess = false;
+        alert('The position ID does not exist.');
+        return;
+      }
+
+      // check if position is filled
       var position = getVacantPosition(positionId);
+
       if (position.position_id) {
         getPositionSuccess = true;
         retrievedPosition = position;
-      } else {
-        alert('The position ID is not found.');
+      }
+      else {
+        getPositionSuccess = false;
+        alert('Cannot add filled position.');
       }
     }
 
