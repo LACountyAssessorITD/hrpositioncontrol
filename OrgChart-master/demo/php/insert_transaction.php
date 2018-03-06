@@ -13,6 +13,7 @@ $src_supervisor_id=$_POST["src_supervisor_id"];
 $dest_supervisor_id=$_POST["dest_supervisor_id"];
 $time_current=$_POST["time"];
 $user='415748';
+$finalize_flag=$_POST["finalize_flag"];
 // echo "$employee_id";
 // echo "$src_pos_id";
 // echo "$dest_pos_id";
@@ -42,8 +43,8 @@ if ($conn===false){
 
 
 
-$sql = "INSERT INTO dbo.transaction_document ( employee_id,position_id_source,position_id_destination,user_employee_id, source_supervisor_id, dest_supervisor_id,time_transaction)
-VALUES ('$employee_id', '$src_pos_id', '$dest_pos_id','$user' ,'$src_supervisor_id','$dest_supervisor_id','$time_current')";
+$sql = "INSERT INTO dbo.transaction_document ( employee_id,position_id_source,position_id_destination,user_employee_id, source_supervisor_id, dest_supervisor_id,time_transaction,FINALIZE_FLAG)
+VALUES ('$employee_id', '$src_pos_id', '$dest_pos_id','$user' ,'$src_supervisor_id','$dest_supervisor_id','$time_current','$finalize_flag')";
 
 $stmt = sqlsrv_query( $conn, $sql);
 if( $stmt === false ) {

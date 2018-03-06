@@ -329,7 +329,8 @@ function addTransaction(employee_id, src_pos_id, dest_pos_id, src_supervisor_id,
        'dest_pos_id': dest_pos_id,
        'src_supervisor_id': src_supervisor_id,
        'dest_supervisor_id': dest_supervisor_id,
-       'time':datetime
+       'time':datetime,
+       'finalize_flag': 'DRAFT',
      };
 
      // get the id part but not the names part
