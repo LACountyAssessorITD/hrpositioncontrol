@@ -14,5 +14,10 @@
 1. Can search for employee (within the UI).
 2. Can get employee and position from the database.
 
+### Deliverable 4 (Mar 5): Track transactions
+1. Can select organization head and update the org chart for that head accordingly.
+2. Can track UI changes and update transactions in the database.
+3. Can export UI as PDF.
+
 ## How to View UI
    Open OrgChart-master/demo/lacounty.html
