@@ -84,20 +84,23 @@ function createUI(datasource) {
     });
 
 
-    //resize Container
+    //resize zoom
+    //2nd time horizontal only work on chrome
     $('#btn_fith').on('click', function () {
+      oc.$chart.css('transform','none');
       var $container = oc.$chartContainer;
       var $chart = oc.$chart;
       var scale = $container.width()/$chart.outerWidth(true);
       var x = ($container.width() - $chart.outerWidth(true))/2*(1/scale);
       var y = ($container.height() - $chart.outerHeight(true))/2*(1+scale);
       oc.setChartScale($chart, scale);
-      var val = $chart.css('transform');  
+      var val = $chart.css('transform');
       $chart.css('transform', val + ' translate(' + x + 'px,' + y + 'px)');
-
+      $(this).attr('disabled','disabled');
     });
     
     $('#btn_fitv').on('click', function () {
+      oc.$chart.css('transform','none');
       var $container = oc.$chartContainer;
       var $chart = oc.$chart;
       var scale = $container.height()/$chart.outerHeight(true);
@@ -106,10 +109,14 @@ function createUI(datasource) {
       oc.setChartScale($chart, scale);
       var val = $chart.css('transform');
       $chart.css('transform', val + ' translate(' + x + 'px,' + y + 'px)');
+      $(this).attr('disabled','disabled');
     });
     
     $('#btn_reset').on('click', function () {
       oc.$chart.css('transform','none');
+      oc.$chartContainer.css('overflow', 'auto');
+      document.getElementById("btn_fitv").disabled =false;
+      document.getElementById("btn_fith").disabled =false;
     });
 
     // Shows whether employee or position desired is found in database

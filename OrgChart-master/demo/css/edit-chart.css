@@ -5,11 +5,11 @@
     .orgchart .node .title { height: 30px; line-height: 30px; }
     .orgchart .node .title .symbol { margin-top: 1px; }
     #department{
-      width: 500px;
+      width: 400px;
       float: left;
     }
     #edit{
-      width: calc(100% - 500px);
+      width: calc(100% - 400px);
       float: left;
     }
     #edit-panel {
