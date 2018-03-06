@@ -220,7 +220,7 @@ function createUI(datasource) {
       }
 
       // add transaction before removing nodes because we need data('node')
-      var employee_id = $node.find('.content').text().split(' ')[0]; // get the id part but not the names part
+      var employee_id = $node.find('.content').text();
       var src_pos_id = $node.find('.position_id').text();
       var src_supervisor_id = $node.closest('.nodes').siblings().eq(0).children().find('.position_id').text();
       addTransaction(employee_id, src_pos_id, null, src_supervisor_id, null);

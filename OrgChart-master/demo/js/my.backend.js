@@ -332,6 +332,18 @@ function addTransaction(employee_id, src_pos_id, dest_pos_id, src_supervisor_id,
        'time':datetime
      };
 
+     // get the id part but not the names part
+     if (myData.employee_id) {
+      myData.employee_id = myData.employee_id.split(' ')[0];
+    }
+     if (myData.src_supervisor_id) {
+      myData.src_supervisor_id = myData.src_supervisor_id.split(' ')[0];
+    }
+     if (myData.dest_supervisor_id) {
+      myData.dest_supervisor_id = myData.dest_supervisor_id.split(' ')[0];
+    }
+  console.log('addTransaction('+myData.employee_id+','+src_pos_id+','+dest_pos_id+','+myData.src_supervisor_id+','+myData.dest_supervisor_id+')');
+
     $.ajax({
     url: "php/insert_transaction.php",
     data: myData,
