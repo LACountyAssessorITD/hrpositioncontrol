@@ -40,13 +40,14 @@ function createUI(datasource) {
       pos = data.name.search(" ");
       var employee_id = data.name.substring(0, pos);
       var employee_name = data.name.substring(pos+1);
+      var hire_date = FormatDate(data.hire);
       return '<div class="position"><div class="position_id">' + data.position + '</div>' +
           '<div class="employee" draggable="true"> <!--referenced as innerNode in .js file-->' +
             '<div class="title">' + employee_title_cd + '<br>' + employee_title_name + '</div>' +
             '<div class="content">' + employee_id + '<br>' + employee_name + '</div>' +
             '<div class="tooltiptext">' +
              'Home Unit Code:  <span class="unit_code">' + data.unit_cd + '</span> <br>' +
-              'Hire Department: <span class="hire">' +  data.hire + '</span> <br>' +
+              'Hire Date: <span class="hire">' +  hire_date + '</span> <br>' +
               'Pay Location: <span class="pay_lctn">' + data.pay_lctn + '</span> <br>' +
             '</div>' +
           '</div>' +
@@ -343,7 +344,7 @@ function createUI(datasource) {
       $node.find('.title').text(nodeVals[0].title_cd.trim() + nodeVals[0].sub_title_cd.trim()).append('<br/>' + nodeVals[0].titl_short_dd);
       $node.find('.content').text(nodeVals[0].employee_id.trim()).append('<br/>' + nodeVals[0].first_name.trim() + ' ' + nodeVals[0].last_name.trim());
       $node.find('.unit_code').text(nodeVals[0].home_unit_cd);
-      $node.find('.hire').text(nodeVals[0].orig_hire_dt);
+      $node.find('.hire').text(FormatDate(nodeVals[0].orig_hire_dt));
       $node.find('.pay_lctn').text(nodeVals[0].pay_lctn_cd);
 
       // transaction for add employee
@@ -368,7 +369,7 @@ function createUI(datasource) {
         alert('Please input value for new position');
         return;
       }
-      
+
       var hasChild = $node.parent().attr('colspan') > 0 ? true : false;
       if (!hasChild) {
         var rel = nodeVals.length > 1 ? '110' : '100';
@@ -570,3 +571,10 @@ function createUI(datasource) {
 
   };
 
+function FormatDate(datestring) {
+  var day = datestring.substring(0, 2);
+  var month = datestring.substring(2, 4);
+  var year = datestring.substring(4);
+  var date = day + '/' + month + '/' + year;
+  return date;
+}
