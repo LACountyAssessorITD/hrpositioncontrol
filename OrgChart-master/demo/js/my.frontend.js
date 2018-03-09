@@ -127,6 +127,8 @@ function createUI(datasource) {
     var retrievedEmployee;
     // If |getPositionSuccess| is true, this is the retrieved position
     var retrievedPosition;
+    // This is the user-created position
+    var createdPosition;
 
     //edit chart script
     oc.$chartContainer.on('click', '.node', function() {
@@ -342,6 +344,36 @@ function createUI(datasource) {
       console.log("Add Employee TRANSACTION: " + employee_id + ", " + dest_pos_id + ", " + dest_supervisor_id);
     });
 
+    $('#btn-create-position').on('click', function() {
+      verifyAndCreatePosition($('#get-new-position-id-input').val().trim(), $('#get-new-position-title-input').val().trim());
+
+      var $chartContainer = $('#chart-container');
+
+      // make nodeVals into an array so it doesn't break the code
+      var nodeVals = [];
+      nodeVals.push(createdPosition);
+
+      var $node = $('#selected-node').data('node');
+      if (!nodeVals.length) {
+        alert('Please input value for new position');
+        return;
+      }
+      
+      var hasChild = $node.parent().attr('colspan') > 0 ? true : false;
+      if (!hasChild) {
+        var rel = nodeVals.length > 1 ? '110' : '100';
+        oc.addChildren($node, nodeVals.map(function (item) {
+            // return { 'name': item, 'relationship': rel, 'id': getId() }; CHANGED
+            return { 'name': '', 'relationship': rel, 'id': getId(), 'title': '', 'unit_cd': '', 'hire': '', 'pay_lctn': '', 'position': item.position_id,'salary': item.salary_maximum_am,'sub_title_cd': item.sub_title_cd };
+          }));
+      } else {
+        oc.addSiblings($node.closest('tr').siblings('.nodes').find('.node:first'), nodeVals.map(function (item) {
+          // return { 'name': item, 'relationship': '110', 'id': getId() }; CHANGED
+          return { 'name': '', 'relationship': '110', 'id': getId(), 'title': '', 'unit_cd': '', 'hire': '', 'pay_lctn': '', 'position': item.position_id,'salary': item.salary_maximum_am,'sub_title_cd': item.sub_title_cd };
+        }));
+      }
+    });
+
     // Search for an employee by employee ID
     function searchEmployee(keyWord) {
       if(!keyWord.length) {
@@ -443,6 +475,36 @@ function createUI(datasource) {
     $('#get-position-input').on('keyup', function(event) {
       if (event.which === 13) {
         getPositionAndSetFlag(this.value);
+      }
+    });
+
+    // Create new position to enter into database
+    function verifyAndCreatePosition(positionId, positionTitle) {
+      // If positionId is not a number, alert and return
+      if (isNaN(positionId)) {
+        alert('Please enter a numeric position ID.');
+        return;
+      }
+
+      // Check that positionId doesn't exist already
+      var existPosition = checkPositionExists(positionId);
+      if (existPosition.position_id) {
+        alert('The position ID ' + positionId + ' exists already.');
+        return;
+      }
+
+      createdPosition = {
+        "position_id" : positionId,
+        "title" : positionTitle
+      };
+
+      createPosition(positionId, positionTitle);
+    }
+
+    $('#get-new-position-title-input').on('keyup', function(event) {
+      // Verify that user has entered position ID
+      if (event.which === 13) {
+        verifyAndCreatePosition($('#get-new-position-id-input').val().trim(), this.value);
       }
     });
 
