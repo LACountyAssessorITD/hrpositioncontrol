@@ -326,6 +326,11 @@ function checkPositionExists(position_id) {
   return position;
 };
 
+// Creates new position
+function createPosition(position_id, position_title) {
+  // TODO
+}
+
 // Gets head info
 function getOrgHead() {
 
