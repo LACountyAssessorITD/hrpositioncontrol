@@ -37,10 +37,13 @@ function createUI(datasource) {
       var pos = data.title.search(" ");
       var employee_title_cd = data.title.substring(0, pos);
       var employee_title_name = data.title.substring(pos+1);
+      pos = data.name.search(" ");
+      var employee_id = data.name.substring(0, pos);
+      var employee_name = data.name.substring(pos+1);
       return '<div class="position"><div class="position_id">' + data.position + '</div>' +
           '<div class="employee" draggable="true"> <!--referenced as innerNode in .js file-->' +
             '<div class="title">' + employee_title_cd + '<br>' + employee_title_name + '</div>' +
-            '<div class="content">' + data.name + '</div>' +
+            '<div class="content">' + employee_id + '<br>' + employee_name + '</div>' +
             '<div class="tooltiptext">' +
              'Home Unit Code:  <span class="unit_code">' + data.unit_cd + '</span> <br>' +
               'Hire Department: <span class="hire">' +  data.hire + '</span> <br>' +

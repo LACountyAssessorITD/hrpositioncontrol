@@ -1,7 +1,6 @@
  #chart-container { background-color: #eee; height: 500px; }
     .orgchart { background: #fff; }
     .orgchart.edit-state .edge { display: none; }
-    .orgchart .node { width: 150px; }
     .orgchart .node .title .symbol { margin-top: 1px; }
     #department{
       width: 400px;
