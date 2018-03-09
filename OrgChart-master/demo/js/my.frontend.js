@@ -486,6 +486,12 @@ function createUI(datasource) {
         return;
       }
 
+      // Check positionTitle is not empty
+      if (!positionTitle) {
+        alert('Please enter a position title.');
+        return;
+      }
+
       // Check that positionId doesn't exist already
       var existPosition = checkPositionExists(positionId);
       if (existPosition.position_id) {
