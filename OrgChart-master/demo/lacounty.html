@@ -33,12 +33,12 @@
         <button type="button" id="btn-search-node">Search</button>
         <button type="button" id="btn-cancel">Cancel</button>
       </div>
-      
+
       <div class="row">
       <label class="selected-node-group">Selected Position:</label>
       <input type="text" id="selected-node" class="selected-node-group" readonly>
       </div>
-     
+
       <div class="row">
         <label>Employee ID:</label>
         <!-- <ul id="new-nodelist">
@@ -62,13 +62,13 @@
         <button type="button" id="btn-delete-position">Delete Position</button>
       </div>
       <div class="row">
-        <label>Position ID:</label>
+        <label>Temporary Position ID:</label>
         <input type="text" id="get-new-position-id-input">
-        <label>Position Title:</label>
+        <label>Temporary Position Title:</label>
         <input type="text" id="get-new-position-title-input">
         <button type="button" id="btn-create-position">Create Position</button>
       </div>
-     
+
   <!--       <div class="head-info" style="display: inline-block">
           <label>ORG_CODE: <span id="org_code"></span><br></label>
           <label>PAYNAME: <span id="payname"></span><br></label>
@@ -117,7 +117,7 @@
       createUI(datasource);
     }
     else{
-      //may hardcode datasource for testing 
+      //may hardcode datasource for testing
       createUI(datasource);
       console.log('error loding database');
     }
