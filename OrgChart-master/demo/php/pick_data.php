@@ -56,7 +56,7 @@ if($stmt===false){
 		$myobject->first_name=$row["EMPL_FIRST_NM"];
 		$myobject->last_name=$row["EMPL_LAST_NM"];
 
-		// // query to get the title name (TITL_SHORT_DD)
+		// query to get the title name (TITL_SHORT_DD)
 		$param = $row["TITLE_CD"];
 		if ($stmt_title = sqlsrv_prepare($conn, $sql_title, array(&$param))) {
 		} else {

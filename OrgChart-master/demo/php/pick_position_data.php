@@ -33,6 +33,9 @@ $stmt = sqlsrv_query( $conn, $stmt_employee);
 if($stmt===false){
    echo "sbsbssbsbbsbs";
 }else{
+	$sql_title = "SELECT *
+				FROM dbo.TITLE
+				WHERE TITLE_CD = ?";
 
 	$result=array();
 	while($row = sqlsrv_fetch_array($stmt)) {
@@ -40,8 +43,24 @@ if($stmt===false){
 		$myobject->position_id=$row["POSN_ID"];
 		$myobject->home_unit_cd=$row["HOME_UNIT_CD"];
 		$myobject->salary_maximum_am=$row["SALARY_MAXIMUM_AM"];
+		$myobject->title_cd=$row["TITLE_CD"];
 		$myobject->sub_title_cd=$row["SUB_TITLE_CD"];
 		//$myjson=json_encode($myobject);
+
+		// query to get the title name (TITL_SHORT_DD)
+		$param = $row["TITLE_CD"];
+		if ($stmt_title = sqlsrv_prepare($conn, $sql_title, array(&$param))) {
+		} else {
+			echo "statment cannot be prepared\n";
+			die(print_r(sqlsrv_errors(), true));
+		}
+		if (sqlsrv_execute($stmt_title)) {
+		    $data = sqlsrv_fetch_array($stmt_title);
+		    $myobject->titl_short_dd = $data["TITL_SHORT_DD"];
+		} else {
+		    echo "Statement could not be executed.\n";
+		    die(print_r(sqlsrv_errors(), true));
+		}
 
     	$result[] = $myobject;
 	}

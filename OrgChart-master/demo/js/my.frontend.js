@@ -187,43 +187,47 @@ function createUI(datasource) {
         alert('Please input value for new node');
         return;
       }
-      var nodeType = $('input[name="node-type"]:checked');
-      if (!nodeType.length) {
-        alert('Please select a node type');
-        return;
-      }
-      if (nodeType.val() !== 'parent' && !$('.orgchart').length) {
-        alert('Please creat the root node firstly when you want to build up the orgchart from the scratch');
-        return;
-      }
-      if (nodeType.val() !== 'parent' && !$node) {
+      // var nodeType = $('input[name="node-type"]:checked');
+      // if (!nodeType.length) {
+      //   alert('Please select a node type');
+      //   return;
+      // }
+      // if (nodeType.val() !== 'parent' && !$('.orgchart').length) {
+      //   alert('Please creat the root node firstly when you want to build up the orgchart from the scratch');
+      //   return;
+      // }
+      // if (nodeType.val() !== 'parent' && !$node) {
+      //   alert('Please select one node in orgchart');
+      //   return;
+      // }
+      if (!$node) {
         alert('Please select one node in orgchart');
         return;
       }
-      if (nodeType.val() === 'parent') {
-        if (!$chartContainer.children('.orgchart').length) {// if the original chart has been deleted
-          oc = $chartContainer.orgchart({
-            'data' : { 'name': nodeVals[0] },
-            'exportButton': true,
-            'exportFilename': 'SportsChart',
-            'parentNodeSymbol': 'fa-th-large',
-            'createNode': function($node, data) {
-              $node[0].id = getId();
-            }
-          });
-          oc.$chart.addClass('view-state');
-        } else {
-          oc.addParent($chartContainer.find('.node:first'), { 'name': nodeVals[0], 'id': getId() });
-        }
-      } else if (nodeType.val() === 'siblings') {
-        if ($node[0].id === oc.$chart.find('.node:first')[0].id) {
-          alert('You are not allowed to directly add sibling nodes to root node');
-          return;
-        }
-        oc.addSiblings($node, nodeVals.map(function (item) {
-          return { 'name': item, 'relationship': '110', 'id': getId() };
-        }));
-      } else {
+      // if (nodeType.val() === 'parent') {
+      //   if (!$chartContainer.children('.orgchart').length) {// if the original chart has been deleted
+      //     oc = $chartContainer.orgchart({
+      //       'data' : { 'name': nodeVals[0] },
+      //       'exportButton': true,
+      //       'exportFilename': 'SportsChart',
+      //       'parentNodeSymbol': 'fa-th-large',
+      //       'createNode': function($node, data) {
+      //         $node[0].id = getId();
+      //       }
+      //     });
+      //     oc.$chart.addClass('view-state');
+      //   } else {
+      //     oc.addParent($chartContainer.find('.node:first'), { 'name': nodeVals[0], 'id': getId() });
+      //   }
+      // } else if (nodeType.val() === 'siblings') {
+      //   if ($node[0].id === oc.$chart.find('.node:first')[0].id) {
+      //     alert('You are not allowed to directly add sibling nodes to root node');
+      //     return;
+      //   }
+      //   oc.addSiblings($node, nodeVals.map(function (item) {
+      //     return { 'name': item, 'relationship': '110', 'id': getId() };
+      //   }));
+      // } else {
         var hasChild = $node.parent().attr('colspan') > 0 ? true : false;
         if (!hasChild) {
           var rel = nodeVals.length > 1 ? '110' : '100';
@@ -237,7 +241,7 @@ function createUI(datasource) {
             return { 'name': '', 'relationship': '110', 'id': getId(), 'title': '', 'unit_cd': '', 'hire': '', 'pay_lctn': '', 'position': item.position_id,'salary': item.salary_maximum_am,'sub_title_cd': item.sub_title_cd };
           }));
         }
-      }
+      // }
 
 
       // Send transactions to backend for tracking
@@ -305,7 +309,7 @@ function createUI(datasource) {
 
     $('#btn-add-employee').on('click', function() {
       // check if employee exists
-      getEmployeeAndSetFlag($('#get-employee-input').val());
+      getEmployeeAndSetFlag($('#get-employee-input').val().split(' ')[0].trim());
 
       if (!getEmployeeSuccess) {
         alert('Please search for a valid employee.');
@@ -331,8 +335,8 @@ function createUI(datasource) {
         return;
       }
 
-      $node.find('.title').text(nodeVals[0].title_cd);
-      $node.find('.content').text(nodeVals[0].employee_id);
+      $node.find('.title').text(nodeVals[0].title_cd.trim() + nodeVals[0].sub_title_cd.trim()).append('<br/>' + nodeVals[0].titl_short_dd);
+      $node.find('.content').text(nodeVals[0].employee_id.trim()).append('<br/>' + nodeVals[0].first_name.trim() + ' ' + nodeVals[0].last_name.trim());
       $node.find('.unit_code').text(nodeVals[0].home_unit_cd);
       $node.find('.hire').text(nodeVals[0].orig_hire_dt);
       $node.find('.pay_lctn').text(nodeVals[0].pay_lctn_cd);
@@ -415,7 +419,7 @@ function createUI(datasource) {
 
     $('#get-employee-input').on('keyup', function(event) {
       if (event.which === 13) {
-        getEmployeeAndSetFlag(this.value);
+        getEmployeeAndSetFlag(this.value.split(' ')[0].trim());
       }
     });
 

@@ -75,11 +75,18 @@ function get_data(position,employee, relation){
  var head_unit_cd=get_home_unit_cd(head_id, employee);
  var head_orig_hire_dt=get_orig_hire_dt(head_id,employee);
  var head_pay_lctn_cd=get_pay_lctn_cd(head_id, employee);
+
  var position_head_id=get_position(head_id, relation);
+ var position_obj=get_position_object(position_head_id, position);
+
+ var position_title_cd=position_obj['TITLE_CD'];
+ var position_sub_title_cd=position_obj['SUB_TITLE_CD'];
+ var position_title_name=position_obj['TITL_SHORT_DD'];
+ var position_title=position_title_cd + position_sub_title_cd + ' ' + position_title_name;
  var head_salary_maximum_am =get_salary_maximum_am(position_head_id,position);
 
  var head_employee={'name':head_name , 'title':head_title,'unit_cd': head_unit_cd,'hire':head_orig_hire_dt,
- 'pay_lctn':head_pay_lctn_cd,'position':position_head_id, 'salary':head_salary_maximum_am, 'sub_title_cd': head_sub_title_cd,'children':[]};
+ 'pay_lctn':head_pay_lctn_cd,'position':position_title_cd, 'salary':head_salary_maximum_am, 'sub_title_cd': head_sub_title_cd,'children':[]};
  var head_child=get_children(head_id, employee);
  for (var i=0;i<head_child.length; i++){
   var single_child=get_data_helper(head_child[i],position,employee, relation);
@@ -129,6 +136,17 @@ function get_data_helper(employee_id,position,employee, relation){
       if( relation[i]['employee_id'].toString().trim()==employee_id.toString().trim()){
 
         return relation[i]['position_id'].toString().trim();
+      }
+    }
+  }
+
+  function get_position_object(position_id, position){
+
+     for (var i=0; i<position.length;i++){
+
+      if( position[i]['position_id'].toString().trim()==position_id.toString().trim()){
+
+        return position[i];
       }
     }
   }
