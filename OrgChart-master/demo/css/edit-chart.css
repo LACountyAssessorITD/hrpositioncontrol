@@ -2,7 +2,6 @@
     .orgchart { background: #fff; }
     .orgchart.edit-state .edge { display: none; }
     .orgchart .node { width: 150px; }
-    .orgchart .node .title { height: 30px; line-height: 30px; }
     .orgchart .node .title .symbol { margin-top: 1px; }
     #department{
       width: 400px;

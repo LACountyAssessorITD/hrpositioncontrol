@@ -34,9 +34,12 @@ function createUI(datasource) {
     };
 
     var nodeTemplate = function(data) {
+      var pos = data.title.search(" ");
+      var employee_title_cd = data.title.substring(0, pos);
+      var employee_title_name = data.title.substring(pos+1);
       return '<div class="position"><div class="position_id">' + data.position + '</div>' +
           '<div class="employee" draggable="true"> <!--referenced as innerNode in .js file-->' +
-            '<div class="title">' + data.title + '</div>' +
+            '<div class="title">' + employee_title_cd + '<br>' + employee_title_name + '</div>' +
             '<div class="content">' + data.name + '</div>' +
             '<div class="tooltiptext">' +
              'Home Unit Code:  <span class="unit_code">' + data.unit_cd + '</span> <br>' +
@@ -98,7 +101,7 @@ function createUI(datasource) {
       $chart.css('transform', val + ' translate(' + x + 'px,' + y + 'px)');
       $(this).attr('disabled','disabled');
     });
-    
+
     $('#btn_fitv').on('click', function () {
       oc.$chart.css('transform','none');
       var $container = oc.$chartContainer;
@@ -111,7 +114,7 @@ function createUI(datasource) {
       $chart.css('transform', val + ' translate(' + x + 'px,' + y + 'px)');
       $(this).attr('disabled','disabled');
     });
-    
+
     $('#btn_reset').on('click', function () {
       oc.$chart.css('transform','none');
       oc.$chartContainer.css('overflow', 'auto');
