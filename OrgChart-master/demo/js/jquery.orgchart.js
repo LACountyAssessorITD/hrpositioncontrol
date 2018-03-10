@@ -1309,6 +1309,16 @@
         .addClass('node ' + (data.className || '') +  (level > opts.visibleLevel ? ' slide-up' : ''));
       if (opts.nodeTemplate) {
         $nodeDiv.append(opts.nodeTemplate(data));
+        // ADDED: for tooltip
+        function Hover(e) {
+          var x = (e.clientX) + 'px';
+          var y = (e.clientY) + 'px';
+          $nodeDiv.find('.tooltiptext').css("top", y);
+          $nodeDiv.find('.tooltiptext').css("left", x);
+        }
+        $nodeDiv.on("mousemove", function (e) {
+          Hover(e);
+        });
       } else {
         $nodeDiv.append('<div class="title">' + data[opts.nodeTitle] + '</div>')
           .append(typeof opts.nodeContent !== 'undefined' ? '<div class="content">' + (data[opts.nodeContent] || '') + '</div>' : '');

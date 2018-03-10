@@ -14,12 +14,12 @@ function createUI(datasource) {
           '<div class="employee" draggable="true">' +
             '<div class="title">' + data.title + '</div>' +
             '<div class="content">' + employee_id + '<br>' + employee_name + '</div>' +
-            '<div class="tooltiptext">' +
-             'Home Unit Code:  <span class="unit_code">' + data.unit_cd + '</span> <br>' +
-              'Hire Date: <span class="hire">' +  hire_date + '</span> <br>' +
-              'Pay Location: <span class="pay_lctn">' + data.pay_lctn + '</span> <br>' +
-            '</div>' +
           '</div>' +
+        '</div>'+
+        '<div class="tooltiptext">' +
+          'Home Unit Code:  <span class="unit_code">' + data.unit_cd + '</span> <br>' +
+          'Hire Date: <span class="hire">' +  hire_date + '</span> <br>' +
+          'Pay Location: <span class="pay_lctn">' + data.pay_lctn + '</span> <br>' +
         '</div>';
     };
 
