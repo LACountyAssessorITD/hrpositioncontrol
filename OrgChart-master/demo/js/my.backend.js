@@ -64,12 +64,12 @@ function get_data(position,employee, relation){
  var head_id=myData['employee_id'];
 
   var head_obj = get_employee_object(head_id, employee);
- var position_head_id=get_position(head_id, relation);
+ var position_head_id=get_position(head_id, relation).trim();
  var position_obj=get_position_object(position_head_id, position);
 
- var head_name=head_id+' '+head_obj.first_name+' '+head_obj.last_name;
+ var head_name=head_obj.first_name+' '+head_obj.last_name;
 
- var head_title=head_obj.title_cd + head_obj.sub_title_cd + ' ' + head_obj.titl_short_dd;
+ var head_title=head_obj.title_cd.trim() + head_obj.sub_title_cd + ' ' + head_obj.titl_short_dd;
 
  var position_title_cd=position_obj.title_cd.trim();
  var position_sub_title_cd=position_obj.sub_title_cd.trim();
@@ -77,7 +77,8 @@ function get_data(position,employee, relation){
  var position_title=position_title_cd + position_sub_title_cd + ' ' + position_title_name;
 
  var head_employee={
-  'name':head_name ,
+  'employee_id':head_id,
+  'employee_name':head_name ,
   'title':head_title,
   'unit_cd': head_obj.home_unit_cd,
   'hire':head_obj.orig_hire_dt,
@@ -85,7 +86,8 @@ function get_data(position,employee, relation){
   'position_id':position_head_id,
   'position_title': position_title,
   'salary':position_obj.salary_maximum_am,
-  'sub_title_cd': position_obj.sub_title_cd,
+  'ordinance': position_obj.ordinance,
+  'budgeted_fte': position_obj.budgeted_fte,
   'children':[]
 };
  var head_child=get_children(head_id, employee);
@@ -99,12 +101,12 @@ return head_employee;
 function get_data_helper(employee_id,position,employee, relation){
 
  var employee_obj = get_employee_object(employee_id, employee);
- var position_current_id=get_position(employee_id, relation);
+ var position_current_id=get_position(employee_id, relation).trim();
  var position_obj=get_position_object(position_current_id, position);
 
- var current_name=employee_id+" "+employee_obj.first_name+" "+employee_obj.last_name;
+ var current_name=employee_obj.first_name+" "+employee_obj.last_name;
 
- var current_title = employee_obj.title_cd + employee_obj.sub_title_cd + ' ' + employee_obj.titl_short_dd;
+ var current_title = employee_obj.title_cd.trim() + employee_obj.sub_title_cd + ' ' + employee_obj.titl_short_dd;
 
  var position_title_cd=position_obj.title_cd.toString().trim();
  var position_sub_title_cd=position_obj.sub_title_cd.toString().trim();
@@ -112,7 +114,8 @@ function get_data_helper(employee_id,position,employee, relation){
  var position_title=position_title_cd + position_sub_title_cd + ' ' + position_title_name;
 
   var current_employee={
-    'name':current_name,
+    'employee_id':employee_id,
+    'employee_name':current_name,
     'title':current_title,
     'unit_cd': employee_obj.home_unit_cd,
     'hire': employee_obj.orig_hire_dt,
@@ -120,7 +123,8 @@ function get_data_helper(employee_id,position,employee, relation){
     'position_id':position_current_id,
     'position_title':position_title,
     'salary':position_obj.salary_maximum_am,
-    'sub_title_cd': position_sub_title_cd,
+    'ordinance': position_obj.ordinance,
+    'budgeted_fte': position_obj.budgeted_fte,
   };
 
  var current_child=get_children(employee_id, employee);

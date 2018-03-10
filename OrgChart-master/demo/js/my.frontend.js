@@ -5,18 +5,16 @@ function createUI(datasource) {
     };
 
     var nodeTemplate = function(data) {
-      pos = data.name.search(" ");
-      var employee_id = data.name.substring(0, pos);
-      var employee_name = data.name.substring(pos+1);
-      var hire_date = FormatDate(data.hire);
       return '<div class="position"><span class="position_id">' + data.position_id + '</span><br>' +
           '<span class="position_title">' + data.position_title + '</span>' +
           '<div class="employee" draggable="true">' +
             '<div class="title">' + data.title + '</div>' +
-            '<div class="content">' + employee_id + '<br>' + employee_name + '</div>' +
+            '<div class="content"><span class="employee_id">' + data.employee_id + '</span><br>' +
+              '<span class="employee_name">' + data.employee_name + '</span>' +
+            '</div>' +
             '<div class="tooltiptext">' +
              'Home Unit Code:  <span class="unit_code">' + data.unit_cd + '</span> <br>' +
-              'Hire Date: <span class="hire">' +  hire_date + '</span> <br>' +
+              'Hire Date: <span class="hire">' +  FormatDate(data.hire) + '</span> <br>' +
               'Pay Location: <span class="pay_lctn">' + data.pay_lctn + '</span> <br>' +
             '</div>' +
           '</div>' +
@@ -43,7 +41,13 @@ function createUI(datasource) {
             $(this).siblings('.second-menu').toggle();
           }
         });
-        var secondMenu = '<div class="second-menu"> Salary: ' + data.salary + '<br>Sub Title: '+data.sub_title_cd+'</div>';
+        var ordinance = (data.ordinance == 1) ? '<br>ORD' : '';
+        var budgeted_fte = (data.budgeted_fte > 0) ? '<br>BGT' : '';
+        var secondMenu = '<div class="second-menu">' +
+          'Salary: ' + data.salary +
+          ordinance +
+          budgeted_fte +
+          '</div>';
         $node.append(secondMenuIcon).append(secondMenu);
       }
     });
@@ -191,8 +195,10 @@ function createUI(datasource) {
 
       function MakeNodeToAdd(item, rel) {
         var position_title = item.title_cd.trim() + item.sub_title_cd.trim() + ' ' + item.titl_short_dd;
+        item.position_id = item.position_id.trim();
         var nodeToAdd = {
-          'name': '',
+          'employee_id':'',
+          'employee_name': '',
           'relationship': rel,
           'id': getId(),
           'title': '',
@@ -202,7 +208,6 @@ function createUI(datasource) {
           'position_id': item.position_id,
           'position_title': position_title,
           'salary': item.salary_maximum_am,
-          'sub_title_cd': item.sub_title_cd,
           'ordinance': item.ordinance,
           'budgeted_fte': item.budgeted_fte,
         };
@@ -228,7 +233,7 @@ function createUI(datasource) {
       }
 
       // add transaction before removing nodes because we need data('node')
-      var employee_id = $node.find('.content').text();
+      var employee_id = $node.find('.employee_id').text();
       var src_pos_id = $node.find('.position_id').text();
       var src_supervisor_id = $node.closest('.nodes').siblings().eq(0).children().find('.position_id').text();
       addTransaction(employee_id, src_pos_id, null, src_supervisor_id, null);
@@ -252,14 +257,15 @@ function createUI(datasource) {
       }
 
       // add transaction before removing employee because we need the data
-      var employee_id =$node.find('.content').text();
+      var employee_id =$node.find('.employee_id').text();
       var src_pos_id = $node.find('.position_id').text();
       var src_supervisor_id = $node.closest('.nodes').siblings().eq(0).children().find('.position_id').text();
       addTransaction(employee_id, src_pos_id, null, src_supervisor_id, null);
       console.log("Clear Position TRANSACTION: " + employee_id + ", " + src_pos_id + ", " + src_supervisor_id);
 
       $node.find('.title').text('');
-      $node.find('.content').text('');
+      $node.find('.employee_id').text('');
+      $node.find('.employee_name').text('');
       $node.find('.unit_code').text('');
       $node.find('.hire').text('');
       $node.find('.pay_lctn').text('');
@@ -301,13 +307,14 @@ function createUI(datasource) {
       }
 
       $node.find('.title').text(nodeVals[0].title_cd.trim() + nodeVals[0].sub_title_cd.trim() + ' ' + nodeVals[0].titl_short_dd);
-      $node.find('.content').text(nodeVals[0].employee_id.trim()).append('<br/>' + nodeVals[0].first_name.trim() + ' ' + nodeVals[0].last_name.trim());
+      $node.find('.employee_id').text(nodeVals[0].employee_id.trim());
+      $node.find('.employee_name').text(nodeVals[0].first_name + nodeVals[0].last_name);
       $node.find('.unit_code').text(nodeVals[0].home_unit_cd);
       $node.find('.hire').text(FormatDate(nodeVals[0].orig_hire_dt));
       $node.find('.pay_lctn').text(nodeVals[0].pay_lctn_cd);
 
       // transaction for add employee
-      var employee_id = $node.find('.content').text().trim();
+      var employee_id = $node.find('.employee_id').text();
       var dest_pos_id = $node.find('.position_id').text().trim();
       var dest_supervisor_id = $node.closest('.nodes').siblings().eq(0).children().find('.position_id').text();
       addTransaction(employee_id, null, dest_pos_id, null, dest_supervisor_id);
