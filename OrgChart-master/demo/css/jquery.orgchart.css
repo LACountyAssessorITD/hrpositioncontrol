@@ -217,19 +217,26 @@
   width: auto;
 }
 
+.position_title {
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
 .orgchart .node .title {
   text-align: center;
   font-size: 12px;
   font-weight: bold;
-  height: auto;
   min-height: 20px;
-  line-height: 20px;
+  height: auto;
+  line-height: 40px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   background-color: rgba(217, 83, 79, 0.8);
   color: #fff;
   border-radius: 4px 4px 0 0;
+  padding-left: 5px;
+  padding-right: 5px;
 }
 
 .orgchart.b2t .node .title {
@@ -474,7 +481,7 @@
     /* Position the tooltip */
     position: absolute;
     z-index: 1;
-    width: 121px;
+    width: auto;
     overflow:auto;
 }
 

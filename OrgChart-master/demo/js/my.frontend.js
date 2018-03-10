@@ -5,16 +5,14 @@ function createUI(datasource) {
     };
 
     var nodeTemplate = function(data) {
-      var pos = data.title.search(" ");
-      var employee_title_cd = data.title.substring(0, pos);
-      var employee_title_name = data.title.substring(pos+1);
       pos = data.name.search(" ");
       var employee_id = data.name.substring(0, pos);
       var employee_name = data.name.substring(pos+1);
       var hire_date = FormatDate(data.hire);
-      return '<div class="position"><div class="position_id">' + data.position_id + '</div>' +
-          '<div class="employee" draggable="true"> <!--referenced as innerNode in .js file-->' +
-            '<div class="title">' + employee_title_cd + '<br>' + employee_title_name + '</div>' +
+      return '<div class="position"><span class="position_id">' + data.position_id + '</span><br>' +
+          '<span class="position_title">' + data.position_title + '</span>' +
+          '<div class="employee" draggable="true">' +
+            '<div class="title">' + data.title + '</div>' +
             '<div class="content">' + employee_id + '<br>' + employee_name + '</div>' +
             '<div class="tooltiptext">' +
              'Home Unit Code:  <span class="unit_code">' + data.unit_cd + '</span> <br>' +
@@ -183,12 +181,30 @@ function createUI(datasource) {
       if (!hasChild) {
         var rel = nodeVals.length > 1 ? '110' : '100';
         oc.addChildren($node, nodeVals.map(function (item) {
-            return { 'name': '', 'relationship': rel, 'id': getId(), 'title': '', 'unit_cd': '', 'hire': '', 'pay_lctn': '', 'position_id': item.position_id,'salary': item.salary_maximum_am,'sub_title_cd': item.sub_title_cd };
-          }));
+          return MakeNodeToAdd(item, rel);
+        }));
       } else {
         oc.addSiblings($node.closest('tr').siblings('.nodes').find('.node:first'), nodeVals.map(function (item) {
-          return { 'name': '', 'relationship': '110', 'id': getId(), 'title': '', 'unit_cd': '', 'hire': '', 'pay_lctn': '', 'position_id': item.position_id,'salary': item.salary_maximum_am,'sub_title_cd': item.sub_title_cd };
+          return MakeNodeToAdd(item, '110');
         }));
+      }
+
+      function MakeNodeToAdd(item, rel) {
+        var position_title = item.title_cd.trim() + item.sub_title_cd.trim() + ' ' + item.titl_short_dd;
+        var nodeToAdd = {
+          'name': '',
+          'relationship': rel,
+          'id': getId(),
+          'title': '',
+          'unit_cd': '',
+          'hire': '',
+          'pay_lctn': '',
+          'position_id': item.position_id,
+          'position_title': position_title,
+          'salary': item.salary_maximum_am,
+          'sub_title_cd': item.sub_title_cd
+        };
+        return nodeToAdd;
       }
 
       // Send transactions to backend for tracking
@@ -282,7 +298,7 @@ function createUI(datasource) {
         return;
       }
 
-      $node.find('.title').text(nodeVals[0].title_cd.trim() + nodeVals[0].sub_title_cd.trim()).append('<br/>' + nodeVals[0].titl_short_dd);
+      $node.find('.title').text(nodeVals[0].title_cd.trim() + nodeVals[0].sub_title_cd.trim() + ' ' + nodeVals[0].titl_short_dd);
       $node.find('.content').text(nodeVals[0].employee_id.trim()).append('<br/>' + nodeVals[0].first_name.trim() + ' ' + nodeVals[0].last_name.trim());
       $node.find('.unit_code').text(nodeVals[0].home_unit_cd);
       $node.find('.hire').text(FormatDate(nodeVals[0].orig_hire_dt));
@@ -483,9 +499,14 @@ function createUI(datasource) {
   };
 
 function FormatDate(datestring) {
-  var day = datestring.substring(0, 2);
-  var month = datestring.substring(2, 4);
-  var year = datestring.substring(4);
-  var date = day + '/' + month + '/' + year;
-  return date;
+  if (datestring) {
+    var day = datestring.substring(0, 2);
+    var month = datestring.substring(2, 4);
+    var year = datestring.substring(4);
+    var date = day + '/' + month + '/' + year;
+    return date;
+  }
+  else {
+    return '';
+  }
 }
