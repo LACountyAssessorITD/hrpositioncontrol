@@ -45,6 +45,8 @@ if($stmt===false){
 		$myobject->salary_maximum_am=$row["SALARY_MAXIMUM_AM"];
 		$myobject->title_cd=$row["TITLE_CD"];
 		$myobject->sub_title_cd=$row["SUB_TITLE_CD"];
+		$myobject->ordinance=$row["ORDINANCE"];
+		$myobject->budgeted_fte=$row["BUDGETED_FTE"];
 		//$myjson=json_encode($myobject);
 
 		// query to get the title name (TITL_SHORT_DD)

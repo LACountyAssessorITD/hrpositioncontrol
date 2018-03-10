@@ -468,7 +468,7 @@
     padding: 5px;
 }
 
-.node .tooltiptext {
+.employee .tooltiptext {
     visibility: hidden;
     background-color: rgba(217, 83, 79, 0.8);
     color: #fff;
@@ -488,7 +488,7 @@
     overflow:auto;
 }
 
-.node:hover .tooltiptext {
+.employee:hover .tooltiptext {
     visibility: visible;
     display: inline-block;
 

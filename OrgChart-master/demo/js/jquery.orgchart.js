@@ -1316,7 +1316,10 @@
           $nodeDiv.find('.tooltiptext').css("top", y);
           $nodeDiv.find('.tooltiptext').css("left", x);
         }
-        $nodeDiv.on("mousemove", function (e) {
+        $nodeDiv.find('.employee').on("mousemove", function (e) {
+          Hover(e);
+        });
+        $nodeDiv.find('.tooltiptext').on("mousemove", function (e) {
           Hover(e);
         });
       } else {
