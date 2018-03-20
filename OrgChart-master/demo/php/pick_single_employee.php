@@ -45,9 +45,24 @@ if($stmt===false){
 	$myobject->orig_hire_dt=$row["ORIG_HIRE_DT"];
 	$myobject->pay_lctn_cd=$row["PAY_LCTN_CD"];
 	$myobject->title_cd=$row["TITLE_CD"];
+	$myobject->sub_title_cd=$row["SUB_TITLE_CD"];
+	$myobject->first_name=$row["EMPL_FIRST_NM"];
+	$myobject->last_name=$row["EMPL_LAST_NM"];
 
+	// query to get the title name (TITL_SHORT_DD)
+	$param = $row["TITLE_CD"];
+	$sql_title = "SELECT *
+				FROM dbo.TITLE
+				WHERE TITLE_CD = $param";
+	if ($stmt_title = sqlsrv_query($conn, $sql_title)) {
+		$data = sqlsrv_fetch_array($stmt_title);
+	    $myobject->titl_short_dd = $data["TITL_SHORT_DD"];
+	} else {
+		echo "statment cannot be executed\n";
+		die(print_r(sqlsrv_errors(), true));
+	}
 
-
+	sqlsrv_free_stmt($stmt_title);
 	sqlsrv_free_stmt($stmt);
 
 

@@ -41,8 +41,8 @@
     // #dropHandler
     this.isInnerNodeDragged = false;
     // When swapping employee or dragging position, track its starting position ID and starting supervisor ID
-    this.dragStartPositionId; 
-    this.dragStartSupervisorId; 
+    this.dragStartPositionId;
+    this.dragStartSupervisorId;
   };
   //
   OrgChart.prototype = {
@@ -1041,11 +1041,11 @@
       if (dropEvent.isDefaultPrevented()) {
         return;
       }
-      console.log("dropHandler| dragging " + $dragged.find('.content').text() + ": from supervisor " 
+      console.log("dropHandler| dragging " + $dragged.find('.content').text() + ": from supervisor "
         + $dragZone.find('.content').text()
         + " -> supervisor " + $dropZone.find('.content').text() );
 
-      // ADDED: shows red for changes 
+      // ADDED: shows red for changes
       if ($dragged.attr('class') === 'employee')
       {
         // console.log("dragged an employee");
@@ -1108,7 +1108,7 @@
       var src_supervisor_id = $dragZone.find('.content').text();
       var dest_supervisor_id = $dropZone.find('.content').text();
       addTransaction(employee_id, src_pos_id, dest_pos_id, src_supervisor_id, dest_supervisor_id);
-      // console.log("dropHandler TRANSACTION: " + employee_id + "; " + 
+      // console.log("dropHandler TRANSACTION: " + employee_id + "; " +
       //   src_pos_id + "; " + dest_pos_id
       //    + "; " + src_supervisor_id + "; " + dest_supervisor_id);
     },
@@ -1142,7 +1142,7 @@
         'dest_supervisor_id': $dragZone.find('.content').text()
       }
 
-      // console.log("dropHandlerInner 4: " + $dragged.text() 
+      // console.log("dropHandlerInner 4: " + $dragged.text()
       //   + " :: " + $dragZone.text() + " -> " + $dropZone.text());
       // console.log('$dropSupervisor=' + $dropSupervisor.text());
 
@@ -1179,9 +1179,9 @@
       // TODO(angela5shao): Highlight the moved node (an employee)
 
       // Send transactions to backend for tracking
-      addTransaction(employee1.employee_id, employee1.src_pos_id, employee1.dest_pos_id, 
+      addTransaction(employee1.employee_id, employee1.src_pos_id, employee1.dest_pos_id,
         employee1.src_supervisor_id, employee1.dest_supervisor_id);
-      addTransaction(employee2.employee_id, employee2.src_pos_id, employee2.dest_pos_id, 
+      addTransaction(employee2.employee_id, employee2.src_pos_id, employee2.dest_pos_id,
         employee2.src_supervisor_id, employee2.dest_supervisor_id);
     },
     //
@@ -1207,7 +1207,7 @@
       this.touchMoved = true;
       var $touching = $(document.elementFromPoint(event.touches[0].clientX, event.touches[0].clientY));
       var $touchingNode = $touching.closest('div.node');
- 
+
       if ($touchingNode.length > 0) {
         var touchingNodeElement = $touchingNode[0];
         // TODO: simulate the dragover visualisation
@@ -1258,20 +1258,20 @@
       var simulatedEvent = document.createEvent('MouseEvents');
       simulatedEvent.initMouseEvent(
         simulatedType,    // type
-        true,             // bubbles                    
-        true,             // cancelable                 
-        window,           // view                       
-        1,                // detail                     
-        touch.screenX,    // screenX                    
-        touch.screenY,    // screenY                    
-        touch.clientX,    // clientX                    
-        touch.clientY,    // clientY                    
-        false,            // ctrlKey                    
-        false,            // altKey                     
-        false,            // shiftKey                   
-        false,            // metaKey                    
-        0,                // button                     
-        null              // relatedTarget              
+        true,             // bubbles
+        true,             // cancelable
+        window,           // view
+        1,                // detail
+        touch.screenX,    // screenX
+        touch.screenY,    // screenY
+        touch.clientX,    // clientX
+        touch.clientY,    // clientY
+        false,            // ctrlKey
+        false,            // altKey
+        false,            // shiftKey
+        false,            // metaKey
+        0,                // button
+        null              // relatedTarget
       );
       // Dispatch the simulated event to the target element
       event.target.dispatchEvent(simulatedEvent);
@@ -1309,6 +1309,19 @@
         .addClass('node ' + (data.className || '') +  (level > opts.visibleLevel ? ' slide-up' : ''));
       if (opts.nodeTemplate) {
         $nodeDiv.append(opts.nodeTemplate(data));
+        // ADDED: for tooltip
+        function Hover(e) {
+          var x = (e.clientX) + 'px';
+          var y = (e.clientY) + 'px';
+          $nodeDiv.find('.tooltiptext').css("top", y);
+          $nodeDiv.find('.tooltiptext').css("left", x);
+        }
+        $nodeDiv.find('.employee').on("mousemove", function (e) {
+          Hover(e);
+        });
+        $nodeDiv.find('.tooltiptext').on("mousemove", function (e) {
+          Hover(e);
+        });
       } else {
         $nodeDiv.append('<div class="title">' + data[opts.nodeTitle] + '</div>')
           .append(typeof opts.nodeContent !== 'undefined' ? '<div class="content">' + (data[opts.nodeContent] || '') + '</div>' : '');
@@ -1599,11 +1612,11 @@
           };
 
           // Change data for the org chart
-          thisChart.init({ 'data': jsonData }); 
+          thisChart.init({ 'data': jsonData });
         } else if (this.id == "clear-position-button") {
-          
+
         } else if (this.id == "finalize-button") {
-          
+
         }
       });
     }

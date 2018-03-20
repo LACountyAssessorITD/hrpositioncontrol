@@ -1,46 +1,20 @@
 function createUI(datasource) {
-    //Sample json data structure
-    // var datasource = {
-    //   'name': 'Lao Lao',
-    //   'title': 'general manager',
-    //   'position': 'position1',
-    //   'children': [
-    //     { 'name': '', 'title': '', 'position': 'position2' },
-    //     { 'name': 'Su Miao', 'title': 'department manager', 'position': 'position3',
-    //       'children': [
-    //         { 'name': 'Tie Hua', 'title': 'senior engineer', 'EmployeeId':'900','position': 'position4' },
-    //         { 'name': 'Hei Hei', 'title': 'senior engineer', 'position': 'position5',
-    //          'children': [
-    //          { 'name': 'Tie Hua', 'title': 'senior engineer', 'EmployeeId':'900','position': 'position4' },
-    //          { 'name': 'Hei Hei', 'title': 'senior engineer', 'position': 'position5',
-    //           'children': [
-    //           { 'name': 'Tie Hua', 'title': 'senior engineer', 'EmployeeId':'900','position': 'position4' },
-    //           { 'name': 'Hei Hei', 'title': 'senior engineer', 'position': 'position5' }
-    //         ]}
-    //         ]}
-    //       ]
-    //     },
-    //     { 'name': 'Yu Jie', 'title': 'department manager', 'position': 'position4' },
-    //     { 'name': 'Yu Li', 'title': 'department manager', 'position': 'position4' },
-    //     { 'name': 'Hong Miao', 'title': 'department manager', 'position': 'position4' },
-    //     { 'name': 'Yu Wei', 'title': 'department manager', 'position': 'position4' },
-    //     { 'name': 'Chun Miao', 'title': 'department manager', 'position': 'position4' },
-    //     { 'name': 'Yu Tie', 'title': 'department manager', 'position': 'position4' }
-    //   ]
-    // };
 
     var getId = function() {
       return (new Date().getTime()) * 1000 + Math.floor(Math.random() * 1001);
     };
 
     var nodeTemplate = function(data) {
-      return '<div class="position"><div class="position_id">' + data.position + '</div>' +
-          '<div class="employee" draggable="true"> <!--referenced as innerNode in .js file-->' +
+      return '<div class="position"><span class="position_id">' + data.position_id + '</span><br>' +
+          '<span class="position_title">' + data.position_title + '</span>' +
+          '<div class="employee" draggable="true">' +
             '<div class="title">' + data.title + '</div>' +
-            '<div class="content">' + data.name + '</div>' +
+            '<div class="content"><span class="employee_id">' + data.employee_id + '</span><br>' +
+              '<span class="employee_name">' + data.employee_name + '</span>' +
+            '</div>' +
             '<div class="tooltiptext">' +
              'Home Unit Code:  <span class="unit_code">' + data.unit_cd + '</span> <br>' +
-              'Hire Department: <span class="hire">' +  data.hire + '</span> <br>' +
+              'Hire Date: <span class="hire">' +  FormatDate(data.hire) + '</span> <br>' +
               'Pay Location: <span class="pay_lctn">' + data.pay_lctn + '</span> <br>' +
             '</div>' +
           '</div>' +
@@ -67,7 +41,13 @@ function createUI(datasource) {
             $(this).siblings('.second-menu').toggle();
           }
         });
-        var secondMenu = '<div class="second-menu"> Salary: ' + data.salary + '<br>Sub Title: '+data.sub_title_cd+'</div>';
+        var ordinance = (data.ordinance == 1) ? '<br>ORD' : '';
+        var budgeted_fte = (data.budgeted_fte > 0) ? '<br>BGT' : '';
+        var secondMenu = '<div class="second-menu">' +
+          'Salary: ' + data.salary +
+          ordinance +
+          budgeted_fte +
+          '</div>';
         $node.append(secondMenuIcon).append(secondMenu);
       }
     });
@@ -98,7 +78,7 @@ function createUI(datasource) {
       $chart.css('transform', val + ' translate(' + x + 'px,' + y + 'px)');
       $(this).attr('disabled','disabled');
     });
-    
+
     $('#btn_fitv').on('click', function () {
       oc.$chart.css('transform','none');
       var $container = oc.$chartContainer;
@@ -111,7 +91,7 @@ function createUI(datasource) {
       $chart.css('transform', val + ' translate(' + x + 'px,' + y + 'px)');
       $(this).attr('disabled','disabled');
     });
-    
+
     $('#btn_reset').on('click', function () {
       oc.$chart.css('transform','none');
       oc.$chartContainer.css('overflow', 'auto');
@@ -175,76 +155,71 @@ function createUI(datasource) {
       // reset position flag
       getPositionSuccess = false;
 
+      AddPosition(retrievedPosition);
+    });
+
+    $('#btn-create-position').on('click', function() {
+      verifyAndCreatePosition($('#get-new-position-id-input').val().trim(), $('#get-new-position-title-input').val().trim());
+
+      AddPosition(createdPosition);
+    });
+
+    function AddPosition(position_to_add) {
+
       var $chartContainer = $('#chart-container');
 
-      // make nodeVals into an array so it doesn't break the code
       var nodeVals = [];
-      nodeVals.push(retrievedPosition);
+      nodeVals.push(position_to_add);
 
       var $node = $('#selected-node').data('node');
       if (!nodeVals.length) {
         alert('Please input value for new node');
         return;
       }
-      var nodeType = $('input[name="node-type"]:checked');
-      if (!nodeType.length) {
-        alert('Please select a node type');
-        return;
-      }
-      if (nodeType.val() !== 'parent' && !$('.orgchart').length) {
-        alert('Please creat the root node firstly when you want to build up the orgchart from the scratch');
-        return;
-      }
-      if (nodeType.val() !== 'parent' && !$node) {
+      if (!$node) {
         alert('Please select one node in orgchart');
         return;
       }
-      if (nodeType.val() === 'parent') {
-        if (!$chartContainer.children('.orgchart').length) {// if the original chart has been deleted
-          oc = $chartContainer.orgchart({
-            'data' : { 'name': nodeVals[0] },
-            'exportButton': true,
-            'exportFilename': 'SportsChart',
-            'parentNodeSymbol': 'fa-th-large',
-            'createNode': function($node, data) {
-              $node[0].id = getId();
-            }
-          });
-          oc.$chart.addClass('view-state');
-        } else {
-          oc.addParent($chartContainer.find('.node:first'), { 'name': nodeVals[0], 'id': getId() });
-        }
-      } else if (nodeType.val() === 'siblings') {
-        if ($node[0].id === oc.$chart.find('.node:first')[0].id) {
-          alert('You are not allowed to directly add sibling nodes to root node');
-          return;
-        }
-        oc.addSiblings($node, nodeVals.map(function (item) {
-          return { 'name': item, 'relationship': '110', 'id': getId() };
+
+      var hasChild = $node.parent().attr('colspan') > 0 ? true : false;
+      if (!hasChild) {
+        var rel = nodeVals.length > 1 ? '110' : '100';
+        oc.addChildren($node, nodeVals.map(function (item) {
+          return MakeNodeToAdd(item, rel);
         }));
       } else {
-        var hasChild = $node.parent().attr('colspan') > 0 ? true : false;
-        if (!hasChild) {
-          var rel = nodeVals.length > 1 ? '110' : '100';
-          oc.addChildren($node, nodeVals.map(function (item) {
-              // return { 'name': item, 'relationship': rel, 'id': getId() }; CHANGED
-              return { 'name': '', 'relationship': rel, 'id': getId(), 'title': '', 'unit_cd': '', 'hire': '', 'pay_lctn': '', 'position': item.position_id,'salary': item.salary_maximum_am,'sub_title_cd': item.sub_title_cd };
-            }));
-        } else {
-          oc.addSiblings($node.closest('tr').siblings('.nodes').find('.node:first'), nodeVals.map(function (item) {
-            // return { 'name': item, 'relationship': '110', 'id': getId() }; CHANGED
-            return { 'name': '', 'relationship': '110', 'id': getId(), 'title': '', 'unit_cd': '', 'hire': '', 'pay_lctn': '', 'position': item.position_id,'salary': item.salary_maximum_am,'sub_title_cd': item.sub_title_cd };
-          }));
-        }
+        oc.addSiblings($node.closest('tr').siblings('.nodes').find('.node:first'), nodeVals.map(function (item) {
+          return MakeNodeToAdd(item, '110');
+        }));
       }
 
+      function MakeNodeToAdd(item, rel) {
+        var position_title = item.title_cd.trim() + item.sub_title_cd.trim() + ' ' + item.titl_short_dd;
+        item.position_id = item.position_id.trim();
+        var nodeToAdd = {
+          'employee_id':'',
+          'employee_name': '',
+          'relationship': rel,
+          'id': getId(),
+          'title': '',
+          'unit_cd': '',
+          'hire': '',
+          'pay_lctn': '',
+          'position_id': item.position_id,
+          'position_title': position_title,
+          'salary': item.salary_maximum_am,
+          'ordinance': item.ordinance,
+          'budgeted_fte': item.budgeted_fte,
+        };
+        return nodeToAdd;
+      }
 
       // Send transactions to backend for tracking
       var src_pos_id = retrievedPosition['position_id'].trim();
       var dest_supervisor_id = $node.find('.position_id').text();
       addTransaction(null, src_pos_id, src_pos_id, null , dest_supervisor_id);
       console.log("Add Position TRANSACTION: " + src_pos_id + ", " + dest_supervisor_id);
-    });
+    }
 
     $('#btn-delete-position').on('click', function() {
       var $node = $('#selected-node').data('node');
@@ -258,7 +233,7 @@ function createUI(datasource) {
       }
 
       // add transaction before removing nodes because we need data('node')
-      var employee_id = $node.find('.content').text();
+      var employee_id = $node.find('.employee_id').text();
       var src_pos_id = $node.find('.position_id').text();
       var src_supervisor_id = $node.closest('.nodes').siblings().eq(0).children().find('.position_id').text();
       addTransaction(employee_id, src_pos_id, null, src_supervisor_id, null);
@@ -282,14 +257,15 @@ function createUI(datasource) {
       }
 
       // add transaction before removing employee because we need the data
-      var employee_id =$node.find('.content').text();
+      var employee_id =$node.find('.employee_id').text();
       var src_pos_id = $node.find('.position_id').text();
       var src_supervisor_id = $node.closest('.nodes').siblings().eq(0).children().find('.position_id').text();
       addTransaction(employee_id, src_pos_id, null, src_supervisor_id, null);
       console.log("Clear Position TRANSACTION: " + employee_id + ", " + src_pos_id + ", " + src_supervisor_id);
 
       $node.find('.title').text('');
-      $node.find('.content').text('');
+      $node.find('.employee_id').text('');
+      $node.find('.employee_name').text('');
       $node.find('.unit_code').text('');
       $node.find('.hire').text('');
       $node.find('.pay_lctn').text('');
@@ -304,7 +280,7 @@ function createUI(datasource) {
 
     $('#btn-add-employee').on('click', function() {
       // check if employee exists
-      getEmployeeAndSetFlag($('#get-employee-input').val());
+      getEmployeeAndSetFlag($('#get-employee-input').val().split(' ')[0].trim());
 
       if (!getEmployeeSuccess) {
         alert('Please search for a valid employee.');
@@ -330,48 +306,19 @@ function createUI(datasource) {
         return;
       }
 
-      $node.find('.title').text(nodeVals[0].title_cd);
-      $node.find('.content').text(nodeVals[0].employee_id);
+      $node.find('.title').text(nodeVals[0].title_cd.trim() + nodeVals[0].sub_title_cd.trim() + ' ' + nodeVals[0].titl_short_dd);
+      $node.find('.employee_id').text(nodeVals[0].employee_id.trim());
+      $node.find('.employee_name').text(nodeVals[0].first_name + nodeVals[0].last_name);
       $node.find('.unit_code').text(nodeVals[0].home_unit_cd);
-      $node.find('.hire').text(nodeVals[0].orig_hire_dt);
+      $node.find('.hire').text(FormatDate(nodeVals[0].orig_hire_dt));
       $node.find('.pay_lctn').text(nodeVals[0].pay_lctn_cd);
 
       // transaction for add employee
-      var employee_id = $node.find('.content').text().trim();
+      var employee_id = $node.find('.employee_id').text();
       var dest_pos_id = $node.find('.position_id').text().trim();
       var dest_supervisor_id = $node.closest('.nodes').siblings().eq(0).children().find('.position_id').text();
       addTransaction(employee_id, null, dest_pos_id, null, dest_supervisor_id);
       console.log("Add Employee TRANSACTION: " + employee_id + ", " + dest_pos_id + ", " + dest_supervisor_id);
-    });
-
-    $('#btn-create-position').on('click', function() {
-      verifyAndCreatePosition($('#get-new-position-id-input').val().trim(), $('#get-new-position-title-input').val().trim());
-
-      var $chartContainer = $('#chart-container');
-
-      // make nodeVals into an array so it doesn't break the code
-      var nodeVals = [];
-      nodeVals.push(createdPosition);
-
-      var $node = $('#selected-node').data('node');
-      if (!nodeVals.length) {
-        alert('Please input value for new position');
-        return;
-      }
-      
-      var hasChild = $node.parent().attr('colspan') > 0 ? true : false;
-      if (!hasChild) {
-        var rel = nodeVals.length > 1 ? '110' : '100';
-        oc.addChildren($node, nodeVals.map(function (item) {
-            // return { 'name': item, 'relationship': rel, 'id': getId() }; CHANGED
-            return { 'name': '', 'relationship': rel, 'id': getId(), 'title': '', 'unit_cd': '', 'hire': '', 'pay_lctn': '', 'position': item.position_id,'salary': item.salary_maximum_am,'sub_title_cd': item.sub_title_cd };
-          }));
-      } else {
-        oc.addSiblings($node.closest('tr').siblings('.nodes').find('.node:first'), nodeVals.map(function (item) {
-          // return { 'name': item, 'relationship': '110', 'id': getId() }; CHANGED
-          return { 'name': '', 'relationship': '110', 'id': getId(), 'title': '', 'unit_cd': '', 'hire': '', 'pay_lctn': '', 'position': item.position_id,'salary': item.salary_maximum_am,'sub_title_cd': item.sub_title_cd };
-        }));
-      }
     });
 
     // Search for an employee by employee ID
@@ -444,7 +391,7 @@ function createUI(datasource) {
 
     $('#get-employee-input').on('keyup', function(event) {
       if (event.which === 13) {
-        getEmployeeAndSetFlag(this.value);
+        getEmployeeAndSetFlag(this.value.split(' ')[0].trim());
       }
     });
 
@@ -560,3 +507,15 @@ function createUI(datasource) {
 
   };
 
+function FormatDate(datestring) {
+  if (datestring) {
+    var day = datestring.substring(0, 2);
+    var month = datestring.substring(2, 4);
+    var year = datestring.substring(4);
+    var date = day + '/' + month + '/' + year;
+    return date;
+  }
+  else {
+    return '';
+  }
+}

@@ -26,7 +26,7 @@ if ($conn===false){
 }
 
 // only select vacant positions (positions not in EMPLOYEE_POSITION)
-$stmt_position = "SELECT p.POSN_ID, p.HOME_UNIT_CD, p.SALARY_MAXIMUM_AM, p.SUB_TITLE_CD
+$stmt_position = "SELECT p.*
 FROM
 	dbo.POSITION p
 	LEFT JOIN EMPLOYEE_POSITION e
@@ -45,12 +45,29 @@ if($stmt===false){
 	$myobject->position_id=$row["POSN_ID"];
 	$myobject->home_unit_cd=$row["HOME_UNIT_CD"];
 	$myobject->salary_maximum_am=$row["SALARY_MAXIMUM_AM"];
+	$myobject->title_cd=$row["TITLE_CD"];
 	$myobject->sub_title_cd=$row["SUB_TITLE_CD"];
+	$myobject->ordinance=$row["ORDINANCE"];
+	$myobject->budgeted_fte=$row["BUDGETED_FTE"];
+
+	// query to get the title name (TITL_SHORT_DD)
+	$param = $row["TITLE_CD"];
+	$sql_title = "SELECT *
+				FROM dbo.TITLE
+				WHERE TITLE_CD = $param";
+	if ($stmt_title = sqlsrv_query($conn, $sql_title)) {
+		$data = sqlsrv_fetch_array($stmt_title);
+	    $myobject->titl_short_dd = $data["TITL_SHORT_DD"];
+	} else {
+		echo "statment cannot be executed\n";
+		die(print_r(sqlsrv_errors(), true));
+	}
 
 	echo json_encode($myobject);
 }
 
-
+sqlsrv_free_stmt($stmt_title);
+sqlsrv_free_stmt($stmt);
 
 
 
