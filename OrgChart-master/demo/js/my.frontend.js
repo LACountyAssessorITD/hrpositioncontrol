@@ -5,8 +5,12 @@ function createUI(datasource) {
     };
 
     var nodeTemplate = function(data) {
+      var newline = (data.ordinance == 1 || data.budgeted_fte > 0) ? '<br>' : '';
+      var ordinance = (data.ordinance == 1) ? 'ORD ' : '';
+      var budgeted_fte = (data.budgeted_fte > 0) ? 'BGT' : '';
       return '<div class="position"><span class="position_id">' + data.position_id + '</span><br>' +
           '<span class="position_title">' + data.position_title + '</span>' +
+          newline + ordinance + budgeted_fte +
           '<div class="employee" draggable="true">' +
             '<div class="title">' + data.title + '</div>' +
             '<div class="content"><span class="employee_id">' + data.employee_id + '</span><br>' +
@@ -41,12 +45,9 @@ function createUI(datasource) {
             $(this).siblings('.second-menu').toggle();
           }
         });
-        var ordinance = (data.ordinance == 1) ? '<br>ORD' : '';
-        var budgeted_fte = (data.budgeted_fte > 0) ? '<br>BGT' : '';
+
         var secondMenu = '<div class="second-menu">' +
           'Salary: ' + data.salary +
-          ordinance +
-          budgeted_fte +
           '</div>';
         $node.append(secondMenuIcon).append(secondMenu);
       }
