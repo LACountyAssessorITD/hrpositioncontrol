@@ -19,5 +19,11 @@
 2. Can track UI changes and update transactions in the database.
 3. Can export UI as PDF.
 
+### Deliverable 5 (Mar 19): UI Updates
+1. Show employee title names and position title names.
+2. Widened view of org chart on display. Made node width dynamic. 
+3. Improved tooltip UI.
+3. Show ordinance and budgeted.
+
 ## How to View UI
    Open OrgChart-master/demo/lacounty.html
