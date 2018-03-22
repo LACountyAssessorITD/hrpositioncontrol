@@ -12,7 +12,7 @@
 .orgchart {
   box-sizing: border-box;
   display: inline-block;
-  min-height: 202px;
+  min-height: 800px;
   min-width: 202px;
   -webkit-touch-callout: none;
   -webkit-user-select: none;

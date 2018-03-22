@@ -488,13 +488,33 @@ function createUI(datasource) {
 
         // change listener for select head drop-down list
         $('#select-head').on('change', function() {
-          console.log('select list: ' + $('#select-head').val());
           updateOrgchart($('#select-head').val());
+          // setupPayLocationList($('#select-head').val());
         });
 
-        $('#btn-display-new-head').on('click', function() {
-          updateOrgchart($('#select-head').val());
-        });
+        // $('#btn-display-new-head').on('click', function() {
+        //   updateOrgchart($('#select-head').val());
+        // });
+    }
+
+    // show all the pay location under the head
+    function setupPayLocationList(selected_head_id) {
+      var paylocations = getPayLocation(selected_head_id);
+      if (!paylocations) {
+        alert ('list of pay locations is empty');
+        return;
+      }
+
+      var $dropdown = $('#select-pay-lctn');
+      for (var i = 0; i < paylocations.length; i++) {
+        var item = paylocations[i]['pay_lctn_cd'].toString().trim();
+        var option = '<option value="' + item + '">' + item + '</option>';
+        $dropdown.append(option);
+      }
+
+      $('#select-pay-lctn').on('change', function() {
+        // updateOrgchart($('#select-head').val());
+      });
     }
 
     // updates orgchart with new datasource
