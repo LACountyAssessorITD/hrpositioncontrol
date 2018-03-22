@@ -1,19 +1,18 @@
- #chart-container { background-color: #eee; height: 500px; }
     .orgchart { background: #fff; }
     .orgchart.edit-state .edge { display: none; }
     .orgchart .node .title .symbol { margin-top: 1px; }
     #department{
-      width: 400px;
-      float: left;
+
+      width: auto;
+      float: right;
     }
     #edit{
-      width: calc(100% - 400px);
+      width: auto;
       float: left;
     }
     #edit-panel {
       position: relative;
-      left: 10px;
-      width: calc(100% - 40px);
+      width: calc(100% - 20px);
       border-radius: 4px;
       float: left;
       margin-top: 10px;
