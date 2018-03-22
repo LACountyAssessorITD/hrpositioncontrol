@@ -32,6 +32,7 @@ function createUI(datasource) {
       'draggable': true,
       'parentNodeSymbol': 'fa-th-large',
       'chartClass': 'edit-state',
+      'verticalLevel': levelCount - 1,
 
       //only work in chrome
       'exportButton': true,

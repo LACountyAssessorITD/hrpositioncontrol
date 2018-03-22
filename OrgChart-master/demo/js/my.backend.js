@@ -58,7 +58,7 @@ function runindex3(position_data,employee_data) {
 }
 
 
-
+var levelCount = 0; // Number of levels in the org chart
 
 function get_data(position,employee, relation){
  var head_id=myData['employee_id'];
@@ -93,6 +93,7 @@ function get_data(position,employee, relation){
  var head_child=get_children(head_id, employee);
  for (var i=0;i<head_child.length; i++){
   var single_child=get_data_helper(head_child[i],position,employee, relation);
+  console.log("Backend: levels " + levelCount);
   head_employee.children.push(single_child);
 }
 return head_employee;
@@ -131,6 +132,7 @@ function get_data_helper(employee_id,position,employee, relation){
  if(current_child.length==0){
     return current_employee;
   }else{
+    levelCount++; // Update levels count
     current_employee.children=[]
     for (var i=0;i<current_child.length; i++){
       var single_current_child=get_data_helper(current_child[i],position,employee, relation);
