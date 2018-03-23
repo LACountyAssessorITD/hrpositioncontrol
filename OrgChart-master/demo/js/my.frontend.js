@@ -32,7 +32,7 @@ function createUI(datasource) {
       'draggable': true,
       'parentNodeSymbol': 'fa-th-large',
       'chartClass': 'edit-state',
-      'verticalLevel': levelCount - 1,
+      'verticalLevel': maxDepth + 1,
 
       //only work in chrome
       'exportButton': true,
@@ -100,6 +100,29 @@ function createUI(datasource) {
       document.getElementById("btn_fitv").disabled =false;
       document.getElementById("btn_fith").disabled =false;
     });
+
+    $('#rd-layout-drag-drop').on('click', function() {
+      updateLayout();
+    });
+
+    $('#rd-layout-print').on('click', function() {
+      updateLayout();
+    });
+
+    function updateLayout() {
+      var opts = oc.opts;
+      var nodeType = $('input[name="layout-type"]:checked');
+      if (nodeType.val() === 'print') {
+        opts.verticalLevel = maxDepth;
+        opts.draggable = false;
+      }
+      else {
+        opts.verticalLevel = maxDepth + 1;
+        opts.draggable = true;
+      }
+      console.log("updateOrgchart: max depth " + maxDepth);
+      oc.init(opts);
+    }
 
     // Shows whether employee or position desired is found in database
     var getEmployeeSuccess = false;
@@ -519,10 +542,21 @@ function createUI(datasource) {
 
     // updates orgchart with new datasource
     function updateOrgchart(selected_head_id){
+      maxDepth = 0; // Reset max depth of chart
       if (selected_head_id) {
         var updated_datasource = connectDatabase(selected_head_id);
         var opts = oc.opts;
         opts.data = updated_datasource;
+        var nodeType = $('input[name="layout-type"]:checked');
+        if (nodeType.val() === 'print') {
+          opts.verticalLevel = maxDepth;
+          opts.draggable = false;
+        }
+        else {
+          opts.verticalLevel = maxDepth + 1;
+          opts.draggable = true;
+        }
+        console.log("updateOrgchart: max depth " + maxDepth);
         oc.init(opts);
       }
     }

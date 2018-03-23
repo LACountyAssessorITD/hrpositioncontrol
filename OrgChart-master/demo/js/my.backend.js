@@ -1,3 +1,5 @@
+var maxDepth = 0; // Max number of levels in the org chart
+
 function connectDatabase(orgchart_head_id){
  var myData= {
   // 'employee_id': '415748'
@@ -57,9 +59,6 @@ function runindex3(position_data,employee_data) {
   });
 }
 
-
-var levelCount = 0; // Number of levels in the org chart
-
 function get_data(position,employee, relation){
  var head_id=myData['employee_id'];
 
@@ -88,18 +87,20 @@ function get_data(position,employee, relation){
   'salary':position_obj.salary_maximum_am,
   'ordinance': position_obj.ordinance,
   'budgeted_fte': position_obj.budgeted_fte,
-  'children':[]
+  'children':[],
+  'depth': 1
 };
  var head_child=get_children(head_id, employee);
  for (var i=0;i<head_child.length; i++){
-  var single_child=get_data_helper(head_child[i],position,employee, relation);
-  console.log("Backend: levels " + levelCount);
+  var single_child=get_data_helper(head_child[i],position,employee, relation, head_employee.depth + 1);
   head_employee.children.push(single_child);
 }
+  console.log("Backend: levels " + maxDepth);
+
 return head_employee;
 }
 
-function get_data_helper(employee_id,position,employee, relation){
+function get_data_helper(employee_id,position,employee, relation, depth){
 
  var employee_obj = get_employee_object(employee_id, employee);
  var position_current_id=get_position(employee_id, relation).trim();
@@ -126,16 +127,18 @@ function get_data_helper(employee_id,position,employee, relation){
     'salary':position_obj.salary_maximum_am,
     'ordinance': position_obj.ordinance,
     'budgeted_fte': position_obj.budgeted_fte,
+    'depth':depth
   };
 
  var current_child=get_children(employee_id, employee);
  if(current_child.length==0){
+    // leaf node
+    if (current_employee.depth > maxDepth) maxDepth = current_employee.depth;
     return current_employee;
   }else{
-    levelCount++; // Update levels count
     current_employee.children=[]
     for (var i=0;i<current_child.length; i++){
-      var single_current_child=get_data_helper(current_child[i],position,employee, relation);
+      var single_current_child=get_data_helper(current_child[i],position,employee, relation,  depth + 1);
       current_employee.children.push(single_current_child);
     }
     return current_employee;
