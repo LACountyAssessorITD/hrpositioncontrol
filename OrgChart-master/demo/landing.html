@@ -11,19 +11,45 @@
     <option value="">
       Select an version
     </option>
-    <option value="1">
-      Version 1
-    </option>
-    <option value="2">
-      Version 2
-    </option>
-    <option value="3">
-      Version 3
-    </option>
-    <option value="4">
-      Version 4
-    </option>
   </select>
 </label>
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript">
+  $(document).ready(function(){
+
+  var versions;
+  $.ajax({
+    url: "php/pick_version.php",
+    data: null,
+    type: 'POST',
+    dataType: "json",
+    success: function(output) {
+        alert ('getversion output:' + output);
+        versions = output;
+      },
+      error: function(xhr, status, error){
+        alert ('error: ' + error + '; status=' + status);
+      },
+      async:false
+    });
+
+    var dropdown = document.getElementById("selectVersion");
+    for (var i=0;i<versions.length; i++){
+      var time = versions[i]['time'].toString().trim();
+      var version_name = versions[i]['version_name'].toString().trim();
+      var owner = versions[i]['owner'].toString().trim();
+      var option = document.createElement("option");  
+      option.text =  time+ ' '+ version_name + ' '+ owner;
+      dropdown.append(option);
+    }
+
+    // change listener for select head drop-down list
+    $('#select-head').on('change', function() {
+      updateOrgchart(oc, $('#select-head').val());
+      // setupPayLocationList($('#select-head').val());
+    });
+  });
+</script>
+
 </body>
 </html>

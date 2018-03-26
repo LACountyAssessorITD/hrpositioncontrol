@@ -2,10 +2,10 @@
 .custom-select {
   position: relative;
   display: block;
-  max-width: 400px;
-  min-width: 180px;
+  max-width: 600px;
+  min-width: 220px;
   margin: 0 auto;
-  border: 1px solid #3C1C78;
+  border: 2px solid #3C1C78;
   background-color: #F5F5F5;
   z-index: 10;
 }
@@ -21,7 +21,7 @@
   display: block;
   width: 100%;
   padding: 12px 55px 15px 15px;
-  font-size: 14px;
+  font-size: 20px;
   color: #714BB9;
 }
 .custom-select:after {
@@ -30,7 +30,7 @@
   top: 0;
   width: 50px;
   height: 100%;
-  line-height: 42px;
+  line-height: 50px;
   content: "∨";
   text-align: center;
   color: #714BB9;
