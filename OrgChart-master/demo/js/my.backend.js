@@ -7,6 +7,7 @@ function connectDatabase(orgchart_head_id){
 };
 
 var datasource;
+var paycd_employee;
 
 $.ajax({
   url: "php/pick_position_data.php",
@@ -50,6 +51,11 @@ function runindex3(position_data,employee_data) {
    success: function(output) {
     console.log ('runindex3 success: output=' + output);
     datasource=get_data(position_data,employee_data,output);
+    paycd_employee=get_pay_location(employee_data);
+    for (var key in paycd_employee) {
+      console.log (key);
+      console.log (paycd_employee[key].length);
+    }
     },
     error: function(xhr, status, error){
       alert (error);
@@ -58,7 +64,23 @@ function runindex3(position_data,employee_data) {
     async:false
   });
 }
+function get_pay_location(employee){
+   var pay_employee={};
+   for (var i=0; i<employee.length;i++){
+      var current_pay=employee[i]['pay_location_code'].toString().trim();
+      
+      if(!(current_pay in pay_employee) ){
+          
+          pay_employee[current_pay]=[];
+          pay_employee[current_pay].push(employee[i]);
+      }else{
+          
+          pay_employee[current_pay].push(employee[i]);
+      }
 
+   }
+   return pay_employee;
+}
 function get_data(position,employee, relation){
  var head_id=myData['employee_id'];
 

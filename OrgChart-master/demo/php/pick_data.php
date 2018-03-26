@@ -55,6 +55,7 @@ if($stmt===false){
 		$myobject->sub_title_cd=$row["SUB_TITLE_CD"];
 		$myobject->first_name=$row["EMPL_FIRST_NM"];
 		$myobject->last_name=$row["EMPL_LAST_NM"];
+		$myobject->pay_location_code=$row["PAY_LCTN_CD"];
 
 		// query to get the title name (TITL_SHORT_DD)
 		$param = $row["TITLE_CD"];

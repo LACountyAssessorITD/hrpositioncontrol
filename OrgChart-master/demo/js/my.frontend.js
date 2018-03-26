@@ -1,3 +1,5 @@
+var oc = null;
+
 function createUI(datasource) {
 
     var getId = function() {
@@ -25,7 +27,7 @@ function createUI(datasource) {
         '</div>';
     };
 
-    var oc = $('#chart-container').orgchart({
+    oc = $('#chart-container').orgchart({
       'data' : datasource,
       'nodeContent': 'title',
       'nodeTemplate': nodeTemplate,
@@ -53,9 +55,6 @@ function createUI(datasource) {
         $node.append(secondMenuIcon).append(secondMenu);
       }
     });
-
-    // set up head list
-    setupHeadList();
 
     //console output for drag and drop
     oc.$chart.on('nodedrop.orgchart', function(event, extraParams) {
@@ -109,19 +108,16 @@ function createUI(datasource) {
       updateLayout();
     });
 
-    function updateLayout() {
-      var opts = oc.opts;
-      var nodeType = $('input[name="layout-type"]:checked');
-      if (nodeType.val() === 'print') {
-        opts.verticalLevel = maxDepth;
-        opts.draggable = false;
-      }
-      else {
-        opts.verticalLevel = maxDepth + 1;
-        opts.draggable = true;
-      }
-      console.log("updateOrgchart: max depth " + maxDepth);
-      oc.init(opts);
+    // store the changes. reset when save button is clicked and data sent to SQL.
+    var temp_position = null;
+    var temp_relation = null;
+    var temp_employee = null;
+    $('#btn-save').on('click', function() {
+      saveToDatabase();
+    });
+
+    function saveToDatabase() {
+      // TODO
     }
 
     // Shows whether employee or position desired is found in database
@@ -486,40 +482,6 @@ function createUI(datasource) {
       }
     });
 
-    // set up org head dropdown-list
-    function setupHeadList() {
-
-        var heads = getOrgHead();
-
-        if (!heads) {
-          alert ('list of org heads is empty');
-          return;
-        }
-
-        var $dropdown = $('#select-head');
-
-        for (var i=0;i<heads.length; i++){
-          // console.log(heads[i]['employee_id'] + ' first name:' + heads[i]['first_name'] + ' last name: ' + heads[i]['last_name']);
-          var employee_id = heads[i]['employee_id'].toString().trim();
-          var first_name = heads[i]['first_name'].toString().trim();
-          var last_name = heads[i]['last_name'].toString().trim();
-          var option = '<option value="' + employee_id + '">'
-          + heads[i]['employee_id'] + ' ' + first_name + ' ' + last_name
-          + '</option>';
-          $dropdown.append(option);
-        }
-
-        // change listener for select head drop-down list
-        $('#select-head').on('change', function() {
-          updateOrgchart($('#select-head').val());
-          // setupPayLocationList($('#select-head').val());
-        });
-
-        // $('#btn-display-new-head').on('click', function() {
-        //   updateOrgchart($('#select-head').val());
-        // });
-    }
-
     // show all the pay location under the head
     function setupPayLocationList(selected_head_id) {
       var paylocations = getPayLocation(selected_head_id);
@@ -540,28 +502,83 @@ function createUI(datasource) {
       });
     }
 
-    // updates orgchart with new datasource
-    function updateOrgchart(selected_head_id){
-      maxDepth = 0; // Reset max depth of chart
-      if (selected_head_id) {
-        var updated_datasource = connectDatabase(selected_head_id);
-        var opts = oc.opts;
-        opts.data = updated_datasource;
-        var nodeType = $('input[name="layout-type"]:checked');
-        if (nodeType.val() === 'print') {
-          opts.verticalLevel = maxDepth;
-          opts.draggable = false;
-        }
-        else {
-          opts.verticalLevel = maxDepth + 1;
-          opts.draggable = true;
-        }
-        console.log("updateOrgchart: max depth " + maxDepth);
-        oc.init(opts);
+    function updateLayout() {
+      var opts = oc.opts;
+      var nodeType = $('input[name="layout-type"]:checked');
+      if (nodeType.val() === 'print') {
+        opts.verticalLevel = maxDepth;
+        opts.draggable = false;
       }
+      else {
+        opts.verticalLevel = maxDepth + 1;
+        opts.draggable = true;
+      }
+      oc.init(opts);
     }
 
   };
+
+// set up org head dropdown-list
+function setupHeadList() {
+    var heads = getOrgHead();
+    if (!heads) {
+      alert ('list of org heads is empty');
+      return;
+    }
+
+    var $dropdown = $('#select-head');
+    for (var i=0;i<heads.length; i++){
+      // console.log(heads[i]['employee_id'] + ' first name:' + heads[i]['first_name'] + ' last name: ' + heads[i]['last_name']);
+      var employee_id = heads[i]['employee_id'].toString().trim();
+      var first_name = heads[i]['first_name'].toString().trim();
+      var last_name = heads[i]['last_name'].toString().trim();
+      var option = '<option value="' + employee_id + '">'
+      + heads[i]['employee_id'] + ' ' + first_name + ' ' + last_name
+      + '</option>';
+      $dropdown.append(option);
+    }
+
+    // change listener for select head drop-down list
+    $('#select-head').on('change', function() {
+      updateOrgchart(oc, $('#select-head').val());
+      // setupPayLocationList($('#select-head').val());
+    });
+
+    // $('#btn-display-new-head').on('click', function() {
+    //   updateOrgchart($('#select-head').val());
+    // });
+}
+
+// updates orgchart with new datasource
+function updateOrgchart(oc, selected_head_id){
+  if (!oc) { // first time loading orgchart
+    var datasource = connectDatabase(selected_head_id);
+    if (datasource) {
+      createUI(datasource);
+    }
+    else {
+      alert('Error connecting database');
+    }
+  }
+  else {
+    maxDepth = 0; // Reset max depth of chart
+    if (selected_head_id) {
+      var updated_datasource = connectDatabase(selected_head_id);
+      var opts = oc.opts;
+      opts.data = updated_datasource;
+      var nodeType = $('input[name="layout-type"]:checked');
+      if (nodeType.val() === 'print') {
+        opts.verticalLevel = maxDepth;
+        opts.draggable = false;
+      }
+      else {
+        opts.verticalLevel = maxDepth + 1;
+        opts.draggable = true;
+      }
+      oc.init(opts);
+    }
+  }
+}
 
 function FormatDate(datestring) {
   if (datestring) {
