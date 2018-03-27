@@ -94,18 +94,24 @@
     </div> <!-- edit -->
     <div id ="department">
       <div class="row" style="display: inline-block">
-          <label>Select Organization Head: </label><br/>
-          <select id="select-head" size="10">
-            <option value="" selected="selected">- Please select a head -</option>
-            
-            <!-- <option value="415748">415748</option> -->
-          </select>
+        <label>Select Organization Head: </label><br/>
+        <select id="select-head" size="10">
+          <option value="" selected="selected">- Please select a head -</option>
+          
+          <!-- <option value="415748">415748</option> -->
+        </select>
       </div>
       <div class="row" style="display: inline-block">
-          <label>Select Pay Location: </label><br/>
-          <select id="select-pay-lctn" size="10">
-            <option value="" selected="selected">- Please select a pay location -</option>
-          </select>
+        <label>Select Pay Location: </label><br/>
+        <select id="select-pay-lctn" size="10">
+          <option value="" selected="selected">- Please select a pay location -</option>
+        </select>
+      </div>
+      <div class="row">
+        <label>Selected Head: </label>
+        <label id="selected-org-head-label"><br>
+        <input type="text" id="edited-org-head-id-input"><br>
+        <button type="button" id="btn-update-org-head">Update Org Head</button>
       </div>
     </div> <!-- department -->
   </div> <!-- edit panel -->
