@@ -482,25 +482,6 @@ function createUI(datasource) {
       }
     });
 
-    // show all the pay location under the head
-    function setupPayLocationList(selected_head_id) {
-      var paylocations = getPayLocation(selected_head_id);
-      if (!paylocations) {
-        alert ('list of pay locations is empty');
-        return;
-      }
-
-      var $dropdown = $('#select-pay-lctn');
-      for (var i = 0; i < paylocations.length; i++) {
-        var item = paylocations[i]['pay_lctn_cd'].toString().trim();
-        var option = '<option value="' + item + '">' + item + '</option>';
-        $dropdown.append(option);
-      }
-
-      $('#select-pay-lctn').on('change', function() {
-        // updateOrgchart($('#select-head').val());
-      });
-    }
 
     function updateLayout() {
       var opts = oc.opts;
@@ -517,6 +498,29 @@ function createUI(datasource) {
     }
 
   };
+
+  function getPayLocation(selected_head_id) {
+  }
+
+    // show all the pay location under the head
+  function setupPayLocationList(selected_head_id) {
+      var datasource = connectDatabase(selected_head_id);
+      if (!paycd_employee) {
+        alert ('list of pay locations is empty');
+        return;
+      }
+
+      var $dropdown = $('#select-pay-lctn');
+      for (var key in paycd_employee) {
+        var item = key.toString().trim();
+        var option = '<option value="' + item + '">' + item + '</option>';
+        $dropdown.append(option);
+      }
+
+      $('#select-pay-lctn').on('change', function() {
+        updateOrgchart(oc, $('#select-head').val());
+      });
+  }
 
 // set up org head dropdown-list
 function setupHeadList() {
@@ -540,8 +544,9 @@ function setupHeadList() {
 
     // change listener for select head drop-down list
     $('#select-head').on('change', function() {
-      updateOrgchart(oc, $('#select-head').val());
-      // setupPayLocationList($('#select-head').val());
+      //updateOrgchart(oc, $('#select-head').val());
+       var e = document.getElementById("select-head");
+       setupPayLocationList(e.value);
     });
 
     // $('#btn-display-new-head').on('click', function() {

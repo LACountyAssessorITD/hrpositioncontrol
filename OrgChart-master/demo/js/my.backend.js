@@ -1,13 +1,12 @@
 var maxDepth = 0; // Max number of levels in the org chart
-
+var paycd_employee; //
 function connectDatabase(orgchart_head_id){
  var myData= {
   // 'employee_id': '415748'
   'employee_id': orgchart_head_id
-};
+  };
 
 var datasource;
-var paycd_employee;
 
 $.ajax({
   url: "php/pick_position_data.php",

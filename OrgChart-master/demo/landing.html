@@ -5,7 +5,6 @@
 <link rel="stylesheet" href="css/landing.css">
 </head>
 <body>
-
 <label class="custom-select" for="selectVersion">
     <select id="selectVersion">
     <option value="">
@@ -40,13 +39,15 @@
       var owner = versions[i]['owner'].toString().trim();
       var option = document.createElement("option");  
       option.text =  time+ ' '+ version_name + ' '+ owner;
+      option.value = version_name;
       dropdown.append(option);
     }
 
     // change listener for select head drop-down list
-    $('#select-head').on('change', function() {
-      updateOrgchart(oc, $('#select-head').val());
-      // setupPayLocationList($('#select-head').val());
+    $('#selectVersion').on('change', function() {
+       var version = document.getElementById("selectVersion").value;
+       sessionStorage.setItem("sent", version); 
+       window.open("http://localhost/hrpositioncontrol/OrgChart-master/demo/lacounty.html","_blank");
     });
   });
 </script>
