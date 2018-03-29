@@ -604,6 +604,7 @@ function setupHeadList() {
       //updateOrgchart(oc, $('#select-head').val());
        var e = document.getElementById("select-head");
        setupPayLocationList(e.value);
+       alert("Please select a Pay Location.");
 
        // Update label for selected org head
       var selectedHead = $('#select-head').val().split(" ");
