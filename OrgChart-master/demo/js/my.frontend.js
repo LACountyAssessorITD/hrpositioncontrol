@@ -215,7 +215,7 @@ function createUI(datasource) {
         }));
       }
 
-      function MakeNodeToAdd(item, rel, depth) {
+      function MakeNodeToAdd(item, rel) {
         var position_title = item.title_cd.trim() + item.sub_title_cd.trim() + ' ' + item.titl_short_dd;
         item.position_id = item.position_id.trim();
         var nodeToAdd = {
