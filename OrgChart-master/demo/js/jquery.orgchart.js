@@ -377,7 +377,22 @@
     loopChart: function ($chart) {
       var that = this;
       var $tr = $chart.find('tr:first');
-      var subObj = { 'id': $tr.find('.node')[0].id };
+      var subObj = {
+        'id': $tr.find('.node')[0].id,
+        'employee_id': $tr.find('.node').first().find('.employee_id').text(),
+        'employee_name': $tr.find('.node').first().find('.employee_name').text(),
+        'relationship': '',
+        'title': $tr.find('.node').first().find('.title').text(),
+        'unit_cd': $tr.find('.node').first().find('.unit_code').text(),
+        'hire': $tr.find('.node').first().find('.hire').text(),
+        'pay_lctn': $tr.find('.node').first().find('.pay_lctn').text(),
+        'position_id': $tr.find('.node').first().find('.position_id').text(),
+        'position_title': $tr.find('.node').first().find('.position_title').text(),
+        'salary': '',
+        'ordinance': '',
+        'budgeted_fte': '',
+        'depth': ''
+      };
       $tr.siblings(':last').children().each(function() {
         if (!subObj.children) { subObj.children = []; }
         subObj.children.push(that.loopChart($(this)));

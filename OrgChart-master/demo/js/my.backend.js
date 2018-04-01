@@ -67,13 +67,13 @@ function get_pay_location(employee){
    var pay_employee={};
    for (var i=0; i<employee.length;i++){
       var current_pay=employee[i]['pay_location_code'].toString().trim();
-      
+
       if(!(current_pay in pay_employee) ){
-          
+
           pay_employee[current_pay]=[];
           pay_employee[current_pay].push(employee[i]);
       }else{
-          
+
           pay_employee[current_pay].push(employee[i]);
       }
 

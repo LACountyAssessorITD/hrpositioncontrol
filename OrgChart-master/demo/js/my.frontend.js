@@ -1,4 +1,5 @@
 var oc = null;
+var test = null;
 
 function createUI(datasource) {
 
@@ -109,16 +110,16 @@ function createUI(datasource) {
     });
 
     // store the changes. reset when save button is clicked and data sent to SQL.
-    var temp_position = null;
-    var temp_relation = null;
-    var temp_employee = null;
     $('#btn-save').on('click', function() {
-      saveToDatabase();
+      test = oc.getHierarchy();
+      console.log ('save: ' + JSON.stringify(test));
     });
 
-    function saveToDatabase() {
-      // TODO
-    }
+    $('#btn-open').on('click', function() {
+      var opts = oc.opts;
+      opts.data = test;
+      oc.init(opts);
+    });
 
     // Shows whether employee or position desired is found in database
     var getEmployeeSuccess = false;
@@ -214,7 +215,7 @@ function createUI(datasource) {
         }));
       }
 
-      function MakeNodeToAdd(item, rel) {
+      function MakeNodeToAdd(item, rel, depth) {
         var position_title = item.title_cd.trim() + item.sub_title_cd.trim() + ' ' + item.titl_short_dd;
         item.position_id = item.position_id.trim();
         var nodeToAdd = {
@@ -231,6 +232,7 @@ function createUI(datasource) {
           'salary': item.salary_maximum_am,
           'ordinance': item.ordinance,
           'budgeted_fte': item.budgeted_fte,
+          'depth': ''
         };
         return nodeToAdd;
       }
@@ -508,7 +510,7 @@ function createUI(datasource) {
       setupHeadList();
     }
 
-    $('#btn-update-org-head').on('click', function() {      
+    $('#btn-update-org-head').on('click', function() {
       var selectedHead = $('#select-head').val().trim().split(" ");
       verifyAndReplaceOrgHead(selectedHead[0], this.value);
     });
