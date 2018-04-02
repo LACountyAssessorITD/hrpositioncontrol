@@ -187,6 +187,11 @@
   background-color: rgba(238, 217, 54, 0.5);
 }
 
+/*Highlights the background of the node*/
+.orgchart .node.highlight {
+  background-color: rgba(300, 100, 100, 0.5);
+}
+
 .orgchart .ghost-node {
   position: fixed;
   left: -10000px;

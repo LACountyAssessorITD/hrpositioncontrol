@@ -305,12 +305,12 @@ function createUI(datasource) {
       $node.find('.pay_lctn').text('');
     });
 
-    $('#btn-reset').on('click', function() {
-      $('.orgchart').find('.focused').removeClass('focused');
-      $('#selected-node').val('');
-      $('#new-nodelist').find('input:first').val('').parent().siblings().remove();
-      $('#node-type-panel').find('input').prop('checked', false);
-    });
+    // $('#btn-reset').on('click', function() {
+    //   $('.orgchart').find('.focused').removeClass('focused');
+    //   $('#selected-node').val('');
+    //   $('#new-nodelist').find('input:first').val('').parent().siblings().remove();
+    //   $('#node-type-panel').find('input').prop('checked', false);
+    // });
 
     $('#btn-add-employee').on('click', function() {
       // check if employee exists
@@ -565,9 +565,30 @@ function setupPayLocationList(selected_head_id) {
       $dropdown.append(option);
     }
 
-    $('#select-pay-lctn').on('change', function() {
-      updateOrgchart(oc, $('#select-head').val());
-    });
+      $('#select-pay-lctn').on('change', function() {
+        updateOrgchart(oc, $('#select-head').val());
+        console.log("Selected Pay Location: '" + $('#select-pay-lctn').val() + "'");
+        highlightNodesWithPayLocation($('#select-pay-lctn').val());
+      });
+  }
+
+function highlightNodesWithPayLocation(pay_location) {
+  if(!pay_location.length) {
+    window.alert('Please select a pay location.');
+    return;
+  }
+
+  // Remove highlight from previously highlighted nodes
+  var $chart = $('.orgchart');
+  $chart.find('.node.highlight').removeClass('highlight');
+
+  // distinguish the matched nodes and the unmatched nodes according to the given key word
+  $chart.find('.node').filter(function(index, node) {
+    var location = $(node).find('.pay_lctn').text();
+    // return $(node).text().toLowerCase().indexOf(keyWord) > -1;
+    return location.toLowerCase().indexOf(pay_location) > -1;
+  }).addClass('highlight')
+  .closest('table').parents('table').find('tr:first').find('.node').addClass('retained');
 }
 
 // set up org head dropdown-list
