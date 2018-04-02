@@ -23,6 +23,7 @@ function createUI(datasource) {
              'Home Unit Code:  <span class="unit_code">' + data.unit_cd + '</span> <br>' +
               'Hire Date: <span class="hire">' +  FormatDate(data.hire) + '</span> <br>' +
               'Pay Location: <span class="pay_lctn">' + data.pay_lctn + '</span> <br>' +
+              '<span class="depth" style="display:none">' + data.depth + '</span><br>' +
             '</div>' +
           '</div>' +
         '</div>';

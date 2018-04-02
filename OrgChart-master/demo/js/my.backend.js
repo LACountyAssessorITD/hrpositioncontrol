@@ -331,7 +331,7 @@ function saveAsNewVersion(json_string) {
     type: 'POST',
     dataType: 'text',
     success: function(output) {
-      console.log ('output=' + output);
+      alert ('Saved as version #' + JSON.parse(output).version_id + '.');
     },
     error: function(xhr, status, error){
       alert ('error=' + error + '; status=' + status);
@@ -389,20 +389,20 @@ function addTransaction(employee_id, src_pos_id, dest_pos_id, src_supervisor_id,
      if (myData.dest_supervisor_id) {
       myData.dest_supervisor_id = myData.dest_supervisor_id.split(' ')[0];
     }
-  console.log('addTransaction('+myData.employee_id+','+src_pos_id+','+dest_pos_id+','+myData.src_supervisor_id+','+myData.dest_supervisor_id+')');
+  // console.log('addTransaction('+myData.employee_id+','+src_pos_id+','+dest_pos_id+','+myData.src_supervisor_id+','+myData.dest_supervisor_id+')');
 
-    $.ajax({
-    url: "php/insert_transaction.php",
-    data: myData,
-    type: 'POST',
-    dataType: "text",
-    success: function(output) {
-         console.log ('gettransaction output:' + output);
+  //   $.ajax({
+  //   url: "php/insert_transaction.php",
+  //   data: myData,
+  //   type: 'POST',
+  //   dataType: "text",
+  //   success: function(output) {
+  //        console.log ('gettransaction output:' + output);
 
-      },
-      error: function(xhr, status, error){
-        alert ('error: error=' + error + '; status=' + status);
-      },
-      async:false
-    });
+  //     },
+  //     error: function(xhr, status, error){
+  //       alert ('error: error=' + error + '; status=' + status);
+  //     },
+  //     async:false
+  //   });
 }

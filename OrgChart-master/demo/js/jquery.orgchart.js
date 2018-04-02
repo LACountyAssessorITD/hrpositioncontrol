@@ -1060,9 +1060,16 @@
       if (dropEvent.isDefaultPrevented()) {
         return;
       }
-      console.log("dropHandler| dragging " + $dragged.find('.content').text() + ": from supervisor "
-        + $dragZone.find('.content').text()
-        + " -> supervisor " + $dropZone.find('.content').text() );
+      console.log("dropHandler| dragging " + $dragged.find('.employee_name').text() + ": from supervisor "
+        + $dragZone.find('.employee_name').text()
+        + " -> supervisor " + $dropZone.find('.employee_name').text() );
+
+      // update maxDepth
+      var supervisor_depth = $dragZone.find('.depth').text();
+      $dragged.find('.depth').text(supervisor_depth + 1);
+      if (supervisor_depth + 1 > maxDepth) {
+        maxDepth = supervisor_depth + 1;
+      }
 
       // ADDED: shows red for changes
       if ($dragged.attr('class') === 'employee')
