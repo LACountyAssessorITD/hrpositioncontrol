@@ -6,8 +6,9 @@ Replace data_source_name with the name of your data source.
 Replace database_username and database_password
 with the SQL Server database username and password.
 */
+$version_id=$_POST["version_id"];
 
-
+// echo "$time";
 
 
 $Servername='Assessor';
@@ -27,35 +28,20 @@ if ($conn===false){
 
 }
 
+$sql = "SELECT CONTENT FROM dbo.VERSION_TEST
+WHERE _ID = '$version_id'";
 
-// $stmt_version="(SELECT * FROM dbo.VERSION_INFO)";
-$stmt_version="(SELECT _ID FROM dbo.VERSION_TEST)";
-
-
-$stmt = sqlsrv_query( $conn, $stmt_version);
-if($stmt===false){
-   echo "sbsbssbsbbsbs";
-}else{
-
-
-	$result=array();
-	while($row = sqlsrv_fetch_array($stmt)) {
-		$myobject= new \stdClass();
-		// $myobject->time=$row["TIME_MODIFY"];
-		// $myobject->version_name=$row["VERSION_MODIFY"];
-		// $myobject->owner=$row["OWNER_MODIFY"];
-		$myobject->version_id = $row["_ID"];
-
-    	$result[] = $myobject;
-	}
-	echo json_encode($result);
-
+if ($stmt = sqlsrv_query( $conn, $sql)) {
+    // statement executed successfully
+    $data = sqlsrv_fetch_array($stmt);
+    $myobject= new \stdClass();
+    $myobject->content = $data["CONTENT"];
 }
-
-
-
-
-
-
+else {
+	echo "statment cannot be executed\n";
+	die(print_r(sqlsrv_errors(), true));
+}
+sqlsrv_free_stmt($stmt);
 sqlsrv_close($conn);
+echo json_encode($myobject);
 ?>

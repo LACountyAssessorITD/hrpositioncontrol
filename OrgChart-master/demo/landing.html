@@ -23,7 +23,7 @@
     type: 'POST',
     dataType: "json",
     success: function(output) {
-        alert ('getversion output:' + output);
+        console.log ('getversion output:' + output);
         versions = output;
       },
       error: function(xhr, status, error){
@@ -34,19 +34,22 @@
 
     var dropdown = document.getElementById("selectVersion");
     for (var i=0;i<versions.length; i++){
-      var time = versions[i]['time'].toString().trim();
-      var version_name = versions[i]['version_name'].toString().trim();
-      var owner = versions[i]['owner'].toString().trim();
-      var option = document.createElement("option");  
-      option.text =  time+ ' '+ version_name + ' '+ owner;
-      option.value = version_name;
+      // var time = versions[i]['time'].toString().trim();
+      // var version_name = versions[i]['version_name'].toString().trim();
+      // var owner = versions[i]['owner'].toString().trim();
+      var version_id = versions[i]['version_id'];
+      var option = document.createElement("option");
+      // option.text =  time+ ' '+ version_name + ' '+ owner;
+      // option.value = version_name;
+      option.text = 'version #' + version_id;
+      option.value = version_id;
       dropdown.append(option);
     }
 
     // change listener for select head drop-down list
     $('#selectVersion').on('change', function() {
-       var version = document.getElementById("selectVersion").value;
-       sessionStorage.setItem("sent", version); 
+       var version_id = document.getElementById("selectVersion").value;
+       sessionStorage.setItem("sent", version_id);
        window.open("http://localhost/hrpositioncontrol/OrgChart-master/demo/lacounty.html","_blank");
     });
   });

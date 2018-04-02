@@ -321,6 +321,46 @@ function replaceOrgHead(oldOrgHead, newOrgHead) {
   // TODO
 }
 
+function saveAsNewVersion(json_string) {
+  var myData = {
+    'content': json_string
+  };
+  $.ajax({
+    url: "php/save_as_version_test.php",
+    data: myData,
+    type: 'POST',
+    dataType: 'text',
+    success: function(output) {
+      console.log ('output=' + output);
+    },
+    error: function(xhr, status, error){
+      alert ('error=' + error + '; status=' + status);
+    },
+    async: false
+  });
+}
+
+function getVersion(version_id) {
+  var myData = {
+    'version_id': version_id
+  };
+  var obj;
+  $.ajax({
+    url: "php/open_version_test.php",
+    data: myData,
+    type: 'POST',
+    dataType: 'json',
+    success: function(output) {
+      obj = output;
+    },
+    error: function(xhr, status, error){
+      alert ('error=' + error + '; status=' + status);
+    },
+    async: false
+  });
+  return obj;
+}
+
 function addTransaction(employee_id, src_pos_id, dest_pos_id, src_supervisor_id, dest_supervisor_id) {
      var currentdate = new Date();
      var datetime =currentdate.getDate() + "/"

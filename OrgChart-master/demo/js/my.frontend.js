@@ -115,6 +115,13 @@ function createUI(datasource) {
       console.log ('save: ' + JSON.stringify(test));
     });
 
+    $('#btn-save-as').on('click', function() {
+      test = oc.getHierarchy();
+      test.maxDepth = maxDepth;
+      var json_string = JSON.stringify(test);
+      saveAsNewVersion(json_string);
+    });
+
     $('#btn-open').on('click', function() {
       var opts = oc.opts;
       opts.data = test;
@@ -522,26 +529,6 @@ function createUI(datasource) {
       }
     });
 
-    // show all the pay location under the head
-    function setupPayLocationList(selected_head_id) {
-      var paylocations = getPayLocation(selected_head_id);
-      if (!paylocations) {
-        alert ('list of pay locations is empty');
-        return;
-      }
-
-      var $dropdown = $('#select-pay-lctn');
-      for (var i = 0; i < paylocations.length; i++) {
-        var item = paylocations[i]['pay_lctn_cd'].toString().trim();
-        var option = '<option value="' + item + '">' + item + '</option>';
-        $dropdown.append(option);
-      }
-
-      $('#select-pay-lctn').on('change', function() {
-        // updateOrgchart($('#select-head').val());
-      });
-    }
-
     function updateLayout() {
       var opts = oc.opts;
       var nodeType = $('input[name="layout-type"]:checked');
@@ -648,6 +635,13 @@ function updateOrgchart(oc, selected_head_id){
       oc.init(opts);
     }
   }
+}
+
+function openFromVersion(version_id) {
+  var obj = getVersion(version_id);
+  var version_datasource = JSON.parse(obj.content);
+  maxDepth = version_datasource.maxDepth;
+  createUI(version_datasource);
 }
 
 function FormatDate(datestring) {

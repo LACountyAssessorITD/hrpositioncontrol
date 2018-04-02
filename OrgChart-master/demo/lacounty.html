@@ -20,6 +20,7 @@
 <input type="radio" name="layout-type" id="rd-layout-drag-drop" value="drag-drop" checked="checked">Drag/Drop Layout</input>
 <input type="radio" name="layout-type" id="rd-layout-print" value="print">Print Layout</input>
 <button id="btn-save">Save</button>
+<button id="btn-save-as">Save As</button>
 <button id="btn-open">Open</button>
 
   <div id="chart-container"></div>
@@ -129,9 +130,14 @@
   // run when the page is loaded
   $(document).ready(function(){
     // set up org head list
-    var version = sessionStorage.getItem("sent");
+    var version_id = sessionStorage.getItem("sent");
+    if (version_id) {
+      // setupHeadList();
+      openFromVersion(version_id);
+      // sessionStorage.removeItem("sent");
+    }
     setupHeadList();
-    alert("To start, please select a organization head.");
+    alert("To open from extract, please select a organization head.");
   });
 </script>
 

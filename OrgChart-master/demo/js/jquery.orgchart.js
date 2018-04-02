@@ -393,6 +393,10 @@
         'budgeted_fte': '',
         'depth': ''
       };
+      // need to escape single quotes otherwise breaks SQL query.
+      subObj.title = escapeSingleQuotes(subObj.title);
+      subObj.position_title = escapeSingleQuotes(subObj.position_title);
+
       $tr.siblings(':last').children().each(function() {
         if (!subObj.children) { subObj.children = []; }
         subObj.children.push(that.loopChart($(this)));
@@ -1642,3 +1646,17 @@
   };
 
 }));
+
+// helper function
+function escapeSingleQuotes(str) {
+  var done = '';
+  var rest = str;
+  var index = str.indexOf('\'');
+  while (index !== -1) {
+      done += rest.substring(0, index + 1) + '\'';
+      rest = rest.substring(index + 1);
+      index = rest.indexOf('\'');
+    }
+  done += rest;
+  return done;
+}
