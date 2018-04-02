@@ -7,6 +7,10 @@ Replace database_username and database_password
 with the SQL Server database username and password.
 */
 $content=$_POST["content"];
+$user=$_POST["user"];
+$user_version_name=$_POST["user_version_name"];
+$time=$_POST["time"];
+
 
 // echo "$time";
 
@@ -28,15 +32,15 @@ if ($conn===false){
 
 }
 
-$sql = "INSERT INTO dbo.VERSION_TEST
-OUTPUT (INSERTED._ID)
-VALUES ('$content')";
+$sql = "INSERT INTO dbo.VERSION_TABLE ( USER_VERSION_NAME,TIME_MODIFIED,USER_CREATED,CONTENT)
+OUTPUT (INSERTED.VERSION_ID)
+VALUES ('$user_version_name','$time','$user','$content')";
 
 if ($stmt = sqlsrv_query( $conn, $sql)) {
     // statement executed successfully
     $myobject= new \stdClass();
     $row = sqlsrv_fetch_array($stmt);
-    $myobject->version_id = $row["_ID"];
+    $myobject->version_id = $row["VERSION_ID"];
     echo json_encode($myobject);
 }
 else {

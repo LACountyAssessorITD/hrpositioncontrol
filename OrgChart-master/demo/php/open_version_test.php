@@ -28,8 +28,8 @@ if ($conn===false){
 
 }
 
-$sql = "SELECT CONTENT FROM dbo.VERSION_TEST
-WHERE _ID = '$version_id'";
+$sql = "SELECT CONTENT FROM dbo.VERSION_TABLE
+WHERE VERSION_ID = '$version_id'";
 
 if ($stmt = sqlsrv_query( $conn, $sql)) {
     // statement executed successfully

@@ -1,12 +1,18 @@
 var maxDepth = 0; // Max number of levels in the org chart
 var paycd_employee; //
+var datasource;
+var old_head;
+var old_datasource;
+var datasource;
+
 function connectDatabase(orgchart_head_id){
  var myData= {
   // 'employee_id': '415748'
   'employee_id': orgchart_head_id
   };
+old_head=orgchart_head_id
 
-var datasource;
+
 
 $.ajax({
   url: "php/pick_position_data.php",
@@ -50,6 +56,7 @@ function runindex3(position_data,employee_data) {
    success: function(output) {
     console.log ('runindex3 success: output=' + output);
     datasource=get_data(position_data,employee_data,output);
+    old_datasource=datasource;
     paycd_employee=get_pay_location(employee_data);
     for (var key in paycd_employee) {
       console.log (key);
@@ -322,15 +329,26 @@ function replaceOrgHead(oldOrgHead, newOrgHead) {
 }
 
 function saveAsNewVersion(json_string) {
+  var datetime =currentdate.getDate() + "/"
+                + (currentdate.getMonth()+1)  + "/"
+                + currentdate.getFullYear() + " @ "
+                + currentdate.getHours() + ":"
+                + currentdate.getMinutes() + ":"
+                + currentdate.getSeconds();
   var myData = {
-    'content': json_string
+    'content': json_string,
+    'user' : '415748',
+    'user_version_name' : "Version_Test",
+    'time' : datetime
   };
+  var current_version_id;
   $.ajax({
     url: "php/save_as_version_test.php",
     data: myData,
     type: 'POST',
     dataType: 'text',
     success: function(output) {
+      current_version_id = JSON.parse(output).version_id;
       alert ('Saved as version #' + JSON.parse(output).version_id + '.');
     },
     error: function(xhr, status, error){
@@ -338,6 +356,7 @@ function saveAsNewVersion(json_string) {
     },
     async: false
   });
+  return current_version_id;
 }
 
 function getVersion(version_id) {
@@ -405,4 +424,9 @@ function addTransaction(employee_id, src_pos_id, dest_pos_id, src_supervisor_id,
   //     },
   //     async:false
   //   });
+}
+
+function updateOrgheadTable() {
+
+
 }

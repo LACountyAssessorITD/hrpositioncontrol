@@ -1,5 +1,6 @@
 var oc = null;
-var test = null;
+var last_saved_datasource;
+var current_version_id;
 
 function createUI(datasource) {
 
@@ -112,21 +113,23 @@ function createUI(datasource) {
 
     // store the changes. reset when save button is clicked and data sent to SQL.
     $('#btn-save').on('click', function() {
-      test = oc.getHierarchy();
-      console.log ('save: ' + JSON.stringify(test));
+      last_saved_datasource = oc.getHierarchy();
+      console.log ('save: ' + JSON.stringify(last_saved_datasource));
     });
 
     $('#btn-save-as').on('click', function() {
-      test = oc.getHierarchy();
-      test.maxDepth = maxDepth;
-      var json_string = JSON.stringify(test);
-      saveAsNewVersion(json_string);
+      last_saved_datasource = oc.getHierarchy();
+      last_saved_datasource.maxDepth = maxDepth;
+      var json_string = JSON.stringify(last_saved_datasource);
+      current_version_id = saveAsNewVersion(json_string);
     });
 
     $('#btn-open').on('click', function() {
-      var opts = oc.opts;
-      opts.data = test;
-      oc.init(opts);
+      if (last_saved_datasource) {
+        var opts = oc.opts;
+        opts.data = last_saved_datasource;
+        oc.init(opts);
+      }
     });
 
     // Shows whether employee or position desired is found in database
@@ -382,7 +385,7 @@ function createUI(datasource) {
           }
         });
       }
-    };
+    }
 
     function clearSearchResult() {
       $('.orgchart').removeClass('noncollapsable')
@@ -544,30 +547,28 @@ function createUI(datasource) {
       oc.init(opts);
     }
 
-  };
+}; // end of create UI
 
-  function getPayLocation(selected_head_id) {
-  }
+/* Global Functions */
+// show all the pay location under the head
+function setupPayLocationList(selected_head_id) {
+    var datasource = connectDatabase(selected_head_id);
+    if (!paycd_employee) {
+      alert ('list of pay locations is empty');
+      return;
+    }
 
-    // show all the pay location under the head
-  function setupPayLocationList(selected_head_id) {
-      var datasource = connectDatabase(selected_head_id);
-      if (!paycd_employee) {
-        alert ('list of pay locations is empty');
-        return;
-      }
+    var $dropdown = $('#select-pay-lctn');
+    for (var key in paycd_employee) {
+      var item = key.toString().trim();
+      var option = '<option value="' + item + '">' + item + '</option>';
+      $dropdown.append(option);
+    }
 
-      var $dropdown = $('#select-pay-lctn');
-      for (var key in paycd_employee) {
-        var item = key.toString().trim();
-        var option = '<option value="' + item + '">' + item + '</option>';
-        $dropdown.append(option);
-      }
-
-      $('#select-pay-lctn').on('change', function() {
-        updateOrgchart(oc, $('#select-head').val());
-      });
-  }
+    $('#select-pay-lctn').on('change', function() {
+      updateOrgchart(oc, $('#select-head').val());
+    });
+}
 
 // set up org head dropdown-list
 function setupHeadList() {
