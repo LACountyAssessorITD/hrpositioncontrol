@@ -6,10 +6,9 @@ Replace data_source_name with the name of your data source.
 Replace database_username and database_password
 with the SQL Server database username and password.
 */
-$content=$_POST["content"];
-$user=$_POST["user"];
+
 $version_id=$_POST["version_id"];
-$time=$_POST["time"];
+
 
 
 // echo "$time";
@@ -32,8 +31,7 @@ if ($conn===false){
 
 }
 
-$sql = "UPDATE dbo.VERSION_TABLE
-SET CONTENT = '$content', TIME_MODIFIED = '$time'
+$sql = "DELETE FROM  dbo.VERSION_TABLE
 WHERE VERSION_ID = '$version_id'";
 
 
