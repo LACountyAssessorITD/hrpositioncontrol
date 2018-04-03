@@ -530,32 +530,9 @@ function createUI(datasource) {
 }; // end of create UI
 
 /* Global Functions */
-// show all the pay location under the head
-function setupPayLocationList(selected_head_id) {
-    var datasource = connectDatabase(selected_head_id);
-    if (!paycd_employee) {
-      alert ('list of pay locations is empty');
-      return;
-    }
-
-    var $dropdown = $('#select-pay-lctn');
-    $dropdown.empty();
-    for (var key in paycd_employee) {
-      var item = key.toString().trim();
-      var option = '<option value="' + item + '">' + item + '</option>';
-      $dropdown.append(option);
-    }
-
-      $('#select-pay-lctn').on('change', function() {
-        updateOrgchart(oc, $('#select-head').val());
-        // console.log("Selected Pay Location: '" + $('#select-pay-lctn').val() + "'");
-        highlightNodesWithPayLocation($('#select-pay-lctn').val());
-      });
-  }
-
 function highlightNodesWithPayLocation(pay_location) {
   if(!pay_location.length) {
-    window.alert('Please select a pay location.');
+    $chart.find('.node.highlight').removeClass('highlight');
     return;
   }
 
@@ -564,12 +541,13 @@ function highlightNodesWithPayLocation(pay_location) {
   $chart.find('.node.highlight').removeClass('highlight');
 
   // distinguish the matched nodes and the unmatched nodes according to the given key word
-  $chart.find('.node').filter(function(index, node) {
-    var location = $(node).find('.pay_lctn').text();
+  $chart.find('.node').filter(function(index) {
+    return $(this).find('.pay_lctn').text().trim() == pay_location;
+    // var location = $(node).find('.pay_lctn').text();
     // return $(node).text().toLowerCase().indexOf(keyWord) > -1;
-    return location.toLowerCase().indexOf(pay_location) > -1;
-  }).addClass('highlight')
-  .closest('table').parents('table').find('tr:first').find('.node').addClass('retained');
+    // return location.toLowerCase().indexOf(pay_location) > -1;
+  }).addClass('highlight');
+  // .closest('table').parents('table').find('tr:first').find('.node').addClass('retained');
 }
 
 // set up org head dropdown-list
@@ -594,10 +572,9 @@ function setupHeadList() {
 
     // change listener for select head drop-down list
     $('#select-head').on('change', function() {
-      //updateOrgchart(oc, $('#select-head').val());
-       var e = document.getElementById("select-head");
-       setupPayLocationList(e.value);
-       alert("Please select a Pay Location.");
+      updateOrgchart(oc, $('#select-head').val());
+      setupPayLocationList($('#select-head').val());
+       // alert("Please select a Pay Location.");
 
        // Update label for selected org head
       var selectedHead = $('#select-head').val().split(" ");
@@ -608,6 +585,29 @@ function setupHeadList() {
     // $('#btn-display-new-head').on('click', function() {
     //   updateOrgchart($('#select-head').val());
     // });
+}
+
+// show all the pay location under the head
+function setupPayLocationList(selected_head_id) {
+  // var datasource = connectDatabase(selected_head_id);
+  if (!paycd_employee) {
+    alert ('list of pay locations is empty');
+    return;
+  }
+
+  var $dropdown = $('#select-pay-lctn');
+  $dropdown.empty();
+  for (var key in paycd_employee) {
+    var item = key.toString().trim();
+    var option = '<option value="' + item + '">' + item + '</option>';
+    $dropdown.append(option);
+  }
+
+    $('#select-pay-lctn').on('change', function() {
+      // updateOrgchart(oc, $('#select-head').val());
+      // console.log("Selected Pay Location: '" + $('#select-pay-lctn').val() + "'");
+      highlightNodesWithPayLocation($('#select-pay-lctn').val());
+    });
 }
 
 // updates orgchart with new datasource

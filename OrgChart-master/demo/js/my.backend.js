@@ -1,9 +1,7 @@
 var maxDepth = 0; // Max number of levels in the org chart
 var paycd_employee; //pay location list from one head
-var datasource;
 var old_head;
 var old_datasource;
-var datasource;
 
 function connectDatabase(orgchart_head_id){
  var myData= {
