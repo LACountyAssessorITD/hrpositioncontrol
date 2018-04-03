@@ -67,6 +67,8 @@
 
     $('#btn-delete').on('click', function() {
       var version_id = document.getElementById("selectVersion").value;
+      var x = document.getElementById("selectVersion");
+      x.remove(x.selectedIndex);
       var myData = {
         'version_id': version_id
       };
