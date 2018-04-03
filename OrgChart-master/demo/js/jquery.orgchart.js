@@ -389,8 +389,8 @@
         'position_id': $tr.find('.node').first().find('.position_id').text(),
         'position_title': $tr.find('.node').first().find('.position_title').text(),
         'salary': '',
-        'ordinance': '',
-        'budgeted_fte': '',
+        'ordinance': $tr.find('.node').first().find('.ordinance').text(),
+        'budgeted_fte': $tr.find('.node').first().find('.budgeted_fte').text(),
         'depth': ''
       };
       // need to escape single quotes otherwise breaks SQL query.

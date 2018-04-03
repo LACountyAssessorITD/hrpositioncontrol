@@ -37,14 +37,14 @@
 
     var dropdown = document.getElementById("selectVersion");
     for (var i=0;i<versions.length; i++){
-      // var time = versions[i]['time'].toString().trim();
-      // var version_name = versions[i]['version_name'].toString().trim();
-      // var owner = versions[i]['owner'].toString().trim();
+      var time = versions[i]['time'].toString().trim();
+      var version_name = versions[i]['version_name'].toString().trim();
+      var owner = versions[i]['user'].toString().trim();
       var version_id = versions[i]['version_id'];
       var option = document.createElement("option");
       // option.text =  time+ ' '+ version_name + ' '+ owner;
       // option.value = version_name;
-      option.text = 'version #' + version_id;
+      option.text = 'Version #' + version_id + ' last modified on ' + time;
       option.value = version_id;
       dropdown.append(option);
     }
@@ -57,6 +57,9 @@
     // });
 
     $('#btn-extrac').on('click', function() {
+      if (sessionStorage.getItem("sent")) {
+        sessionStorage.removeItem("sent");
+      }
       window.open("http://localhost/hrpositioncontrol/OrgChart-master/demo/lacounty.html","_blank");
     });
     $('#btn-open').on('click', function() {
@@ -66,25 +69,28 @@
     });
 
     $('#btn-delete').on('click', function() {
-      var version_id = document.getElementById("selectVersion").value;
-      var x = document.getElementById("selectVersion");
-      x.remove(x.selectedIndex);
-      var myData = {
-        'version_id': version_id
-      };
-      $.ajax({
-        url: "php/delete_version.php",
-        data: myData,
-        type: 'POST',
-        dataType: "text",
-        success: function(output) {
+      var result = confirm("Are you sure you want to delete?");
+      if (result == true) {
+        var version_id = document.getElementById("selectVersion").value;
+        var x = document.getElementById("selectVersion");
+        x.remove(x.selectedIndex);
+        var myData = {
+          'version_id': version_id
+        };
+        $.ajax({
+          url: "php/delete_version.php",
+          data: myData,
+          type: 'POST',
+          dataType: "text",
+          success: function(output) {
 
-          },
-          error: function(xhr, status, error){
-            alert ('error: ' + error + '; status=' + status);
-          },
-          async:false
-        });
+            },
+            error: function(xhr, status, error){
+              alert ('error: ' + error + '; status=' + status);
+            },
+            async:false
+          });
+      }
     });
 
   });

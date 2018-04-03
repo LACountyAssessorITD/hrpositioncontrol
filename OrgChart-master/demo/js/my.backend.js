@@ -339,7 +339,7 @@ function saveAsNewVersion(json_string) {
   var myData = {
     'content': json_string,
     'user' : '415748',
-    'user_version_name' : "Version_Test",
+    'version_name' : "Version_Test",
     'time' : datetime
   };
   var current_version_id;
@@ -371,7 +371,6 @@ function saveVersion(json_string,version_id) {
                 + currentdate.getSeconds();
   var myData = {
     'content': json_string,
-    'user' : '415748',
     'time' : datetime,
     'version_id' : version_id
   };

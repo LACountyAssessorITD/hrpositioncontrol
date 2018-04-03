@@ -7,7 +7,6 @@ Replace database_username and database_password
 with the SQL Server database username and password.
 */
 $content=$_POST["content"];
-$user=$_POST["user"];
 $version_id=$_POST["version_id"];
 $time=$_POST["time"];
 

@@ -8,7 +8,7 @@ with the SQL Server database username and password.
 */
 $content=$_POST["content"];
 $user=$_POST["user"];
-$user_version_name=$_POST["user_version_name"];
+$version_name=$_POST["version_name"];
 $time=$_POST["time"];
 
 
@@ -32,9 +32,9 @@ if ($conn===false){
 
 }
 
-$sql = "INSERT INTO dbo.VERSION_TABLE ( USER_VERSION_NAME,TIME_MODIFIED,USER_CREATED,CONTENT)
+$sql = "INSERT INTO dbo.VERSION_TABLE ( VERSION_NAME,TIME_MODIFIED,USER_CREATED,CONTENT)
 OUTPUT (INSERTED.VERSION_ID)
-VALUES ('$user_version_name','$time','$user','$content')";
+VALUES ('$version_name','$time','$user','$content')";
 
 if ($stmt = sqlsrv_query( $conn, $sql)) {
     // statement executed successfully

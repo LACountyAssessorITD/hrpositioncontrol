@@ -29,7 +29,7 @@ if ($conn===false){
 
 
 // $stmt_version="(SELECT * FROM dbo.VERSION_INFO)";
-$stmt_version="(SELECT VERSION_ID FROM dbo.VERSION_TABLE)";
+$stmt_version="(SELECT * FROM dbo.VERSION_TABLE)";
 
 
 $stmt = sqlsrv_query( $conn, $stmt_version);
@@ -41,9 +41,9 @@ if($stmt===false){
 	$result=array();
 	while($row = sqlsrv_fetch_array($stmt)) {
 		$myobject= new \stdClass();
-		// $myobject->time=$row["TIME_MODIFY"];
-		// $myobject->version_name=$row["VERSION_MODIFY"];
-		// $myobject->owner=$row["OWNER_MODIFY"];
+		$myobject->time=$row["TIME_MODIFIED"];
+		$myobject->version_name=$row["VERSION_NAME"];
+		$myobject->user=$row["USER_CREATED"];
 		$myobject->version_id = $row["VERSION_ID"];
 
     	$result[] = $myobject;
