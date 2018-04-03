@@ -434,7 +434,7 @@ function createUI(datasource) {
         return;
       }
 
-      // check if position is filled      
+      // check if position is filled
       var position = getVacantPosition(positionId);
 
       if (position.position_id) {
@@ -527,20 +527,6 @@ function createUI(datasource) {
       }
     });
 
-    function updateLayout() {
-      var opts = oc.opts;
-      var nodeType = $('input[name="layout-type"]:checked');
-      if (nodeType.val() === 'print') {
-        opts.verticalLevel = maxDepth;
-        opts.draggable = false;
-      }
-      else {
-        opts.verticalLevel = maxDepth + 1;
-        opts.draggable = true;
-      }
-      oc.init(opts);
-    }
-
 }; // end of create UI
 
 /* Global Functions */
@@ -562,7 +548,7 @@ function setupPayLocationList(selected_head_id) {
 
       $('#select-pay-lctn').on('change', function() {
         updateOrgchart(oc, $('#select-head').val());
-        console.log("Selected Pay Location: '" + $('#select-pay-lctn').val() + "'");
+        // console.log("Selected Pay Location: '" + $('#select-pay-lctn').val() + "'");
         highlightNodesWithPayLocation($('#select-pay-lctn').val());
       });
   }
@@ -616,7 +602,7 @@ function setupHeadList() {
        // Update label for selected org head
       var selectedHead = $('#select-head').val().split(" ");
       $('#selected-org-head-label').val(selectedHead[0]);
-      console.log("Selected head id '" + selectedHead[0] + "'");
+      // console.log("Selected head id '" + selectedHead[0] + "'");
     });
 
     // $('#btn-display-new-head').on('click', function() {
@@ -641,18 +627,24 @@ function updateOrgchart(oc, selected_head_id){
       var updated_datasource = connectDatabase(selected_head_id);
       var opts = oc.opts;
       opts.data = updated_datasource;
-      var nodeType = $('input[name="layout-type"]:checked');
-      if (nodeType.val() === 'print') {
-        opts.verticalLevel = maxDepth;
-        opts.draggable = false;
-      }
-      else {
-        opts.verticalLevel = maxDepth + 1;
-        opts.draggable = true;
-      }
       oc.init(opts);
     }
   }
+  updateLayout();
+}
+
+function updateLayout() {
+  var opts = oc.opts;
+  var nodeType = $('input[name="layout-type"]:checked');
+  if (nodeType.val() === 'print') {
+    opts.verticalLevel = maxDepth;
+    opts.draggable = false;
+  }
+  else {
+    opts.verticalLevel = maxDepth + 10;
+    opts.draggable = true;
+  }
+  oc.init(opts);
 }
 
 function openFromVersion(version_id) {

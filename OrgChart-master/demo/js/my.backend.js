@@ -59,8 +59,8 @@ function runindex3(position_data,employee_data) {
     old_datasource=datasource;
     paycd_employee=get_pay_location(employee_data);
     for (var key in paycd_employee) {
-      console.log (key);
-      console.log (paycd_employee[key].length);
+      // console.log (key);
+      // console.log (paycd_employee[key].length);
     }
     },
     error: function(xhr, status, error){
@@ -123,7 +123,7 @@ function get_data(position,employee, relation){
   var single_child=get_data_helper(head_child[i],position,employee, relation, head_employee.depth + 1);
   head_employee.children.push(single_child);
 }
-  console.log("Backend: levels " + maxDepth);
+  // console.log("Backend: levels " + maxDepth);
 
 return head_employee;
 }
@@ -254,7 +254,7 @@ function getVacantPosition(position_id) {
   var position = null;
 
   $.ajax({
-    url: "php/pick_position_vacant.php",
+    url: "php/pick_single_position.php",
     data: myData,
     type: 'POST',
     dataType: "json",
@@ -347,10 +347,10 @@ function saveAsNewVersion(json_string) {
     url: "php/save_as_version_test.php",
     data: myData,
     type: 'POST',
-    dataType: 'text',
+    dataType: 'json',
     success: function(output) {
-      current_version_id = JSON.parse(output).version_id;
-      alert ('Saved as version #' + JSON.parse(output).version_id + '.');
+      current_version_id = output.version_id;
+      alert ('Saved as version #' + output.version_id + '.');
     },
     error: function(xhr, status, error){
       alert ('error=' + error + '; status=' + status);
