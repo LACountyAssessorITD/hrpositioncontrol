@@ -43,3 +43,14 @@ body {
   margin-top: 80px;
   background-color:#F5F5F5;
 }
+
+button {
+  position: relative;
+  left: 50%;
+  margin-top: 20px;
+  border: 2px solid #3C1C78;
+  background-color: #F5F5F5;
+  font-size: 20px;
+  color: #714BB9;
+  padding: 15px;
+}

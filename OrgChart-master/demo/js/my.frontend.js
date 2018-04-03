@@ -434,7 +434,7 @@ function createUI(datasource) {
         return;
       }
 
-      // check if position is filled
+      // check if position is filled      
       var position = getVacantPosition(positionId);
 
       if (position.position_id) {

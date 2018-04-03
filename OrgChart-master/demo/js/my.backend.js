@@ -1,5 +1,5 @@
 var maxDepth = 0; // Max number of levels in the org chart
-var paycd_employee; //
+var paycd_employee; //pay location list from one head
 var datasource;
 var old_head;
 var old_datasource;
@@ -262,7 +262,7 @@ function getVacantPosition(position_id) {
         position = output;
       },
       error: function(xhr, status, error){
-        alert ('error: error=' + error + '; status=' + status);
+        alert ('error: pick_position_vacant.php=' + error + '; status=' + status);
       },
       async:false
     });
@@ -287,7 +287,7 @@ function checkPositionExists(position_id) {
         position = output;
       },
       error: function(xhr, status, error){
-        alert ('error: error=' + error + '; status=' + status);
+        alert ('error: pick_single_position.php=' + error + '; status=' + status);
       },
       async:false
     });
@@ -329,8 +329,9 @@ function replaceOrgHead(oldOrgHead, newOrgHead) {
 }
 
 function saveAsNewVersion(json_string) {
-  var datetime =currentdate.getDate() + "/"
-                + (currentdate.getMonth()+1)  + "/"
+  var currentdate = new Date();
+  var datetime =(currentdate.getMonth()+1) + "/"
+                + (currentdate.getDate())  + "/"
                 + currentdate.getFullYear() + " @ "
                 + currentdate.getHours() + ":"
                 + currentdate.getMinutes() + ":"
@@ -358,6 +359,37 @@ function saveAsNewVersion(json_string) {
   });
   return current_version_id;
 }
+
+function saveVersion(json_string,version_id) {
+  alert("mlgb");
+  var currentdate = new Date();
+  var datetime =(currentdate.getMonth()+1) + "/"
+                + (currentdate.getDate())  + "/"
+                + currentdate.getFullYear() + " @ "
+                + currentdate.getHours() + ":"
+                + currentdate.getMinutes() + ":"
+                + currentdate.getSeconds();
+  var myData = {
+    'content': json_string,
+    'user' : '415748',
+    'time' : datetime,
+    'version_id' : version_id
+  };
+  $.ajax({
+    url: "php/save_version.php",
+    data: myData,
+    type: 'POST',
+    dataType: 'text',
+    success: function(output) {
+      alert (output);
+    },
+    error: function(xhr, status, error){
+      alert ('error=' + error + '; status=' + status);
+    },
+    async: false
+  });
+}
+
 
 function getVersion(version_id) {
   var myData = {
