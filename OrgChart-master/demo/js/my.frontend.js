@@ -114,7 +114,9 @@ function createUI(datasource) {
     // store the changes. reset when save button is clicked and data sent to SQL.
     $('#btn-save').on('click', function() {
       last_saved_datasource = oc.getHierarchy();
-      console.log ('save: ' + JSON.stringify(last_saved_datasource));
+      var json_string = JSON.stringify(last_saved_datasource);
+      saveVersion(json_string, current_version_id);
+      // console.log ('save: ' + JSON.stringify(last_saved_datasource));
     });
 
     $('#btn-save-as').on('click', function() {
@@ -122,14 +124,6 @@ function createUI(datasource) {
       last_saved_datasource.maxDepth = maxDepth;
       var json_string = JSON.stringify(last_saved_datasource);
       current_version_id = saveAsNewVersion(json_string);
-    });
-
-    $('#btn-open').on('click', function() {
-      if (last_saved_datasource) {
-        var opts = oc.opts;
-        opts.data = last_saved_datasource;
-        oc.init(opts);
-      }
     });
 
     // Shows whether employee or position desired is found in database
@@ -559,6 +553,7 @@ function setupPayLocationList(selected_head_id) {
     }
 
     var $dropdown = $('#select-pay-lctn');
+    $dropdown.empty();
     for (var key in paycd_employee) {
       var item = key.toString().trim();
       var option = '<option value="' + item + '">' + item + '</option>';
@@ -661,6 +656,7 @@ function updateOrgchart(oc, selected_head_id){
 }
 
 function openFromVersion(version_id) {
+  current_version_id = version_id;
   var obj = getVersion(version_id);
   var version_datasource = JSON.parse(obj.content);
   maxDepth = version_datasource.maxDepth;

@@ -1178,9 +1178,12 @@
       var tempTitle = $dragged.children('.title').text();
       $dragged.children('.title').text($dropZone.children('.title').text());
       $dropZone.children('.title').text(tempTitle);
-      var tempContent = $dragged.children('.content').text();
-      $dragged.children('.content').text($dropZone.children('.content').text());
-      $dropZone.children('.content').text(tempContent);
+      var tempEmployeeId = $dragged.children('div.content').find('span.employee_id').text();
+      $dragged.children('div.content').find('span.employee_id').text($dropZone.children('div.content').find('span.employee_id').text());
+      $dropZone.children('div.content').find('span.employee_id').text(tempEmployeeId);
+      var tempEmployeeName = $dragged.children('div.content').find('span.employee_name').text();
+      $dragged.children('div.content').find('span.employee_name').text($dropZone.children('div.content').find('span.employee_name').text());
+      $dropZone.children('div.content').find('span.employee_name').text(tempEmployeeName);
 
 
       // var tempposi = $dragged.siblings(".position_id").text();
