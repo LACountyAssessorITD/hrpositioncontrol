@@ -639,10 +639,14 @@ function updateLayout() {
   if (nodeType.val() === 'print') {
     opts.verticalLevel = maxDepth;
     opts.draggable = false;
+    $('#btn-save').attr('disabled','disabled');
+    $('#btn-save-as').attr('disabled','disabled');
   }
   else {
     opts.verticalLevel = maxDepth + 10;
     opts.draggable = true;
+    $('#btn-save').removeAttr('disabled');
+    $('#btn-save-as').removeAttr('disabled');
   }
   oc.init(opts);
 }
