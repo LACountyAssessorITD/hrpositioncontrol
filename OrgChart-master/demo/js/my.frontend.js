@@ -622,14 +622,17 @@ function setupHeadList() {
 
     // change listener for select head drop-down list
     $('#select-head').on('change', function() {
-      updateOrgchart(oc, $('#select-head').val());
-      setupPayLocationList($('#select-head').val());
-       // alert("Please select a Pay Location.");
+      var result = confirm("You are about to open a new orgchart. Any unsaved changes will be lost. Are you sure you want to continue?");
+      if (result == true) {
+        updateOrgchart(oc, $('#select-head').val());
+        setupPayLocationList($('#select-head').val());
+         // alert("Please select a Pay Location.");
 
-       // Update label for selected org head
-      var selectedHead = $('#select-head').val().split(" ");
-      $('#edited-org-head-id-input').val(selectedHead[0]);
-      // console.log("Selected head id '" + selectedHead[0] + "'");
+         // Update label for selected org head
+        var selectedHead = $('#select-head').val().split(" ");
+        $('#edited-org-head-id-input').val(selectedHead[0]);
+        // console.log("Selected head id '" + selectedHead[0] + "'");
+      }
     });
 }
 
