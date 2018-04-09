@@ -134,8 +134,6 @@ function createUI(datasource) {
     var retrievedEmployee;
     // If |getPositionSuccess| is true, this is the retrieved position
     var retrievedPosition;
-    // This is the user-created position
-    var createdPosition;
 
     //edit chart script
     oc.$chartContainer.on('click', '.node', function() {
@@ -193,6 +191,17 @@ function createUI(datasource) {
       // Verify that user has entered position ID
       if (event.which === 13) {
         verifyAndCreatePosition($('#get-new-position-id-input').val().trim(), this.value);
+      }
+    });
+
+    $('#btn-create-employee').on('click', function() {
+      verifyAndCreateEmployee($('#get-new-employee-id-input').val().trim(), $('#get-new-employee-title-input').val().trim());
+    });
+
+    $('#get-new-employee-title-input').on('keyup', function(event) {
+      // Verify that user has entered employee ID
+      if (event.which === 13) {
+        verifyAndCreateEmployee($('#get-new-employee-id-input').val().trim(), this.value);
       }
     });
 
@@ -486,12 +495,51 @@ function createUI(datasource) {
         return;
       }
 
-      createdPosition = {
+      var createdPosition = {
         "position_id" : positionId,
         "position_title" : positionTitle
       };
 
       AddPosition(createdPosition);
+    }
+
+    // Create new employee to enter into database
+    function verifyAndCreateEmployee(employeeId, employeeTitle) {
+      // Check employeeId
+      if (!employeeId) {
+        alert('Please enter a employee ID.');
+        return;
+      }
+
+      // Check employeeTitle is not empty
+      if (!employeeTitle) {
+        alert('Please enter a employee title.');
+        return;
+      }
+
+      // // Check that employeeId doesn't exist already
+      // var existEmployee = getEmployee(employeeId);
+      // if (existEmployee.employee_id) {
+      //   alert('The employee ID ' + employeeId + ' exists already. Click "Add Employee" to add an existing employee.');
+      //   return;
+      // }
+
+      var createdEmployee = {
+        "employee_id" : employeeId,
+        "title" : employeeTitle
+      };
+
+      // AddEmployee(createdEmployee);
+      var nodeVals = [];
+      nodeVals.push(createdEmployee);
+
+      var $node = $('#selected-node').data('node');
+      if ($node.find('.title').text() !== ''){
+        alert('cannot add employee to filled position');
+        return;
+      }
+      $node.find('.title').text(employeeTitle);
+      $node.find('.employee_id').text(employeeId);
     }
 
     // Verifies that newOrgHeadId is valid and replaces the original org head with the new.
