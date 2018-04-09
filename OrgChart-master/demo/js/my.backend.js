@@ -371,7 +371,7 @@ function saveAsNewVersion(json_string) {
   };
   var current_version_id;
   $.ajax({
-    url: "php/save_as_version_test.php",
+    url: "php/save_as_version.php",
     data: myData,
     type: 'POST',
     dataType: 'json',
