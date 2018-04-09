@@ -187,8 +187,13 @@ function createUI(datasource) {
 
     $('#btn-create-position').on('click', function() {
       verifyAndCreatePosition($('#get-new-position-id-input').val().trim(), $('#get-new-position-title-input').val().trim());
+    });
 
-      AddPosition(createdPosition);
+    $('#get-new-position-title-input').on('keyup', function(event) {
+      // Verify that user has entered position ID
+      if (event.which === 13) {
+        verifyAndCreatePosition($('#get-new-position-id-input').val().trim(), this.value);
+      }
     });
 
     function AddPosition(position_to_add) {
@@ -221,8 +226,15 @@ function createUI(datasource) {
       }
 
       function MakeNodeToAdd(item, rel) {
-        var position_title = item.title_cd.trim() + item.sub_title_cd.trim() + ' ' + item.titl_short_dd;
-        item.position_id = item.position_id.trim();
+        var position_title;
+        if (item.position_title) {
+          // creating temporary position
+          position_title = item.position_title;
+        }
+        else {
+          // adding existing position
+          position_title = item.title_cd.trim() + item.sub_title_cd.trim() + ' ' + item.titl_short_dd;
+        }
         var nodeToAdd = {
           'employee_id':'',
           'employee_name': '',
@@ -232,21 +244,21 @@ function createUI(datasource) {
           'unit_cd': '',
           'hire': '',
           'pay_lctn': '',
-          'position_id': item.position_id,
+          'position_id': item.position_id.trim(),
           'position_title': position_title,
-          'salary': item.salary_maximum_am,
-          'ordinance': item.ordinance,
-          'budgeted_fte': item.budgeted_fte,
+          'salary': (item.salary_maximum_am) ? item.salary_maximum_am : '',
+          'ordinance': (item.ordinance) ? item.ordinance : '',
+          'budgeted_fte': (item.budgeted_fte) ? item.budgeted_fte : '',
           'depth': ''
         };
         return nodeToAdd;
       }
 
-      // Send transactions to backend for tracking
-      var src_pos_id = retrievedPosition['position_id'].trim();
-      var dest_supervisor_id = $node.find('.position_id').text();
-      addTransaction(null, src_pos_id, src_pos_id, null , dest_supervisor_id);
-      console.log("Add Position TRANSACTION: " + src_pos_id + ", " + dest_supervisor_id);
+      // // Send transactions to backend for tracking
+      // var src_pos_id = retrievedPosition['position_id'].trim();
+      // var dest_supervisor_id = $node.find('.position_id').text();
+      // addTransaction(null, src_pos_id, src_pos_id, null , dest_supervisor_id);
+      // console.log("Add Position TRANSACTION: " + src_pos_id + ", " + dest_supervisor_id);
     }
 
     $('#btn-delete-position').on('click', function() {
@@ -455,9 +467,9 @@ function createUI(datasource) {
 
     // Create new position to enter into database
     function verifyAndCreatePosition(positionId, positionTitle) {
-      // If positionId is not a number, alert and return
-      if (isNaN(positionId)) {
-        alert('Please enter a numeric position ID.');
+      // Check positionId
+      if (!positionId) {
+        alert('Please enter a position ID.');
         return;
       }
 
@@ -470,24 +482,17 @@ function createUI(datasource) {
       // Check that positionId doesn't exist already
       var existPosition = checkPositionExists(positionId);
       if (existPosition.position_id) {
-        alert('The position ID ' + positionId + ' exists already.');
+        alert('The position ID ' + positionId + ' exists already. Click "Add Position" to add an existing position.');
         return;
       }
 
       createdPosition = {
         "position_id" : positionId,
-        "title" : positionTitle
+        "position_title" : positionTitle
       };
 
-      createPosition(positionId, positionTitle);
+      AddPosition(createdPosition);
     }
-
-    $('#get-new-position-title-input').on('keyup', function(event) {
-      // Verify that user has entered position ID
-      if (event.which === 13) {
-        verifyAndCreatePosition($('#get-new-position-id-input').val().trim(), this.value);
-      }
-    });
 
     // Verifies that newOrgHeadId is valid and replaces the original org head with the new.
     function verifyAndReplaceOrgHead() {

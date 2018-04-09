@@ -285,7 +285,7 @@ function checkPositionExists(position_id) {
         position = output;
       },
       error: function(xhr, status, error){
-        alert ('error: pick_single_position.php=' + error + '; status=' + status);
+        alert ('checkPositionExists error: =' + error + '; status=' + status);
       },
       async:false
     });
