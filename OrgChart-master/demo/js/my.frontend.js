@@ -490,40 +490,36 @@ function createUI(datasource) {
     });
 
     // Verifies that newOrgHeadId is valid and replaces the original org head with the new.
-    function verifyAndReplaceOrgHead(oldOrgHeadId, newOrgHeadId) {
+    function verifyAndReplaceOrgHead() {
       // Check that an org head is selected
+      var oldOrgHeadId = $('#select-head').val();
       if (!oldOrgHeadId) {
         alert("An organization head must be selected.");
         return;
       }
 
-      // Verify that newOrgHeadId is numeric and a valid ID
-      if(isNaN(positionId)) {
-        alert("Please enter a numeric organization head ID.");
-        return;
-      }
-      var newOrgHead = getEmployee(newOrgHeadId);
-      if (!newOrgHead.employee_id) {
-        alert('The new orgnization head ID is invalid.');
+      var newOrgHeadId = $('#edited-org-head-id-input').val().trim();
+      if (!newOrgHeadId) {
+        alert("Please enter the new org head's employee id.");
         return;
       }
 
-      var oldOrgHead = getEmployee(oldOrgHeadId);
-      replaceOrgHead(oldOrgHead, newOrgHead);
+      var result = confirm("Are you sure you want to update this org head?");
+      if (result == true) {
+        updateOrgHead(oldOrgHeadId, newOrgHeadId);
 
-      // Reload head list
-      setupHeadList();
+        // Reload head list
+        setupHeadList();
+      }
     }
 
     $('#btn-update-org-head').on('click', function() {
-      var selectedHead = $('#select-head').val().trim().split(" ");
-      verifyAndReplaceOrgHead(selectedHead[0], this.value);
+      verifyAndReplaceOrgHead();
     });
 
     $('#edited-org-head-id-input').on('keyup', function(event) {
-      if (event.which === 13) {
-        var selectedHead = $('#select-head').val().split(" ");
-        verifyAndReplaceOrgHead(selectedHead[0], this.value);
+      if (event.which === 13) { // Enter key pressed
+        verifyAndReplaceOrgHead();
       }
     });
 
@@ -559,6 +555,7 @@ function setupHeadList() {
     }
 
     var $dropdown = $('#select-head');
+    $dropdown.empty();
     for (var i=0;i<heads.length; i++){
       // console.log(heads[i]['employee_id'] + ' first name:' + heads[i]['first_name'] + ' last name: ' + heads[i]['last_name']);
       var employee_id = heads[i]['employee_id'].toString().trim();
@@ -578,13 +575,9 @@ function setupHeadList() {
 
        // Update label for selected org head
       var selectedHead = $('#select-head').val().split(" ");
-      $('#selected-org-head-label').val(selectedHead[0]);
+      $('#edited-org-head-id-input').val(selectedHead[0]);
       // console.log("Selected head id '" + selectedHead[0] + "'");
     });
-
-    // $('#btn-display-new-head').on('click', function() {
-    //   updateOrgchart($('#select-head').val());
-    // });
 }
 
 // show all the pay location under the head

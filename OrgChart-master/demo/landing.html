@@ -58,7 +58,7 @@
       m = m < 10 ? "0" + m : m;
       s = s < 10 ? "0" + s : s;
       // Note: getMonth returns values [0-11]
-      var formatedTime = d.getMonth()+1 + "-" + d.getDate() + "-" + d.getFullYear() + " " 
+      var formatedTime = d.getMonth()+1 + "-" + d.getDate() + "-" + d.getFullYear() + " "
         + h + ":" + m + ":" + s + " " + dd;
 
       var version_name = versions[i]['version_name'].toString().trim();
@@ -92,7 +92,7 @@ $('#btn-open').on('click', function() {
 });
 
 $('#btn-delete').on('click', function() {
-  var result = confirm("Are you sure you want to delete?");
+  var result = confirm("Are you sure you want to delete the selected version?");
   if (result == true) {
     var version_id = document.getElementById("selectVersion").value;
     var x = document.getElementById("selectVersion");

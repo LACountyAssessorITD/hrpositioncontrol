@@ -326,6 +326,35 @@ function replaceOrgHead(oldOrgHead, newOrgHead) {
   // TODO
 }
 
+function updateOrgHead(old_id, new_id) {
+  var currentdate = new Date();
+  var datetime = currentdate.getFullYear() + '-'
+                + (currentdate.getMonth()+1) + '-'
+                + currentdate.getDate() + ' '
+                + currentdate.getHours() + ":"
+                + currentdate.getMinutes() + ":"
+                + currentdate.getSeconds();
+  var myData = {
+    'old_id': old_id,
+    'new_id': new_id,
+    'user' : '12345',
+    'time' : datetime
+  };
+  $.ajax({
+    url: "php/update_org_head.php",
+    data: myData,
+    type: 'POST',
+    dataType: 'text',
+    success: function(output) {
+      console.log(output);
+    },
+    error: function(xhr, status, error){
+      alert ('updateOrgHead error=' + error + '; status=' + status);
+    },
+    async: false
+  });
+}
+
 function saveAsNewVersion(json_string) {
   var currentdate = new Date();
   var datetime =(currentdate.getMonth()+1) + "/"
