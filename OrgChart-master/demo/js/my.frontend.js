@@ -622,7 +622,7 @@ function setupHeadList() {
 
     // change listener for select head drop-down list
     $('#select-head').on('change', function() {
-      var result = confirm("You are about to open a new orgchart. Any unsaved changes will be lost. Are you sure you want to continue?");
+      var result = confirm("Are you sure you want to change to new head?");
       if (result == true) {
         updateOrgchart(oc, $('#select-head').val());
         setupPayLocationList($('#select-head').val());
