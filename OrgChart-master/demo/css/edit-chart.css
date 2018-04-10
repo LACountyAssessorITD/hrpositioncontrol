@@ -62,9 +62,19 @@
     #btn-add-nodes { margin-left: 20px; }
 
     .rounded-border-block {
-      display: inline-block;
-      border-radius: 10px;
+/*      display: inline-block;
+*/      border-radius: 10px;
       border-width: 2px;
       border-style: solid;
       padding: 20px;
+    }
+
+    #org-head-search-div {
+      width: 40%;
+      float: left;
+    }
+
+    #position-employee-div {
+      width: 60%;
+      float: left;
     }

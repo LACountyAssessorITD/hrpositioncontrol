@@ -139,14 +139,17 @@ function createUI(datasource) {
     oc.$chartContainer.on('click', '.node', function() {
       var $this = $(this);
       $('#selected-node').val($this.find('.position_id').text()).data('node', $this);
+      console.log("selected node: " + $this.find('.position_id').text());
       $('#position-employee-div').show();
 
       // If selected position is occupied
       var $node = $('#selected-node').data('node');
       if ($node.find('.title').text() !== ''){
         $('#occupied-position-div').show();
+        $('#empty-position-div').hide();
       } else { // Else position is empty
         $('#empty-position-div').show();
+        $('#occupied-position-div').hide();
       }
     });
 
