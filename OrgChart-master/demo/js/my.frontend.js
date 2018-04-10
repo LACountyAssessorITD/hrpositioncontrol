@@ -139,6 +139,15 @@ function createUI(datasource) {
     oc.$chartContainer.on('click', '.node', function() {
       var $this = $(this);
       $('#selected-node').val($this.find('.position_id').text()).data('node', $this);
+      $('#position-employee-div').show();
+
+      // If selected position is occupied
+      var $node = $('#selected-node').data('node');
+      if ($node.find('.title').text() !== ''){
+        $('#occupied-position-div').show();
+      } else { // Else position is empty
+        $('#empty-position-div').show();
+      }
     });
 
     oc.$chartContainer.on('click', '.orgchart', function(event) {
@@ -630,6 +639,15 @@ function setupHeadList() {
       var selectedHead = $('#select-head').val().split(" ");
       $('#edited-org-head-id-input').val(selectedHead[0]);
       // console.log("Selected head id '" + selectedHead[0] + "'");
+
+      var orgHeadId = $('#select-head').val();
+      $('#selected-org-head-label').val(orgHeadId);
+
+      // Show search div; hide position-employee-div and its inner divs
+      $('#search-div').show();
+      $('#position-employee-div').hide();
+      $('#occupied-position-div').hide();
+      $('#empty-position-div').hide();
     });
 }
 
