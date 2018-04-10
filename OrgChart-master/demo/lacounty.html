@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=Edge" >
-  <title>LA County Assessor's Office</title>
+  <title>New | HR Position Control</title>
   <link rel="icon" href="img/logo.png">
   <link rel="stylesheet" href="css/font-awesome.min.css">
   <link rel="stylesheet" href="css/jquery.orgchart.css">
@@ -139,6 +139,7 @@
     var version_id = sessionStorage.getItem("sent");
     if (version_id) {
       // setupHeadList();
+      document.title = 'Version #' + version_id + ' | HR Position Control';
       openFromVersion(version_id);
       // sessionStorage.removeItem("sent");
     }
