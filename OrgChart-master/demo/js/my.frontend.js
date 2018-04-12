@@ -573,7 +573,7 @@ function createUI(datasource) {
         return;
       }
 
-      var result = confirm("Are you sure you want to update this org head?");
+      var result = confirm("Changes for the current Org Head will be lost if not saved. Do you still want to update this Org Head?");
       if (result == true) {
         updateOrgHead(oldOrgHeadId, newOrgHeadId);
 
