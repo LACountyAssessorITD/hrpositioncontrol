@@ -15,15 +15,7 @@ $time=$_POST["time"];
 // echo "$time";
 
 
-$Servername='Assessor';
-$connection_info=array('UID'=>'zhdllwyc',
-	'PWD'=> '19960806Wyc',
-	'Database'=>'PositionControl',
-'ReturnDatesAsStrings'=>true);
-
-
-// Connect to the data source and get a handle for that connection.
-$conn=sqlsrv_connect($Servername,$connection_info);
+include 'constants.php';
 
 
 if ($conn===false){

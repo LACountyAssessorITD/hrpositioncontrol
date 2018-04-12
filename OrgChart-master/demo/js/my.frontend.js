@@ -139,6 +139,18 @@ function createUI(datasource) {
     oc.$chartContainer.on('click', '.node', function() {
       var $this = $(this);
       $('#selected-node').val($this.find('.position_id').text()).data('node', $this);
+      console.log("selected node: " + $this.find('.position_id').text());
+      $('#position-employee-div').show();
+
+      // If selected position is occupied
+      var $node = $('#selected-node').data('node');
+      if ($node.find('.title').text() !== ''){
+        $('#occupied-position-div').show();
+        $('#empty-position-div').hide();
+      } else { // Else position is empty
+        $('#empty-position-div').show();
+        $('#occupied-position-div').hide();
+      }
     });
 
     oc.$chartContainer.on('click', '.orgchart', function(event) {
@@ -622,14 +634,26 @@ function setupHeadList() {
 
     // change listener for select head drop-down list
     $('#select-head').on('change', function() {
-      updateOrgchart(oc, $('#select-head').val());
-      setupPayLocationList($('#select-head').val());
-       // alert("Please select a Pay Location.");
+      var result = confirm("Are you sure you want to change to new head?");
+      if (result == true) {
+        updateOrgchart(oc, $('#select-head').val());
+        setupPayLocationList($('#select-head').val());
+         // alert("Please select a Pay Location.");
 
-       // Update label for selected org head
-      var selectedHead = $('#select-head').val().split(" ");
-      $('#edited-org-head-id-input').val(selectedHead[0]);
-      // console.log("Selected head id '" + selectedHead[0] + "'");
+         // Update label for selected org head
+        var selectedHead = $('#select-head').val().split(" ");
+        $('#edited-org-head-id-input').val(selectedHead[0]);
+        // console.log("Selected head id '" + selectedHead[0] + "'");
+      }
+
+      var orgHeadId = $('#select-head').val();
+      $('#selected-org-head-label').val(orgHeadId);
+
+      // Show search div; hide position-employee-div and its inner divs
+      $('#search-div').show();
+      $('#position-employee-div').hide();
+      $('#occupied-position-div').hide();
+      $('#empty-position-div').hide();
     });
 }
 

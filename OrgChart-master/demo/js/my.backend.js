@@ -423,7 +423,7 @@ function getVersion(version_id) {
   };
   var obj;
   $.ajax({
-    url: "php/open_version_test.php",
+    url: "php/open_version.php",
     data: myData,
     type: 'POST',
     dataType: 'json',

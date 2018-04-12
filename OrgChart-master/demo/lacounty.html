@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=Edge" >
-  <title>LA County Assessor's Office</title>
+  <title>New | HR Position Control</title>
   <link rel="icon" href="img/logo.png">
   <link rel="stylesheet" href="css/font-awesome.min.css">
   <link rel="stylesheet" href="css/jquery.orgchart.css">
@@ -14,21 +14,14 @@
 </head>
 <body>
 <div id="outercontainer">
-<<<<<<< HEAD
-<h1>LA County Assessor: Human Resources Item Control</h1>
-<button id="btn_fith" class="w3-button w3-light-gray w3-border w3-round-large">fit to container horizontally</button>
-<button id="btn_fitv" class="w3-button w3-light-gray w3-border w3-round-large">fit to container vertically</button>
-<button id="btn_reset" class="w3-button w3-light-gray w3-border w3-round-large">reset chart size</button>
-=======
 <h1>LA County Assessor: HR Position Control</h1>
 <button id="btn_fith" class="w3-button w3-light-gray w3-border w3-round-large">Fit Horizontally</button>
 <button id="btn_fitv" class="w3-button w3-light-gray w3-border w3-round-large">Fit Vertically</button>
 <button id="btn_reset" class="w3-button w3-light-gray w3-border w3-round-large">Reset Chart View</button>
->>>>>>> 8afe449... Landing opens chart in same tab
 <input type="radio" name="layout-type" id="rd-layout-drag-drop" value="drag-drop" checked="checked">Drag/Drop Layout
 <input type="radio" name="layout-type" id="rd-layout-print" value="print">Print Layout
-<button id="btn-save" class="w3-button w3-lime w3-border w3-round-large">Save</button>
-<button id="btn-save-as" class="w3-button w3-lime w3-border w3-round-large">Save As</button>
+<button id="btn-save" class="w3-button w3-lime w3-border w3-round-large" style="float:right">Save</button>
+<button id="btn-save-as" class="w3-button w3-lime w3-border w3-round-large" style="float:right">Save As</button>
 <!-- <button id="btn-open">Open</button> -->
 
   <div id="chart-container"></div>
@@ -40,55 +33,76 @@
       <button id="finalize-button" type="button">Finalize</button>
     </div>  -->
   <div id="edit-panel">
-    <div id ="edit">
-      <div class="row">
-        <label>Search in Current Chart:</label>
+
+    <!-- style="display:none" -->
+    <div id="org-head-search-div">
+      <div id="org-head-pay-lctn-div" class="rounded-border-block">
+        <div style="display: inline-block">
+          <label>Organization Head: </label><br/>
+          <select id="select-head" size="10">
+            <option value="" selected="selected">- Please select a head -</option>
+
+            <!-- <option value="415748">415748</option> -->
+          </select>
+        </div>
+        <div style="display: inline-block">
+          <label>Pay Location: </label><br/>
+          <select id="select-pay-lctn" size="10">
+            <option value="" selected="selected">- Please select a pay location -</option>
+          </select>
+        </div>
+        <div>
+          <label>Selected Head: </label>
+          <label id="selected-org-head-label"><br>
+          <input type="text" id="edited-org-head-id-input">
+          <button type="button" class="w3-button w3-green" id="btn-update-org-head">Update Org Head</button>
+        </div>
+      </div> <!-- org-head-pay-lctn-div -->
+
+      <div id="search-div" class="rounded-border-block" style="display:none">
+        <label>Search Employee in Chart:</label><br>
         <input type="text" id="search-key-word">
-        <button type="button" id="btn-search-node">Search</button>
-        <button type="button" id="btn-cancel">Cancel</button>
-      </div>
+        <button type="button" id="btn-search-node" class="w3-button">Search</button>
+        <button type="button" id="btn-cancel" class="w3-button">Cancel</button>
+      </div> <!-- search-div -->
+    </div>
+    
 
-      <div class="row">
-      <label class="selected-node-group">Selected Position:</label>
+    <div id="position-employee-div" class="rounded-border-block" style="display:none">
+      <label class="selected-node-group">Selected Position:</label><br>
       <input type="text" id="selected-node" class="selected-node-group" readonly>
+      <!-- <label id="selected-node" class="selected-node-group"></label> -->
+      <button type="button" id="btn-delete-position" class="w3-button">Delete Position</button><hr>
+
+      <label>Position ID:</label><br>
+      <input type="text" id="get-position-input">
+      <button type="button" id="btn-add-position" class="w3-button">Add Position</button><br>
+
+      <label>Temporary Position ID:</label><br>
+      <input type="text" id="get-new-position-id-input"><br>
+      <label>Temporary Position Title:</label><br>
+      <input type="text" id="get-new-position-title-input"><br>
+      <button type="button" id="btn-create-position" class="w3-button">Create Position</button><hr>
+
+      <div id="empty-position-div" align="left">
+        <label>Employee ID:</label><br>
+        <input type="text" id="get-employee-input">
+        <button type="button" id="btn-add-employee" class="w3-button">Add Employee</button><hr>
+
+        <label>Temporary Employee ID:</label><br>
+        <input type="text" id="get-new-employee-id-input"><br>
+        <label>Temporary Employee Title:</label><br>
+        <input type="text" id="get-new-employee-title-input"><br>
+        <button type="button" id="btn-create-employee" class="w3-button">Create Employee</button>
       </div>
 
-      <div class="row">
-        <label>Employee ID:</label>
-        <!-- <ul id="new-nodelist">
-          <li><input type="text" class="new-node"></li>
-        </ul> -->
-        <input type="text" id="get-employee-input">
-        <!-- <button type="button" id="btn-get-employee">Get Employee</button> -->
-        <button type="button" id="btn-add-employee">Add Employee</button>
+      <div id="occupied-position-div" >
+        <button type="button" id="btn-clear-position" class="w3-button">Clear Position</button>
       </div>
-      <br>
-      <div class="row">
-        <label>Position ID:</label>
-        <input type="text" id="get-position-input">
-        <!-- <button type="button" id="btn-get-position">Get Position</button> -->
-        <!-- <span id="node-type-panel" class="radio-panel">
-          <input type="radio" name="node-type" id="rd-child" value="children"><label for="rd-child">Child</label>
-          <input type="radio" name="node-type" id="rd-sibling" value="siblings"><label for="rd-sibling">Sibling</label>
-        </span> -->
-        <button type="button" id="btn-add-position">Add Position</button>
-        <button type="button" id="btn-clear-position">Clear Position</button>
-        <button type="button" id="btn-delete-position">Delete Position</button>
-      </div>
-      <div class="row">
-        <label>Temporary Position ID:</label>
-        <input type="text" id="get-new-position-id-input">
-        <label>Temporary Position Title:</label>
-        <input type="text" id="get-new-position-title-input">
-        <button type="button" id="btn-create-position">Create Position</button>
-      </div>
-      <div class="row">
-        <label>Temporary Employee ID:</label>
-        <input type="text" id="get-new-employee-id-input">
-        <label>Temporary Employee Title:</label>
-        <input type="text" id="get-new-employee-title-input">
-        <button type="button" id="btn-create-employee">Create Employee</button>
-      </div>
+
+    </div> <!-- position-employee-div -->
+
+    <div id ="edit">
 
   <!--       <div class="head-info" style="display: inline-block">
           <label>ORG_CODE: <span id="org_code"></span><br></label>
@@ -108,26 +122,6 @@
       <button type="button" id="btn-reset">Reset</button> -->
     </div> <!-- edit -->
     <div id ="department">
-      <div class="row" style="display: inline-block">
-        <label>Select Organization Head: </label><br/>
-        <select id="select-head" size="10">
-          <option value="" selected="selected">- Please select a head -</option>
-
-          <!-- <option value="415748">415748</option> -->
-        </select>
-      </div>
-      <div class="row" style="display: inline-block">
-        <label>Select Pay Location: </label><br/>
-        <select id="select-pay-lctn" size="10">
-          <option value="" selected="selected">- Please select a pay location -</option>
-        </select>
-      </div>
-      <div class="row">
-        <label>Selected Head: </label>
-        <label id="selected-org-head-label"><br>
-        <input type="text" id="edited-org-head-id-input"><br>
-        <button type="button" id="btn-update-org-head">Update Org Head</button>
-      </div>
     </div> <!-- department -->
   </div> <!-- edit panel -->
 </div> <!-- outer container -->
@@ -149,6 +143,7 @@
     var version_id = sessionStorage.getItem("sent");
     if (version_id) {
       // setupHeadList();
+      document.title = 'Version #' + version_id + ' | HR Position Control';
       openFromVersion(version_id);
       // sessionStorage.removeItem("sent");
     }
