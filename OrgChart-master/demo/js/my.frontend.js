@@ -12,9 +12,13 @@ function createUI(datasource) {
       var newline = (data.ordinance == 1 || data.budgeted_fte > 0) ? '<br>' : '';
       // var ordinance = (data.ordinance == 1) ? 'ORD ' : '';
       // var budgeted_fte = (data.budgeted_fte > 0) ? 'BGT' : '';
+
+      // Round budgeted number to 1 decimal place
+      var budgeted = parseFloat(data.budgeted_fte);
+      var budgetedRounded = budgeted.toFixed(1); // 
       return '<div class="position"><span class="position_id">' + data.position_id + '</span><br>' +
           '<span class="position_title">' + data.position_title + '</span><br>' +
-          'ORD: <span class="ordinance">' + data.ordinance + '</span> BGT: <span class="budgeted_fte">' + data.budgeted_fte + '</span>' +
+          'ORD: <span class="ordinance">' + data.ordinance + '</span> BGT: <span class="budgeted_fte">' + budgetedRounded + '</span>' +
           '<div class="employee" draggable="true">' +
             '<div class="title">' + data.title + '</div>' +
             '<div class="content"><span class="employee_id">' + data.employee_id + '</span><br>' +
