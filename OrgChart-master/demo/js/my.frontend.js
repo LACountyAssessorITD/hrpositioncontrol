@@ -130,6 +130,10 @@ function createUI(datasource) {
       current_version_id = saveAsNewVersion(json_string);
     });
 
+    $('#btn-return-to-landing').on('click', function() {
+      console.log("Clicked on Return to Landing!");
+      window.open("landing.html","_self");
+    });
     // Shows whether employee or position desired is found in database
     var getEmployeeSuccess = false;
     var getPositionSuccess = false;
