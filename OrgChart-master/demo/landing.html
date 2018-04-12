@@ -8,6 +8,10 @@
   <div id="outercontainer2">
     <button id="btn-extrac">Open from extract</button>
     <div id="outercontainer1">
+<<<<<<< HEAD
+=======
+      <h1>LA County Assessor<br> HR Position Control</h1>
+>>>>>>> 8afe449... Landing opens chart in same tab
       <label class="custom-select" for="selectVersion">
         <select id="selectVersion">
           <option value="">
@@ -83,12 +87,12 @@ $('#btn-extrac').on('click', function() {
   if (sessionStorage.getItem("sent")) {
     sessionStorage.removeItem("sent");
   }
-  window.open("http://localhost/hrpositioncontrol/OrgChart-master/demo/lacounty.html","_blank");
+  window.open("http://localhost/hrpositioncontrol/OrgChart-master/demo/lacounty.html","_self");
 });
 $('#btn-open').on('click', function() {
   var version_id = document.getElementById("selectVersion").value;
   sessionStorage.setItem("sent", version_id);
-  window.open("http://localhost/hrpositioncontrol/OrgChart-master/demo/lacounty.html","_blank");
+  window.open("http://localhost/hrpositioncontrol/OrgChart-master/demo/lacounty.html","_self");
 });
 
 $('#btn-delete').on('click', function() {
