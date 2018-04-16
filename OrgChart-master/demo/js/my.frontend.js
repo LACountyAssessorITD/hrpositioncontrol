@@ -120,7 +120,6 @@ function createUI(datasource) {
       last_saved_datasource = oc.getHierarchy();
       var json_string = JSON.stringify(last_saved_datasource);
       saveVersion(json_string, current_version_id);
-      // console.log ('save: ' + JSON.stringify(last_saved_datasource));
     });
 
     $('#btn-save-as').on('click', function() {
@@ -131,7 +130,6 @@ function createUI(datasource) {
     });
 
     $('#btn-return-to-landing').on('click', function() {
-      console.log("Clicked on Return to Landing!");
       window.open("landing.html","_self");
     });
     // Shows whether employee or position desired is found in database
@@ -431,7 +429,6 @@ function createUI(datasource) {
 
     // Buttons and input for searching within the UI
     $('#btn-search-node').on('click', function() {
-      console.log("Search: " + $('#search-empl-id').val());
       searchEmployee($('#search-empl-id').val());
     });
 
@@ -630,7 +627,6 @@ function setupHeadList() {
     var $dropdown = $('#select-head');
     $dropdown.empty();
     for (var i=0;i<heads.length; i++){
-      // console.log(heads[i]['employee_id'] + ' first name:' + heads[i]['first_name'] + ' last name: ' + heads[i]['last_name']);
       var employee_id = heads[i]['employee_id'].toString().trim();
       var first_name = heads[i]['first_name'].toString().trim();
       var last_name = heads[i]['last_name'].toString().trim();
@@ -646,12 +642,10 @@ function setupHeadList() {
       if (result == true) {
         updateOrgchart(oc, $('#select-head').val());
         setupPayLocationList($('#select-head').val());
-         // alert("Please select a Pay Location.");
 
          // Update label for selected org head
         var selectedHead = $('#select-head').val().split(" ");
         $('#edited-org-head-id-input').val(selectedHead[0]);
-        // console.log("Selected head id '" + selectedHead[0] + "'");
       }
 
       var orgHeadId = $('#select-head').val();
@@ -683,7 +677,6 @@ function setupPayLocationList(selected_head_id) {
 
     $('#select-pay-lctn').on('change', function() {
       // updateOrgchart(oc, $('#select-head').val());
-      // console.log("Selected Pay Location: '" + $('#select-pay-lctn').val() + "'");
       highlightNodesWithPayLocation($('#select-pay-lctn').val());
     });
 }
