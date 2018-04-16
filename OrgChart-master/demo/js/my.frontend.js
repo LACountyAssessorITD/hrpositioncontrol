@@ -391,8 +391,8 @@ function createUI(datasource) {
     });
 
     // Search for an employee by employee ID
-    function searchEmployee(keyWord) {
-      if(!keyWord.length) {
+    function searchEmployee(employeeId) {
+      if(!employeeId.length) {
         window.alert('Please type key word firstly.');
         return;
       } else {
@@ -401,7 +401,7 @@ function createUI(datasource) {
         $chart.addClass('noncollapsable');
         // distinguish the matched nodes and the unmatched nodes according to the given key word
         $chart.find('.node').filter(function(index, node) {
-          return $(node).text().toLowerCase().indexOf(keyWord) > -1;
+          return $(node).text().toLowerCase().indexOf(employeeId) > -1;
         }).addClass('matched')
         .closest('table').parents('table').find('tr:first').find('.node').addClass('retained');
         // hide the unmatched nodes
@@ -431,15 +431,15 @@ function createUI(datasource) {
 
     // Buttons and input for searching within the UI
     $('#btn-search-node').on('click', function() {
-      console.log("Search: " + $('#search-key-word').val());
-      searchEmployee($('#search-key-word').val());
+      console.log("Search: " + $('#search-empl-id').val());
+      searchEmployee($('#search-empl-id').val());
     });
 
     $('#btn-cancel').on('click', function() {
       clearSearchResult();
     });
 
-    $('#search-key-word').on('keyup', function(event) {
+    $('#search-empl-id').on('keyup', function(event) {
       if (event.which === 13) {
         searchEmployee(this.value);
       } else if (event.which === 8 && this.value.length === 0) {
