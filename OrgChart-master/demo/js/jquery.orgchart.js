@@ -1188,8 +1188,6 @@
       $dropZone.children('.title').css("color", "blue");
       $dropZone.children('.content').css("color", "blue");
 
-      // TODO(angela5shao): Highlight the moved node (an employee)
-
       // Send transactions to backend for tracking
       addTransaction(employee1.employee_id, employee1.src_pos_id, employee1.dest_pos_id,
         employee1.src_supervisor_id, employee1.dest_supervisor_id);

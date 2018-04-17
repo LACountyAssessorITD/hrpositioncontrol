@@ -574,7 +574,7 @@ function createUI(datasource) {
         return;
       }
 
-      var result = confirm("Changes for the current Org Head will be lost if not saved. Do you still want to update this Org Head?");
+      var result = confirm("Are you sure you want to update this Org Head?");
       if (result == true) {
         updateOrgHead(oldOrgHeadId, newOrgHeadId);
 
@@ -638,7 +638,7 @@ function setupHeadList() {
 
     // change listener for select head drop-down list
     $('#select-head').on('change', function() {
-      var result = confirm("Are you sure you want to change to new head?");
+      var result = confirm("Changes for the current Org Head will be lost if not saved. Do you still want to update this Org Head?");
       if (result == true) {
         updateOrgchart(oc, $('#select-head').val());
         setupPayLocationList($('#select-head').val());
