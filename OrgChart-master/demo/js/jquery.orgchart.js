@@ -138,6 +138,7 @@
         'class': 'oc-export-btn' + (this.options.chartClass !== '' ? ' ' + this.options.chartClass : ''),
         'text': 'Export',
         'id' : 'btn-export',
+        'disabled':true,
         'click': function(e) {
           e.preventDefault();
           that.export();

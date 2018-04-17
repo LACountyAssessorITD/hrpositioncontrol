@@ -42,7 +42,7 @@ function createUI(datasource) {
       'parentNodeSymbol': 'fa-th-large',
       'chartClass': 'edit-state',
       'verticalLevel': maxDepth + 1,
-      
+
 
       //only work in chrome
       'exportButton': true,
@@ -729,14 +729,15 @@ function updateLayout() {
     opts.draggable = false;
     $('#btn-save').attr('disabled','disabled');
     $('#btn-save-as').attr('disabled','disabled');
-    $('#btn-export').attr('disabled','disabled');
+    $('#btn-export').removeAttr('disabled');
+    
   }
   else {
     opts.verticalLevel = maxDepth + 10;
     opts.draggable = true;
     $('#btn-save').removeAttr('disabled');
     $('#btn-save-as').removeAttr('disabled');
-    $('#btn-export').removeAttr('disabled');
+    $('#btn-export').attr('disabled','disabled');
   }
   oc.init(opts);
 }
