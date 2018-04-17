@@ -56,17 +56,44 @@ if( $stmt_new_head === false ) {
 }
 sqlsrv_free_stmt($stmt_new_head);
 
-$sql = "UPDATE dbo.ORGANIZATION_HEAD
-SET EMPLOYEE_ID = '$new_id', UPDATEDATE = '$time', UPDATEUSERID = '$user', TITL_SHORT_DD = '$title_short', PAY_LCTN_CD = '$pay_lc', HOME_UNIT_CD = '$home_unit'
-WHERE EMPLOYEE_ID = '$old_id'";
-
-
-$stmt = sqlsrv_query( $conn, $sql);
-if( $stmt === false ) {
+$sql_check_head="SELECT * FROM dbo.ORGANIZATION_HEAD WHERE EMPLOYEE_ID = '$new_id'";
+$stmt_check_head = sqlsrv_query( $conn, $sql_check_head);
+$sql;
+$stmt;
+if( $stmt_check_head === false ) {
 	echo "false";
     die( print_r( sqlsrv_errors(), true));
+}else{
+	$data = sqlsrv_fetch_array($stmt_check_head);
+    if(sizeof($data)!=0){
+    	$sql = "UPDATE dbo.ORGANIZATION_HEAD
+		SET UPDATEDATE = '$time', UPDATEUSERID = '$user', TITL_SHORT_DD = '$title_short', PAY_LCTN_CD = '$pay_lc', HOME_UNIT_CD = '$home_unit'
+		WHERE EMPLOYEE_ID = '$new_id'";
+
+
+		$stmt = sqlsrv_query( $conn, $sql);
+		if( $stmt === false ) {
+			echo "false";
+		    die( print_r( sqlsrv_errors(), true));
+		}
+    }else{
+    	$sql = "UPDATE dbo.ORGANIZATION_HEAD
+		SET EMPLOYEE_ID = '$new_id', UPDATEDATE = '$time', UPDATEUSERID = '$user', TITL_SHORT_DD = '$title_short', PAY_LCTN_CD = '$pay_lc', HOME_UNIT_CD = '$home_unit'
+		WHERE EMPLOYEE_ID = '$old_id'";
+
+
+		$stmt = sqlsrv_query( $conn, $sql);
+		if( $stmt === false ) {
+			echo "false";
+		    die( print_r( sqlsrv_errors(), true));
+		}
+
+    }
+
 }
 
+
 sqlsrv_free_stmt($stmt);
+sqlsrv_free_stmt($stmt_check_head);
 sqlsrv_close($conn);
 ?>
