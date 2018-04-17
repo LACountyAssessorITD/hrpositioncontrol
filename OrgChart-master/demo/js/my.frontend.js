@@ -369,7 +369,7 @@ function createUI(datasource) {
       }
 
       if ($node.find('.title').text() !== ''){
-        alert('cannot add employee to filled position');
+        alert('Cannot add employee to filled position');
         return;
       }
 
@@ -451,7 +451,7 @@ function createUI(datasource) {
         getEmployeeSuccess = true;
         retrievedEmployee = employee;
       } else {
-        alert('The employee ID is not found.');
+        alert('The employee ID ' + employeeId + ' is not found.');
       }
     }
 
@@ -468,7 +468,7 @@ function createUI(datasource) {
 
       if (!existPosition.position_id) {
         getPositionSuccess = false;
-        alert('The position ID does not exist.');
+        alert('The position ID ' + positionId + ' does not exist.');
         return;
       }
 
@@ -552,7 +552,7 @@ function createUI(datasource) {
 
       var $node = $('#selected-node').data('node');
       if ($node.find('.title').text() !== ''){
-        alert('cannot add employee to filled position');
+        alert('Cannot add employee to filled position');
         return;
       }
       $node.find('.title').text(employeeTitle);
@@ -564,7 +564,7 @@ function createUI(datasource) {
       // Check that an org head is selected
       var oldOrgHeadId = $('#select-head').val();
       if (!oldOrgHeadId) {
-        alert("An organization head must be selected.");
+        alert("An org head must be selected.");
         return;
       }
 
@@ -620,7 +620,7 @@ function highlightNodesWithPayLocation(pay_location) {
 function setupHeadList() {
     var heads = getOrgHead();
     if (!heads) {
-      alert ('list of org heads is empty');
+      alert ('List of org heads is empty');
       return;
     }
 
@@ -663,7 +663,7 @@ function setupHeadList() {
 function setupPayLocationList(selected_head_id) {
   // var datasource = connectDatabase(selected_head_id);
   if (!paycd_employee) {
-    alert ('list of pay locations is empty');
+    alert ('List of pay locations is empty');
     return;
   }
 
