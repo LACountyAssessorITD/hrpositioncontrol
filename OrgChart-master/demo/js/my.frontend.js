@@ -162,6 +162,7 @@ function createUI(datasource) {
     oc.$chartContainer.on('click', '.orgchart', function(event) {
       if (!$(event.target).closest('.node').length) {
         $('#selected-node').val('');
+        $('#position-employee-div').hide();
       }
     });
 
