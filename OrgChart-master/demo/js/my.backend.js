@@ -390,7 +390,6 @@ function saveAsNewVersion(json_string) {
 }
 
 function saveVersion(json_string,version_id) {
-  alert("mlgb");
   var currentdate = new Date();
   var datetime =(currentdate.getMonth()+1) + "/"
                 + (currentdate.getDate())  + "/"

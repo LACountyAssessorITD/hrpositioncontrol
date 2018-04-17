@@ -1119,13 +1119,13 @@
       this.$chart.find('.focused').removeClass('focused');
       $dragged.addClass('focused');
 
-      // Send transactions to backend for tracking
-      var employee_id = $dragged.find('.content').text();
-      var src_pos_id = $dragged.find('.position_id').text();
-      var dest_pos_id = $dragged.find('.position_id').text(); // only different if dragged employee
-      var src_supervisor_id = $dragZone.find('.content').text();
-      var dest_supervisor_id = $dropZone.find('.content').text();
-      addTransaction(employee_id, src_pos_id, dest_pos_id, src_supervisor_id, dest_supervisor_id);
+      // // Send transactions to backend for tracking
+      // var employee_id = $dragged.find('.content').text();
+      // var src_pos_id = $dragged.find('.position_id').text();
+      // var dest_pos_id = $dragged.find('.position_id').text(); // only different if dragged employee
+      // var src_supervisor_id = $dragZone.find('.content').text();
+      // var dest_supervisor_id = $dropZone.find('.content').text();
+      // addTransaction(employee_id, src_pos_id, dest_pos_id, src_supervisor_id, dest_supervisor_id);
     },
 
     // TODO(angela5shao): take out employee dragging in #dropHandler
@@ -1188,13 +1188,11 @@
       $dropZone.children('.title').css("color", "blue");
       $dropZone.children('.content').css("color", "blue");
 
-      // TODO(angela5shao): Highlight the moved node (an employee)
-
       // Send transactions to backend for tracking
-      addTransaction(employee1.employee_id, employee1.src_pos_id, employee1.dest_pos_id,
-        employee1.src_supervisor_id, employee1.dest_supervisor_id);
-      addTransaction(employee2.employee_id, employee2.src_pos_id, employee2.dest_pos_id,
-        employee2.src_supervisor_id, employee2.dest_supervisor_id);
+      // addTransaction(employee1.employee_id, employee1.src_pos_id, employee1.dest_pos_id,
+      //   employee1.src_supervisor_id, employee1.dest_supervisor_id);
+      // addTransaction(employee2.employee_id, employee2.src_pos_id, employee2.dest_pos_id,
+      //   employee2.src_supervisor_id, employee2.dest_supervisor_id);
     },
     //
     touchstartHandler: function (event) {

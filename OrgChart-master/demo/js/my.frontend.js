@@ -162,6 +162,7 @@ function createUI(datasource) {
     oc.$chartContainer.on('click', '.orgchart', function(event) {
       if (!$(event.target).closest('.node').length) {
         $('#selected-node').val('');
+        $('#position-employee-div').hide();
       }
     });
 
@@ -299,13 +300,13 @@ function createUI(datasource) {
         }
       }
 
-      // add transaction before removing nodes because we need data('node')
-      var employee_id = $node.find('.employee_id').text();
-      var src_pos_id = $node.find('.position_id').text();
-      var src_supervisor_id = $node.closest('.nodes').siblings().eq(0).children().find('.position_id').text();
-      addTransaction(employee_id, src_pos_id, null, src_supervisor_id, null);
-      addTransaction(null, src_pos_id, null, src_supervisor_id, null);
-      console.log("Delete Position TRANSACTION: " + employee_id + ", " + src_pos_id + ", " + src_supervisor_id);
+      // // add transaction before removing nodes because we need data('node')
+      // var employee_id = $node.find('.employee_id').text();
+      // var src_pos_id = $node.find('.position_id').text();
+      // var src_supervisor_id = $node.closest('.nodes').siblings().eq(0).children().find('.position_id').text();
+      // addTransaction(employee_id, src_pos_id, null, src_supervisor_id, null);
+      // addTransaction(null, src_pos_id, null, src_supervisor_id, null);
+      // console.log("Delete Position TRANSACTION: " + employee_id + ", " + src_pos_id + ", " + src_supervisor_id);
 
       // remove nodes and set data('node') to null
       oc.removeNodes($node);
@@ -323,12 +324,12 @@ function createUI(datasource) {
         }
       }
 
-      // add transaction before removing employee because we need the data
-      var employee_id =$node.find('.employee_id').text();
-      var src_pos_id = $node.find('.position_id').text();
-      var src_supervisor_id = $node.closest('.nodes').siblings().eq(0).children().find('.position_id').text();
-      addTransaction(employee_id, src_pos_id, null, src_supervisor_id, null);
-      console.log("Clear Position TRANSACTION: " + employee_id + ", " + src_pos_id + ", " + src_supervisor_id);
+      // // add transaction before removing employee because we need the data
+      // var employee_id =$node.find('.employee_id').text();
+      // var src_pos_id = $node.find('.position_id').text();
+      // var src_supervisor_id = $node.closest('.nodes').siblings().eq(0).children().find('.position_id').text();
+      // addTransaction(employee_id, src_pos_id, null, src_supervisor_id, null);
+      // console.log("Clear Position TRANSACTION: " + employee_id + ", " + src_pos_id + ", " + src_supervisor_id);
 
       $node.find('.title').text('');
       $node.find('.employee_id').text('');
@@ -369,7 +370,7 @@ function createUI(datasource) {
       }
 
       if ($node.find('.title').text() !== ''){
-        alert('cannot add employee to filled position');
+        alert('Cannot add employee to filled position');
         return;
       }
 
@@ -384,8 +385,8 @@ function createUI(datasource) {
       var employee_id = $node.find('.employee_id').text();
       var dest_pos_id = $node.find('.position_id').text().trim();
       var dest_supervisor_id = $node.closest('.nodes').siblings().eq(0).children().find('.position_id').text();
-      addTransaction(employee_id, null, dest_pos_id, null, dest_supervisor_id);
-      console.log("Add Employee TRANSACTION: " + employee_id + ", " + dest_pos_id + ", " + dest_supervisor_id);
+      // addTransaction(employee_id, null, dest_pos_id, null, dest_supervisor_id);
+      // console.log("Add Employee TRANSACTION: " + employee_id + ", " + dest_pos_id + ", " + dest_supervisor_id);
     });
 
     // Search for an employee by employee ID
@@ -451,7 +452,7 @@ function createUI(datasource) {
         getEmployeeSuccess = true;
         retrievedEmployee = employee;
       } else {
-        alert('The employee ID is not found.');
+        alert('The employee ID ' + employeeId + ' is not found.');
       }
     }
 
@@ -468,7 +469,7 @@ function createUI(datasource) {
 
       if (!existPosition.position_id) {
         getPositionSuccess = false;
-        alert('The position ID does not exist.');
+        alert('The position ID ' + positionId + ' does not exist.');
         return;
       }
 
@@ -552,7 +553,7 @@ function createUI(datasource) {
 
       var $node = $('#selected-node').data('node');
       if ($node.find('.title').text() !== ''){
-        alert('cannot add employee to filled position');
+        alert('Cannot add employee to filled position');
         return;
       }
       $node.find('.title').text(employeeTitle);
@@ -564,7 +565,7 @@ function createUI(datasource) {
       // Check that an org head is selected
       var oldOrgHeadId = $('#select-head').val();
       if (!oldOrgHeadId) {
-        alert("An organization head must be selected.");
+        alert("An org head must be selected.");
         return;
       }
 
@@ -580,6 +581,7 @@ function createUI(datasource) {
       }
 
       var result = confirm("Changes for the current Org Head will be lost if not saved. Do you still want to update this Org Head?");
+
       if (result == true) {
         updateOrgHead(oldOrgHeadId, newOrgHeadId);
 
@@ -631,7 +633,7 @@ function highlightNodesWithPayLocation(pay_location) {
 function setupHeadList() {
     var heads = getOrgHead();
     if (!heads) {
-      alert ('list of org heads is empty');
+      alert ('List of org heads is empty');
       return;
     }
 
@@ -649,7 +651,7 @@ function setupHeadList() {
 
     // change listener for select head drop-down list
     $('#select-head').on('change', function() {
-      var result = confirm("Are you sure you want to change to new head?");
+      var result = confirm("Changes for the current Org Head will be lost if not saved. Do you still want to update this Org Head?");
       if (result == true) {
         changeOrgHead();
       }
@@ -677,7 +679,7 @@ function changeOrgHead() {
 function setupPayLocationList(selected_head_id) {
   // var datasource = connectDatabase(selected_head_id);
   if (!paycd_employee) {
-    alert ('list of pay locations is empty');
+    alert ('List of pay locations is empty');
     return;
   }
 
