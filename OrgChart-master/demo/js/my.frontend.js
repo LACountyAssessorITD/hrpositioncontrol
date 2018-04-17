@@ -299,13 +299,13 @@ function createUI(datasource) {
         }
       }
 
-      // add transaction before removing nodes because we need data('node')
-      var employee_id = $node.find('.employee_id').text();
-      var src_pos_id = $node.find('.position_id').text();
-      var src_supervisor_id = $node.closest('.nodes').siblings().eq(0).children().find('.position_id').text();
-      addTransaction(employee_id, src_pos_id, null, src_supervisor_id, null);
-      addTransaction(null, src_pos_id, null, src_supervisor_id, null);
-      console.log("Delete Position TRANSACTION: " + employee_id + ", " + src_pos_id + ", " + src_supervisor_id);
+      // // add transaction before removing nodes because we need data('node')
+      // var employee_id = $node.find('.employee_id').text();
+      // var src_pos_id = $node.find('.position_id').text();
+      // var src_supervisor_id = $node.closest('.nodes').siblings().eq(0).children().find('.position_id').text();
+      // addTransaction(employee_id, src_pos_id, null, src_supervisor_id, null);
+      // addTransaction(null, src_pos_id, null, src_supervisor_id, null);
+      // console.log("Delete Position TRANSACTION: " + employee_id + ", " + src_pos_id + ", " + src_supervisor_id);
 
       // remove nodes and set data('node') to null
       oc.removeNodes($node);
@@ -323,12 +323,12 @@ function createUI(datasource) {
         }
       }
 
-      // add transaction before removing employee because we need the data
-      var employee_id =$node.find('.employee_id').text();
-      var src_pos_id = $node.find('.position_id').text();
-      var src_supervisor_id = $node.closest('.nodes').siblings().eq(0).children().find('.position_id').text();
-      addTransaction(employee_id, src_pos_id, null, src_supervisor_id, null);
-      console.log("Clear Position TRANSACTION: " + employee_id + ", " + src_pos_id + ", " + src_supervisor_id);
+      // // add transaction before removing employee because we need the data
+      // var employee_id =$node.find('.employee_id').text();
+      // var src_pos_id = $node.find('.position_id').text();
+      // var src_supervisor_id = $node.closest('.nodes').siblings().eq(0).children().find('.position_id').text();
+      // addTransaction(employee_id, src_pos_id, null, src_supervisor_id, null);
+      // console.log("Clear Position TRANSACTION: " + employee_id + ", " + src_pos_id + ", " + src_supervisor_id);
 
       $node.find('.title').text('');
       $node.find('.employee_id').text('');
@@ -384,8 +384,8 @@ function createUI(datasource) {
       var employee_id = $node.find('.employee_id').text();
       var dest_pos_id = $node.find('.position_id').text().trim();
       var dest_supervisor_id = $node.closest('.nodes').siblings().eq(0).children().find('.position_id').text();
-      addTransaction(employee_id, null, dest_pos_id, null, dest_supervisor_id);
-      console.log("Add Employee TRANSACTION: " + employee_id + ", " + dest_pos_id + ", " + dest_supervisor_id);
+      // addTransaction(employee_id, null, dest_pos_id, null, dest_supervisor_id);
+      // console.log("Add Employee TRANSACTION: " + employee_id + ", " + dest_pos_id + ", " + dest_supervisor_id);
     });
 
     // Search for an employee by employee ID
