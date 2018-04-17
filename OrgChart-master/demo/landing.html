@@ -61,7 +61,7 @@
       s = s < 10 ? "0" + s : s;
       // Note: getMonth returns values [0-11]
       var formatedTime = d.getMonth()+1 + "-" + d.getDate() + "-" + d.getFullYear() + " "
-        + h + ":" + m + ":" + s + " " + dd;
+        + h + ":" + m + " " + dd;
 
       var version_name = versions[i]['version_name'].toString().trim();
       var owner = versions[i]['user'].toString().trim();
@@ -69,7 +69,7 @@
       var option = document.createElement("option");
       // option.text =  time+ ' '+ version_name + ' '+ owner;
       // option.value = version_name;
-      option.text = 'Version #' + version_id + ' last modified on ' + formatedTime;
+      option.text = 'Version #' + version_id + ' ' + version_name + ' (created by ' + owner + ', last modified on ' + formatedTime + ')';
       option.value = version_id;
       dropdown.append(option);
     }
