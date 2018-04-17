@@ -15,7 +15,7 @@ function createUI(datasource) {
 
       // Round budgeted number to 1 decimal place
       var budgeted = parseFloat(data.budgeted_fte);
-      var budgetedRounded = budgeted.toFixed(1); // 
+      var budgetedRounded = budgeted.toFixed(1); //
       return '<div class="position"><span class="position_id">' + data.position_id + '</span><br>' +
           '<span class="position_title">' + data.position_title + '</span><br>' +
           'ORD: <span class="ordinance">' + data.ordinance + '</span> BGT: <span class="budgeted_fte">' + budgetedRounded + '</span>' +
@@ -574,12 +574,23 @@ function createUI(datasource) {
         return;
       }
 
+      if (newOrgHeadId === oldOrgHeadId) {
+        alert("New org head is the same.");
+        return;
+      }
+
       var result = confirm("Changes for the current Org Head will be lost if not saved. Do you still want to update this Org Head?");
       if (result == true) {
         updateOrgHead(oldOrgHeadId, newOrgHeadId);
 
+        var index = $("#select-head option:selected").index();
+
         // Reload head list
         setupHeadList();
+
+        // Reload orgchart
+        $('#select-head option:eq(' + index + ')').attr('selected', 'selected');
+        changeOrgHead();
       }
     }
 
@@ -640,23 +651,26 @@ function setupHeadList() {
     $('#select-head').on('change', function() {
       var result = confirm("Are you sure you want to change to new head?");
       if (result == true) {
-        updateOrgchart(oc, $('#select-head').val());
-        setupPayLocationList($('#select-head').val());
-
-         // Update label for selected org head
-        var selectedHead = $('#select-head').val().split(" ");
-        $('#edited-org-head-id-input').val(selectedHead[0]);
+        changeOrgHead();
       }
-
-      var orgHeadId = $('#select-head').val();
-      $('#selected-org-head-label').val(orgHeadId);
-
-      // Show search div; hide position-employee-div and its inner divs
-      $('#search-div').show();
-      $('#position-employee-div').hide();
-      $('#occupied-position-div').hide();
-      $('#empty-position-div').hide();
     });
+}
+
+function changeOrgHead() {
+  var selectedHead = $('#select-head').val();
+
+  updateOrgchart(oc, selectedHead);
+  setupPayLocationList(selectedHead);
+
+   // Update label for selected org head
+  $('#selected-org-head-label').text(selectedHead);
+  // $('#edited-org-head-id-input').val(selectedHead);
+
+  // Show search div; hide position-employee-div and its inner divs
+  $('#search-div').show();
+  $('#position-employee-div').hide();
+  $('#occupied-position-div').hide();
+  $('#empty-position-div').hide();
 }
 
 // show all the pay location under the head

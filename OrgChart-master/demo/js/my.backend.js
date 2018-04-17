@@ -327,6 +327,7 @@ function replaceOrgHead(oldOrgHead, newOrgHead) {
 }
 
 function updateOrgHead(old_id, new_id) {
+  
   var currentdate = new Date();
   var datetime = currentdate.getFullYear() + '-'
                 + (currentdate.getMonth()+1) + '-'
@@ -340,6 +341,7 @@ function updateOrgHead(old_id, new_id) {
     'user' : '12345',
     'time' : datetime
   };
+  alert(myData);
   $.ajax({
     url: "php/update_org_head.php",
     data: myData,
