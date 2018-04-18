@@ -15,9 +15,13 @@ function createUI(datasource) {
       var newline = (data.ordinance == 1 || data.budgeted_fte > 0) ? '<br>' : '';
       // var ordinance = (data.ordinance == 1) ? 'ORD ' : '';
       // var budgeted_fte = (data.budgeted_fte > 0) ? 'BGT' : '';
+
+      // Round budgeted number to 1 decimal place
+      var budgeted = parseFloat(data.budgeted_fte);
+      var budgetedRounded = budgeted.toFixed(1); //
       return '<div class="position"><span class="position_id">' + data.position_id + '</span><br>' +
           '<span class="position_title">' + data.position_title + '</span><br>' +
-          'ORD: <span class="ordinance">' + data.ordinance + '</span> BGT: <span class="budgeted_fte">' + data.budgeted_fte + '</span>' +
+          'ORD: <span class="ordinance">' + data.ordinance + '</span> BGT: <span class="budgeted_fte">' + budgetedRounded + '</span>' +
           '<div class="employee" draggable="true">' +
             '<div class="title">' + data.title + '</div>' +
             '<div class="content"><span class="employee_id">' + data.employee_id + '</span><br>' +
@@ -41,6 +45,7 @@ function createUI(datasource) {
       'parentNodeSymbol': 'fa-th-large',
       'chartClass': 'edit-state',
       'verticalLevel': maxDepth + 1,
+
 
       //only work in chrome
       'exportButton': true,
@@ -130,6 +135,9 @@ function createUI(datasource) {
       current_version_id = saveAsNewVersion(json_string, current_username, version_name);
     });
 
+    $('#btn-return-to-landing').on('click', function() {
+      window.open("landing.html","_self");
+    });
     // Shows whether employee or position desired is found in database
     var getEmployeeSuccess = false;
     var getPositionSuccess = false;
@@ -160,6 +168,7 @@ function createUI(datasource) {
     oc.$chartContainer.on('click', '.orgchart', function(event) {
       if (!$(event.target).closest('.node').length) {
         $('#selected-node').val('');
+        $('#position-employee-div').hide();
       }
     });
 
@@ -297,13 +306,13 @@ function createUI(datasource) {
         }
       }
 
-      // add transaction before removing nodes because we need data('node')
-      var employee_id = $node.find('.employee_id').text();
-      var src_pos_id = $node.find('.position_id').text();
-      var src_supervisor_id = $node.closest('.nodes').siblings().eq(0).children().find('.position_id').text();
-      addTransaction(employee_id, src_pos_id, null, src_supervisor_id, null);
-      addTransaction(null, src_pos_id, null, src_supervisor_id, null);
-      console.log("Delete Position TRANSACTION: " + employee_id + ", " + src_pos_id + ", " + src_supervisor_id);
+      // // add transaction before removing nodes because we need data('node')
+      // var employee_id = $node.find('.employee_id').text();
+      // var src_pos_id = $node.find('.position_id').text();
+      // var src_supervisor_id = $node.closest('.nodes').siblings().eq(0).children().find('.position_id').text();
+      // addTransaction(employee_id, src_pos_id, null, src_supervisor_id, null);
+      // addTransaction(null, src_pos_id, null, src_supervisor_id, null);
+      // console.log("Delete Position TRANSACTION: " + employee_id + ", " + src_pos_id + ", " + src_supervisor_id);
 
       // remove nodes and set data('node') to null
       oc.removeNodes($node);
@@ -321,12 +330,12 @@ function createUI(datasource) {
         }
       }
 
-      // add transaction before removing employee because we need the data
-      var employee_id =$node.find('.employee_id').text();
-      var src_pos_id = $node.find('.position_id').text();
-      var src_supervisor_id = $node.closest('.nodes').siblings().eq(0).children().find('.position_id').text();
-      addTransaction(employee_id, src_pos_id, null, src_supervisor_id, null);
-      console.log("Clear Position TRANSACTION: " + employee_id + ", " + src_pos_id + ", " + src_supervisor_id);
+      // // add transaction before removing employee because we need the data
+      // var employee_id =$node.find('.employee_id').text();
+      // var src_pos_id = $node.find('.position_id').text();
+      // var src_supervisor_id = $node.closest('.nodes').siblings().eq(0).children().find('.position_id').text();
+      // addTransaction(employee_id, src_pos_id, null, src_supervisor_id, null);
+      // console.log("Clear Position TRANSACTION: " + employee_id + ", " + src_pos_id + ", " + src_supervisor_id);
 
       $node.find('.title').text('');
       $node.find('.employee_id').text('');
@@ -367,7 +376,7 @@ function createUI(datasource) {
       }
 
       if ($node.find('.title').text() !== ''){
-        alert('cannot add employee to filled position');
+        alert('Cannot add employee to filled position');
         return;
       }
 
@@ -382,13 +391,13 @@ function createUI(datasource) {
       var employee_id = $node.find('.employee_id').text();
       var dest_pos_id = $node.find('.position_id').text().trim();
       var dest_supervisor_id = $node.closest('.nodes').siblings().eq(0).children().find('.position_id').text();
-      addTransaction(employee_id, null, dest_pos_id, null, dest_supervisor_id);
-      console.log("Add Employee TRANSACTION: " + employee_id + ", " + dest_pos_id + ", " + dest_supervisor_id);
+      // addTransaction(employee_id, null, dest_pos_id, null, dest_supervisor_id);
+      // console.log("Add Employee TRANSACTION: " + employee_id + ", " + dest_pos_id + ", " + dest_supervisor_id);
     });
 
     // Search for an employee by employee ID
-    function searchEmployee(keyWord) {
-      if(!keyWord.length) {
+    function searchEmployee(employeeId) {
+      if(!employeeId.length) {
         window.alert('Please type key word firstly.');
         return;
       } else {
@@ -397,7 +406,7 @@ function createUI(datasource) {
         $chart.addClass('noncollapsable');
         // distinguish the matched nodes and the unmatched nodes according to the given key word
         $chart.find('.node').filter(function(index, node) {
-          return $(node).text().toLowerCase().indexOf(keyWord) > -1;
+          return $(node).text().toLowerCase().indexOf(employeeId) > -1;
         }).addClass('matched')
         .closest('table').parents('table').find('tr:first').find('.node').addClass('retained');
         // hide the unmatched nodes
@@ -427,7 +436,6 @@ function createUI(datasource) {
 
     // Buttons and input for searching within the UI
     $('#btn-search-node').on('click', function() {
-      console.log("Search: " + $('#search-key-word').val());
       searchEmployee($('#search-key-word').val());
     });
 
@@ -435,7 +443,7 @@ function createUI(datasource) {
       clearSearchResult();
     });
 
-    $('#search-key-word').on('keyup', function(event) {
+    $('#search-empl-id').on('keyup', function(event) {
       if (event.which === 13) {
         searchEmployee(this.value);
       } else if (event.which === 8 && this.value.length === 0) {
@@ -450,7 +458,7 @@ function createUI(datasource) {
         getEmployeeSuccess = true;
         retrievedEmployee = employee;
       } else {
-        alert('The employee ID is not found.');
+        alert('The employee ID ' + employeeId + ' is not found.');
       }
     }
 
@@ -467,7 +475,7 @@ function createUI(datasource) {
 
       if (!existPosition.position_id) {
         getPositionSuccess = false;
-        alert('The position ID does not exist.');
+        alert('The position ID ' + positionId + ' does not exist.');
         return;
       }
 
@@ -551,7 +559,7 @@ function createUI(datasource) {
 
       var $node = $('#selected-node').data('node');
       if ($node.find('.title').text() !== ''){
-        alert('cannot add employee to filled position');
+        alert('Cannot add employee to filled position');
         return;
       }
       $node.find('.title').text(employeeTitle);
@@ -574,7 +582,13 @@ function createUI(datasource) {
         return;
       }
 
-      var result = confirm("Are you sure you want to update this org head?");
+      if (newOrgHeadId === oldOrgHeadId) {
+        alert("New org head is the same.");
+        return;
+      }
+
+      var result = confirm("Changes for the current Org Head will be lost if not saved. Do you still want to update this Org Head?");
+
       if (result == true) {
 		var cur_datasource = oc.getHierarchy();
 		var result=getNewHead(newOrgHeadId, cur_datasource);
@@ -630,9 +644,15 @@ function createUI(datasource) {
 		  updateLayout();
         updateOrgHead(oldOrgHeadId, newOrgHeadId, current_username);
 
+        var index = $("#select-head option:selected").index();
+
         // Reload head list
         setupHeadList();
 		// $('#select-head').attr('disabled', 'disabled');
+
+        // Reload orgchart
+        //$('#select-head option:eq(' + index + ')').attr('selected', 'selected');
+        //changeOrgHead();
       }
     }
 
@@ -679,14 +699,13 @@ function setupUserInfo(role, username) {
 function setupHeadList() {
     var heads = getOrgHead();
     if (!heads) {
-      alert ('list of org heads is empty');
+      alert ('List of org heads is empty');
       return;
     }
 
     var $dropdown = $('#select-head');
     $dropdown.empty();
     for (var i=0;i<heads.length; i++){
-      // console.log(heads[i]['employee_id'] + ' first name:' + heads[i]['first_name'] + ' last name: ' + heads[i]['last_name']);
       var employee_id = heads[i]['employee_id'].toString().trim();
       var first_name = heads[i]['first_name'].toString().trim();
       var last_name = heads[i]['last_name'].toString().trim();
@@ -698,32 +717,36 @@ function setupHeadList() {
 
     // change listener for select head drop-down list
     $('#select-head').on('change', function() {
-      var result = confirm("Are you sure you want to change to new head?");
+      var result = confirm("Changes for the current Org Head will be lost if not saved. Do you still want to update this Org Head?");
       if (result == true) {
-		  var selectedHead = $('#select-head').val();
-
-		  current_head = selectedHead;
-		  updateOrgchart(oc, selectedHead);
-		  setupPayLocationList(selectedHead);
-
-		   // Update label for selected org head
-		  $('#selected-org-head-label').text(selectedHead);
-		  // $('#edited-org-head-id-input').val(selectedHead);
-
-		  // Show search div; hide position-employee-div and its inner divs
-		  $('#search-div').show();
-		  $('#position-employee-div').hide();
-		  $('#occupied-position-div').hide();
-		  $('#empty-position-div').hide();
+        changeOrgHead();
       }
     });
+}
+
+function changeOrgHead() {
+    var selectedHead = $('#select-head').val();
+    current_head = selectedHead;
+
+  updateOrgchart(oc, selectedHead);
+  setupPayLocationList(selectedHead);
+
+   // Update label for selected org head
+  $('#selected-org-head-label').text(selectedHead);
+  // $('#edited-org-head-id-input').val(selectedHead);
+
+  // Show search div; hide position-employee-div and its inner divs
+  $('#search-div').show();
+  $('#position-employee-div').hide();
+  $('#occupied-position-div').hide();
+  $('#empty-position-div').hide();
 }
 
 // show all the pay location under the head
 function setupPayLocationList(selected_head_id) {
   // var datasource = connectDatabase(selected_head_id);
   if (!paycd_employee) {
-    alert ('list of pay locations is empty');
+    alert ('List of pay locations is empty');
     return;
   }
 
@@ -737,7 +760,6 @@ function setupPayLocationList(selected_head_id) {
 
     $('#select-pay-lctn').on('change', function() {
       // updateOrgchart(oc, $('#select-head').val());
-      // console.log("Selected Pay Location: '" + $('#select-pay-lctn').val() + "'");
       highlightNodesWithPayLocation($('#select-pay-lctn').val());
     });
 }
@@ -773,12 +795,15 @@ function updateLayout() {
     opts.draggable = false;
     $('#btn-save').attr('disabled','disabled');
     $('#btn-save-as').attr('disabled','disabled');
+    $('#btn-export').removeAttr('disabled');
+    
   }
   else {
     opts.verticalLevel = maxDepth + 10;
     opts.draggable = true;
     $('#btn-save').removeAttr('disabled');
     $('#btn-save-as').removeAttr('disabled');
+    $('#btn-export').attr('disabled','disabled');
   }
   if (current_role == 0) {// not admin
 	$('#btn-save').attr('disabled','disabled');

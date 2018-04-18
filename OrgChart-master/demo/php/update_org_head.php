@@ -68,6 +68,7 @@ if( $stmt_new_head === false ) {
 
 }
 sqlsrv_free_stmt($stmt_new_head);
+
 $sql_check_head="SELECT * FROM dbo.ORGANIZATION_HEAD WHERE EMPLOYEE_ID = '$new_id'";
 $stmt_check_head = sqlsrv_query( $conn, $sql_check_head);
 $sql;
@@ -97,6 +98,7 @@ if( $stmt_check_head === false ) {
 		}
     }
 }
+
 sqlsrv_free_stmt($stmt);
 sqlsrv_free_stmt($stmt_check_head);
 sqlsrv_close($conn);

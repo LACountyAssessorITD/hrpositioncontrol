@@ -8,7 +8,7 @@
   border: 2px solid #3C1C78;
   background-color: rgba(255,255,255,0.2);
   z-index: 10;
-  opacity:1; 
+  opacity:1;
   margin-bottom: 10px;
 }
 .custom-select select {
@@ -22,7 +22,7 @@
   display: block;
   width: 100%;
   padding: 12px 55px 15px 15px;
-  font-size: 20px;
+  font-size: 16px;
   color: #714BB9;
 }
 .custom-select:after {
@@ -60,11 +60,14 @@
 
 #outercontainer1 {
   padding-top: 70px;
-  width: 600px; 
+  width: 600px;
   margin-right: auto;
-  margin-left: auto;           
+  margin-left: auto;
 }
 
+.landingtext{
+  color: #3C1C78;
+}
 
 body {
   height: 100%;

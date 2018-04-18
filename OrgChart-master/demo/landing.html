@@ -8,16 +8,17 @@
   <div id="outercontainer2">
     <button id="btn-extrac">New</button>
     <div id="outercontainer1">
-    <h1>HR Position Control</h1>
+      <h1 class="landingtext">LA County Assessor<br> HR Position Control</h1>
       <label class="custom-select" for="selectVersion">
         <select id="selectVersion">
           <option value="">
-            Select an version
+            Select a version
           </option>
         </select>
       </label>
       <button id="btn-open">Open</button>
-      <button id="btn-delete">Delete</button>
+      <button id="btn-delete">Delete</button><br>
+      <label class="landingtext">Note: Please use Chrome for best results.</label>
     </div>
   </div>
   <script type="text/javascript" src="js/jquery.min.js"></script>
@@ -88,7 +89,7 @@
       s = s < 10 ? "0" + s : s;
       // Note: getMonth returns values [0-11]
       var formatedTime = d.getMonth()+1 + "-" + d.getDate() + "-" + d.getFullYear() + " "
-        + h + ":" + m + ":" + s + " " + dd;
+        + h + ":" + m + " " + dd;
 
       var version_name = versions[i]['version_name'].toString().trim();
       var owner = versions[i]['user'].toString().trim();
@@ -96,7 +97,7 @@
       var option = document.createElement("option");
       // option.text =  time+ ' '+ version_name + ' '+ owner;
       // option.value = version_name;
-      option.text = 'Version #' + version_id + ' last modified on ' + formatedTime;
+      option.text = 'Version #' + version_id + ' ' + version_name + ' (created by ' + owner + ', last modified on ' + formatedTime + ')';
       option.value = version_id;
       dropdown.append(option);
     }
@@ -123,7 +124,7 @@ $('#btn-open').on('click', function() {
 function openPage() {
 	sessionStorage.setItem("role", role);
 	sessionStorage.setItem("username", employee_id);
-	window.open("lacounty.html","_blank");
+	window.open("lacounty.html","_self");
 }
 
 $('#btn-delete').on('click', function() {

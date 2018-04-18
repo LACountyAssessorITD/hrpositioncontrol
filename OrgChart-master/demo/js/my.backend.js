@@ -325,6 +325,7 @@ function getOrgHead() {
 function replaceOrgHead(oldOrgHead, newOrgHead) {
   // TODO
 }
+
 function getNewHead(newOrgHeadId, cur_datasource){
 	
 	var current_array=[];
@@ -387,6 +388,7 @@ function getNewHead(newOrgHeadId, cur_datasource){
 function updateOrgHead(old_id, new_id, username) {
 	
 	console.log(old_id + "  "+ new_id+ "  "+ username);
+
   var currentdate = new Date();
   var datetime = currentdate.getFullYear() + '-'
                 + (currentdate.getMonth()+1) + '-'
@@ -448,7 +450,6 @@ function saveAsNewVersion(json_string, username, version_name) {
 }
 
 function saveVersion(json_string,version_id, username) {
-  alert("mlgb");
   var currentdate = new Date();
   var datetime =(currentdate.getMonth()+1) + "/"
                 + (currentdate.getDate())  + "/"

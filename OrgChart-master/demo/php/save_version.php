@@ -48,9 +48,7 @@ if( $stmt === false ) {
 	echo "false";
      die( print_r( sqlsrv_errors(), true));
 }
-else{
-echo "yehhhhhhhhhhhhhhh";
-}
+
 sqlsrv_free_stmt($stmt);
 sqlsrv_close($conn);
 ?>

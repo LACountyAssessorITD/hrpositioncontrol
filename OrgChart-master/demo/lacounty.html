@@ -14,7 +14,7 @@
 </head>
 <body>
 <div id="outercontainer">
-<h1>LA County Assessor: Human Resources Item Control</h1>
+<h1>LA County Assessor: HR Position Control</h1>
 <button id="btn_fith" class="w3-button w3-light-gray w3-border w3-round-large">Fit Horizontally</button>
 <button id="btn_fitv" class="w3-button w3-light-gray w3-border w3-round-large">Fit Vertically</button>
 <button id="btn_reset" class="w3-button w3-light-gray w3-border w3-round-large">Reset Chart View</button>
@@ -22,6 +22,7 @@
 <input type="radio" name="layout-type" id="rd-layout-print" value="print">Print Layout
 <button id="btn-save" class="w3-button w3-lime w3-border w3-round-large" style="float:right">Save</button>
 <button id="btn-save-as" class="w3-button w3-lime w3-border w3-round-large" style="float:right">Save As</button>
+<button id="btn-return-to-landing" class="w3-button w3-light-gray w3-border w3-round-large" style="float:right">Select a Different Version</button>
 <!-- <button id="btn-open">Open</button> -->
 
   <div id="chart-container"></div>
@@ -53,7 +54,7 @@
         </div>
         <div>
           <label>Selected Head: </label>
-          <label id="selected-org-head-label"><br>
+          <label id="selected-org-head-label"></label><br>
           <input type="text" id="edited-org-head-id-input">
           <button type="button" class="w3-button w3-green" id="btn-update-org-head">Update Org Head</button>
         </div>
@@ -66,7 +67,7 @@
         <button type="button" id="btn-cancel" class="w3-button">Cancel</button>
       </div> <!-- search-div -->
     </div>
-    
+
 
     <div id="position-employee-div" class="rounded-border-block" style="display:none">
       <label class="selected-node-group">Selected Position:</label><br>
@@ -97,7 +98,7 @@
       </div>
 
       <div id="occupied-position-div" >
-        <button type="button" id="btn-clear-position" class="w3-button">Clear Position</button>
+        <button type="button" id="btn-clear-position" class="w3-button">Clear Employee Info</button>
       </div>
 
     </div> <!-- position-employee-div -->
