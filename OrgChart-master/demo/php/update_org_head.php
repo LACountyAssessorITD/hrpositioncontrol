@@ -12,7 +12,7 @@ $new_id=$_POST["new_id"];
 $time=$_POST["time"];
 $user=$_POST["user"];
 
-include 'constants.php';
+include_once 'constants.php';
 
 
 $serverName = SQL_SERVER_NAME;
@@ -30,7 +30,6 @@ $conn = sqlsrv_connect($serverName, $connectionInfo);
 if ($conn===false){
 	echo "unable to connect";
 	die(print_r(sqlsrv_errors(),true));
-
 }
 
 $sql_pick_new_head="SELECT * FROM dbo.EMPLOYEE WHERE EMPLOYEE_ID= '$new_id'";

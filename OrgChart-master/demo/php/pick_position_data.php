@@ -10,14 +10,12 @@ with the SQL Server database username and password.
 
 $employee_id_initial=$_POST["employee_id"];
 
-include 'constants.php';
+include_once 'constants.php';
 
 $serverName = SQL_SERVER_NAME;
 $uid = SQL_SERVER_USERNAME;
 $pwd = SQL_SERVER_PASSWORD;
-//$serverName = "Assessor";
-//$uid = "zhdllwyc";
-//$pwd = "19960806Wyc";
+
 $connectionInfo = array(
     "UID"=>$uid,
     "PWD"=>$pwd,
@@ -33,8 +31,7 @@ if ($conn===false){
 
 }
 $stmt_employee="(SELECT * FROM dbo.position WHERE (HOME_UNIT_CD IN (SELECT HOME_UNIT_CD from dbo.position WHERE POSN_ID IN (SELECT POSN_ID from dbo.EMPLOYEE_POSITION WHERE(EMPLOYEE_ID IN (SELECT EMPLOYEE_ID FROM dbo.EMPLOYEE WHERE SUPERVISOR_ID=$employee_id_initial)))))) UNION (SELECT * FROM dbo.POSITION WHERE POSN_ID = (SELECT POSN_ID from dbo.EMPLOYEE_POSITION WHERE EMPLOYEE_ID=$employee_id_initial ))";
-//$stmt_employee="SELECT * FROM dbo.position WHERE (HOME_UNIT_CD = (SELECT HOME_UNIT_CD from dbo.position WHERE POSN_ID = (SELECT POSN_ID from dbo.EMPLOYEE_POSITION WHERE( EMPLOYEE_ID = $employee_id_initial))))
-//";
+
 
 $stmt = sqlsrv_query( $conn, $stmt_employee);
 if($stmt===false){
@@ -54,7 +51,6 @@ if($stmt===false){
 		$myobject->sub_title_cd=$row["SUB_TITLE_CD"];
 		$myobject->ordinance=$row["ORDINANCE"];
 		$myobject->budgeted_fte=$row["BUDGETED_FTE"];
-		//$myjson=json_encode($myobject);
 
 		// query to get the title name (TITL_SHORT_DD)
 		$param = $row["TITLE_CD"];
@@ -75,12 +71,6 @@ if($stmt===false){
 	}
 	echo json_encode($result);
 }
-
-
-
-
-
-
 
 sqlsrv_close($conn);
 ?>

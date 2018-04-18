@@ -1,14 +1,12 @@
 var maxDepth = 0; // Max number of levels in the org chart
 var paycd_employee; //pay location list from one head
-var old_head;
-var old_datasource;
 
 function connectDatabase(orgchart_head_id){
  var myData= {
   // 'employee_id': '415748'
   'employee_id': orgchart_head_id
   };
-old_head=orgchart_head_id
+
 
 
 
@@ -18,7 +16,6 @@ $.ajax({
   type: 'POST',
   dataType: "json",
   success: function(output) {
-    console.log ('success: output=' + output);
     runindex2(output);
   },
   error: function(xhr, status, error){
@@ -34,7 +31,6 @@ function runindex2(position_data) {
    type: 'POST',
    dataType: "json",
    success: function(output) {
-    console.log ('runindex2 success: output=' + output);
     runindex3(position_data,output);
   },
   error: function(xhr, status, error){
@@ -52,14 +48,8 @@ function runindex3(position_data,employee_data) {
    type: 'POST',
    dataType: "json",
    success: function(output) {
-    console.log ('runindex3 success: output=' + output);
     datasource=get_data(position_data,employee_data,output);
-    old_datasource=datasource;
     paycd_employee=get_pay_location(employee_data);
-    for (var key in paycd_employee) {
-      // console.log (key);
-      // console.log (paycd_employee[key].length);
-    }
     },
     error: function(xhr, status, error){
       alert (error);
@@ -121,7 +111,6 @@ function get_data(position,employee, relation){
   var single_child=get_data_helper(head_child[i],position,employee, relation, head_employee.depth + 1);
   head_employee.children.push(single_child);
 }
-  // console.log("Backend: levels " + maxDepth);
 
 return head_employee;
 }
@@ -293,11 +282,6 @@ function checkPositionExists(position_id) {
   return position;
 }
 
-// Creates new position
-function createPosition(position_id, position_title) {
-  // TODO
-}
-
 // Gets head info
 function getOrgHead() {
 
@@ -309,7 +293,6 @@ function getOrgHead() {
     type: 'POST',
     dataType: "json",
     success: function(output) {
-        // alert ('getOrgHead output:' + output);
         heads = output;
       },
       error: function(xhr, status, error){
@@ -319,11 +302,6 @@ function getOrgHead() {
     });
 
     return heads;
-}
-
-// Replaces the old org head with the new
-function replaceOrgHead(oldOrgHead, newOrgHead) {
-  // TODO
 }
 
 function getNewHead(newOrgHeadId, cur_datasource){
@@ -498,55 +476,4 @@ function getVersion(version_id) {
     async: false
   });
   return obj;
-}
-
-function addTransaction(employee_id, src_pos_id, dest_pos_id, src_supervisor_id, dest_supervisor_id) {
-     var currentdate = new Date();
-     var datetime =currentdate.getDate() + "/"
-                + (currentdate.getMonth()+1)  + "/"
-                + currentdate.getFullYear() + " @ "
-                + currentdate.getHours() + ":"
-                + currentdate.getMinutes() + ":"
-                + currentdate.getSeconds();
-     var myData= {
-       'employee_id': employee_id,
-       'src_pos_id': src_pos_id,
-       'dest_pos_id': dest_pos_id,
-       'src_supervisor_id': src_supervisor_id,
-       'dest_supervisor_id': dest_supervisor_id,
-       'time':datetime,
-       'finalize_flag': 'DRAFT',
-     };
-
-     // get the id part but not the names part
-     if (myData.employee_id) {
-      myData.employee_id = myData.employee_id.split(' ')[0];
-    }
-     if (myData.src_supervisor_id) {
-      myData.src_supervisor_id = myData.src_supervisor_id.split(' ')[0];
-    }
-     if (myData.dest_supervisor_id) {
-      myData.dest_supervisor_id = myData.dest_supervisor_id.split(' ')[0];
-    }
-  // console.log('addTransaction('+myData.employee_id+','+src_pos_id+','+dest_pos_id+','+myData.src_supervisor_id+','+myData.dest_supervisor_id+')');
-
-  //   $.ajax({
-  //   url: "php/insert_transaction.php",
-  //   data: myData,
-  //   type: 'POST',
-  //   dataType: "text",
-  //   success: function(output) {
-  //        console.log ('gettransaction output:' + output);
-
-  //     },
-  //     error: function(xhr, status, error){
-  //       alert ('error: error=' + error + '; status=' + status);
-  //     },
-  //     async:false
-  //   });
-}
-
-function updateOrgheadTable() {
-
-
 }

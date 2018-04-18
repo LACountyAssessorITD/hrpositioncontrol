@@ -8,17 +8,15 @@ with the SQL Server database username and password.
 */
 $version_id=$_POST["version_id"];
 
-// echo "$time";
 
 
-include 'constants.php';
+
+include_once 'constants.php';
 
 $serverName = SQL_SERVER_NAME;
 $uid = SQL_SERVER_USERNAME;
 $pwd = SQL_SERVER_PASSWORD;
-//$serverName = "Assessor";
-//$uid = "zhdllwyc";
-//$pwd = "19960806Wyc";
+
 $connectionInfo = array(
     "UID"=>$uid,
     "PWD"=>$pwd,

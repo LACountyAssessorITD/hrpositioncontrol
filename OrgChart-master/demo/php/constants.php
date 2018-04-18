@@ -11,21 +11,23 @@ define("ON_AZURE", False);
 define("HTTP_PREFIX", "http://localhost/");
 
 if(ON_AZURE) {
-
+	// git repo file path
+	define("DIR", "PositionControl/OrgChart-master-20180412/demo/");
+	// SQL Server Name
+	define("SQL_SERVER_USERNAME", "zhdllwyc");
+	define("SQL_SERVER_PASSWORD", "19960806Wyc");
+	define("SQL_SERVER_NAME", "Assessor");
 }
 else {
 	// git repo file path
 	define("DIR", "PositionControl/OrgChart-master-20180412/demo/");
 	// SQL Server Name
-	//define("SQL_SERVER_NAME", "HTRAINDATADEV-V");
-	// define("SQL_SERVER_LACDATABASE", "ml_LAC_mdb_data"); // "temporary_5_table"
-	// define("SQL_SERVER_LACDATABASE", "ml_LAC_mdb_data"); // "temporary_5_table"
+	define("SQL_SERVER_USERNAME", "superadmin");
+	define("SQL_SERVER_PASSWORD", "admin");
+	define("SQL_SERVER_NAME", "hrpersonneldev");
 }
 
-define("SQL_SERVER_USERNAME", "superadmin");
-define("SQL_SERVER_PASSWORD", "admin");
 define("SQL_SERVER_LACDATABASE", "PositionControl");
-define("SQL_SERVER_NAME", "hrpersonneldev");
 
 // File Paths
 define("USER_HOME_PAGE_URL",	HTTP_PREFIX.DIR."landing.html");

@@ -11,17 +11,15 @@ $version_id=$_POST["version_id"];
 
 
 
-// echo "$time";
 
 
-include 'constants.php';
+
+include_once 'constants.php';
 
 $serverName = SQL_SERVER_NAME;
 $uid = SQL_SERVER_USERNAME;
 $pwd = SQL_SERVER_PASSWORD;
-//$serverName = "Assessor";
-//$uid = "zhdllwyc";
-//$pwd = "19960806Wyc";
+
 $connectionInfo = array(
     "UID"=>$uid,
     "PWD"=>$pwd,
@@ -46,9 +44,7 @@ if( $stmt === false ) {
 	echo "false";
      die( print_r( sqlsrv_errors(), true));
 }
-else{
-echo "yehhhhhhhhhhhhhhh";
-}
+
 sqlsrv_free_stmt($stmt);
 sqlsrv_close($conn);
 ?>

@@ -10,14 +10,12 @@ with the SQL Server database username and password.
 
 $employee_id_initial=$_POST["employee_id"];
 
-include 'constants.php';
+include_once 'constants.php';
 
 $serverName = SQL_SERVER_NAME;
 $uid = SQL_SERVER_USERNAME;
 $pwd = SQL_SERVER_PASSWORD;
-//$serverName = "Assessor";
-//$uid = "zhdllwyc";
-//$pwd = "19960806Wyc";
+
 $connectionInfo = array(
     "UID"=>$uid,
     "PWD"=>$pwd,
@@ -34,14 +32,10 @@ if ($conn===false){
 }
 
 $stmt_employee="(SELECT * FROM dbo.EMPLOYEE WHERE (PRIM_UNIT_CD IN (SELECT PRIM_UNIT_CD FROM dbo.EMPLOYEE WHERE SUPERVISOR_ID=$employee_id_initial))) UNION (SELECT * FROM dbo.EMPLOYEE WHERE EMPLOYEE_ID=$employee_id_initial) ";
-//$stmt_employee="SELECT * FROM dbo.EMPLOYEE WHERE (EMPLOYEE_ID IN (SELECT EMPLOYEE_ID FROM dbo.EMPLOYEE_POSITION WHERE POSN_ID IN (SELECT POSN_ID FROM dbo.POSITION WHERE HOME_UNIT_CD= (SELECT HOME_UNIT_CD FROM dbo.POSITION WHERE POSN_ID=(SELECT POSN_ID FROM dbo.EMPLOYEE_POSITION WHERE EMPLOYEE_ID=$employee_id_initial)))))";
-//$stmt_position_employee="SELECT * FROM dbo.EMPLOYEE_POSITION WHERE POSN_ID IN (SELECT POSN_ID FROM dbo.POSITION WHERE HOME_UNIT_CD=10222)";
-//$stmt_employee="SELECT * FROM dbo.employee WHERE (employee_id IN (SELECT EMPLOYEE_ID FROM dbo.EMPLOYEE_POSITION WHERE POSN_ID IN (SELECT POSN_ID FROM dbo.POSITION WHERE HOME_UNIT_CD=10222)))";
-
 
 $stmt = sqlsrv_query( $conn, $stmt_employee);
 if($stmt===false){
-   echo "sbsbssbsbbsbs";
+   echo "false";
 }else{
 	$result=array();
 
@@ -78,38 +72,13 @@ if($stmt===false){
 		    die(print_r(sqlsrv_errors(), true));
 		}
 
-		//$myjson=json_encode($myobject);
-		//echo $myjson;
+
     	$result[] = $myobject;
 	}
 	sqlsrv_free_stmt($stmt_title);
 	sqlsrv_free_stmt($stmt);
 
-
- 	// foreach($result as $item) {
-
-		// $titlecd=(string)$item->title_cd;
-		// echo $titlecd;
- 	//     $stmt_title="SELECT * FROM dbo.TITLE WHERE (TITLE_CD=$titlecd)";
- 	// 	$stmt1 = sqlsrv_query( $conn, $stmt_title);
-  // 		if($stmt1===false){
-  //   		echo "sbsbssbsbbsbsssssssssssssss";
-		// }else{
-		// 	//$row_title = sqlsrv_fetch_array($stmt1);
-		// 	//$item->title_cd=$row_title["TITL_SHORT_DD"];
-	 // 	}
-
- 	// 	sqlsrv_free_stmt($stmt1);
- 	// }
-
-
 	echo json_encode($result);
 }
-
-
-
-
-
-
 sqlsrv_close($conn);
 ?>

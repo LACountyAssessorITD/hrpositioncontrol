@@ -8,14 +8,12 @@ with the SQL Server database username and password.
 */
 
 
-include 'constants.php';
+include_once 'constants.php';
 
 $serverName = SQL_SERVER_NAME;
 $uid = SQL_SERVER_USERNAME;
 $pwd = SQL_SERVER_PASSWORD;
-//$serverName = "Assessor";
-//$uid = "zhdllwyc";
-//$pwd = "19960806Wyc";
+
 $connectionInfo = array(
     "UID"=>$uid,
     "PWD"=>$pwd,
@@ -30,14 +28,6 @@ if ($conn===false){
 
 }
 
-
-// $stmt_employee="SELECT  DISTINCT dbo.tblPayLoc$.MgrEmpNo,
-//         dbo.EMPLOYEE.EMPL_FIRST_NM,
-// 		dbo.EMPLOYEE.EMPL_LAST_NM
-//  FROM   dbo.tblPayLoc$
-//         INNER JOIN dbo.EMPLOYEE
-//         ON dbo.EMPLOYEE.EMPLOYEE_ID =
-//            dbo.tblPayLoc$.MgrEmpNo";
 $stmt_employee="SELECT  DISTINCT dbo.ORGANIZATION_HEAD.EMPLOYEE_ID,
         dbo.EMPLOYEE.EMPL_FIRST_NM,
 		dbo.EMPLOYEE.EMPL_LAST_NM
@@ -49,7 +39,7 @@ $stmt_employee="SELECT  DISTINCT dbo.ORGANIZATION_HEAD.EMPLOYEE_ID,
 
 $stmt = sqlsrv_query( $conn, $stmt_employee);
 if($stmt===false){
-   echo "sbsbssbsbbsbs";
+   echo "false";
 }else{
 
 
@@ -63,15 +53,7 @@ if($stmt===false){
     	$result[] = $myobject;
 	}
 	echo json_encode($result);
-
-
-
 }
-
-
-
-
-
 
 sqlsrv_close($conn);
 ?>

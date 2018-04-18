@@ -1,5 +1,4 @@
 var oc = null;
-var last_saved_datasource;
 var current_version_id;
 var current_role;
 var current_username;
@@ -12,10 +11,6 @@ function createUI(datasource) {
     };
 
     var nodeTemplate = function(data) {
-      var newline = (data.ordinance == 1 || data.budgeted_fte > 0) ? '<br>' : '';
-      // var ordinance = (data.ordinance == 1) ? 'ORD ' : '';
-      // var budgeted_fte = (data.budgeted_fte > 0) ? 'BGT' : '';
-
       // Round budgeted number to 1 decimal place
       var budgeted = parseFloat(data.budgeted_fte);
       var budgetedRounded = budgeted.toFixed(1); //
@@ -121,17 +116,16 @@ function createUI(datasource) {
 
     // store the changes. reset when save button is clicked and data sent to SQL.
     $('#btn-save').on('click', function() {
-      last_saved_datasource = oc.getHierarchy();
-      var json_string = JSON.stringify(last_saved_datasource);
+      var cur_datasource = oc.getHierarchy();
+      var json_string = JSON.stringify(cur_datasource);
       saveVersion(json_string, current_version_id, current_username);
-      // console.log ('save: ' + JSON.stringify(last_saved_datasource));
     });
 
     $('#btn-save-as').on('click', function() {
 	  var version_name = prompt("Enter a name for the version:", "");
-      last_saved_datasource = oc.getHierarchy();
-      last_saved_datasource.maxDepth = maxDepth;
-      var json_string = JSON.stringify(last_saved_datasource);
+	  var cur_datasource = oc.getHierarchy();
+	  cur_datasource.maxDepth = maxDepth;
+	  var json_string = JSON.stringify(cur_datasource);
       current_version_id = saveAsNewVersion(json_string, current_username, version_name);
     });
 
@@ -198,7 +192,6 @@ function createUI(datasource) {
       // check if position exists
       getPositionAndSetFlag($('#get-position-input').val().trim());
       if (!getPositionSuccess) {
-        // alert('Please search for a valid position.');
         return;
       }
 
@@ -344,13 +337,6 @@ function createUI(datasource) {
       $node.find('.hire').text('');
       $node.find('.pay_lctn').text('');
     });
-
-    // $('#btn-reset').on('click', function() {
-    //   $('.orgchart').find('.focused').removeClass('focused');
-    //   $('#selected-node').val('');
-    //   $('#new-nodelist').find('input:first').val('').parent().siblings().remove();
-    //   $('#node-type-panel').find('input').prop('checked', false);
-    // });
 
     $('#btn-add-employee').on('click', function() {
       // check if employee exists
@@ -541,13 +527,6 @@ function createUI(datasource) {
         return;
       }
 
-      // // Check that employeeId doesn't exist already
-      // var existEmployee = getEmployee(employeeId);
-      // if (existEmployee.employee_id) {
-      //   alert('The employee ID ' + employeeId + ' exists already. Click "Add Employee" to add an existing employee.');
-      //   return;
-      // }
-
       var createdEmployee = {
         "employee_id" : employeeId,
         "title" : employeeTitle
@@ -682,11 +661,7 @@ function highlightNodesWithPayLocation(pay_location) {
   // distinguish the matched nodes and the unmatched nodes according to the given key word
   $chart.find('.node').filter(function(index) {
     return $(this).find('.pay_lctn').text().trim() == pay_location;
-    // var location = $(node).find('.pay_lctn').text();
-    // return $(node).text().toLowerCase().indexOf(keyWord) > -1;
-    // return location.toLowerCase().indexOf(pay_location) > -1;
   }).addClass('highlight');
-  // .closest('table').parents('table').find('tr:first').find('.node').addClass('retained');
 }
 
 // set up user info 
@@ -744,7 +719,6 @@ function changeOrgHead() {
 
 // show all the pay location under the head
 function setupPayLocationList(selected_head_id) {
-  // var datasource = connectDatabase(selected_head_id);
   if (!paycd_employee) {
     alert ('List of pay locations is empty');
     return;
@@ -759,7 +733,6 @@ function setupPayLocationList(selected_head_id) {
   }
 
     $('#select-pay-lctn').on('change', function() {
-      // updateOrgchart(oc, $('#select-head').val());
       highlightNodesWithPayLocation($('#select-pay-lctn').val());
     });
 }

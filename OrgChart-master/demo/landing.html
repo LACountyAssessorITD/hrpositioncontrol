@@ -24,14 +24,14 @@
   <script type="text/javascript" src="js/jquery.min.js"></script>
 
   <script type="text/javascript">
-	
-	
+
+
 
   $(document).ready(function(){
-	
+
 	var role ;
 	var employee_id;
-	
+
 	 $.ajax({
       url: "php/get_session.php",
       data: null,
@@ -41,7 +41,7 @@
         console.log ('get session:' + output);
         role=output['role'];
 		employee_id=output['employee_id'];
-		
+
 		//alert('role=' + role + ' employee_id=' + employee_id);
 		//console.log('role=' + role + ' employee_id=' + employee_id);
       },
@@ -50,9 +50,9 @@
       },
       async:false
     });
-	
-	
-	
+
+
+
     var versions;
     $.ajax({
       url: "php/pick_version.php",
@@ -95,19 +95,10 @@
       var owner = versions[i]['user'].toString().trim();
       var version_id = versions[i]['version_id'];
       var option = document.createElement("option");
-      // option.text =  time+ ' '+ version_name + ' '+ owner;
-      // option.value = version_name;
       option.text = 'Version #' + version_id + ' ' + version_name + ' (created by ' + owner + ', last modified on ' + formatedTime + ')';
       option.value = version_id;
       dropdown.append(option);
     }
-
-    // change listener for select head drop-down list
-    // $('#selectVersion').on('change', function() {
-    //    var version_id = document.getElementById("selectVersion").value;
-    //    sessionStorage.setItem("sent", version_id);
-    //    window.open("http://localhost/hrpositioncontrol/OrgChart-master/demo/lacounty.html","_blank");
-    // });
 
 $('#btn-extrac').on('click', function() {
   if (sessionStorage.getItem("sent")) {
@@ -153,7 +144,7 @@ $('#btn-delete').on('click', function() {
 });
 
 });
-</script>
+  </script>
 
 </body>
 </html>

@@ -2,12 +2,10 @@
 if (session_status() == PHP_SESSION_NONE) {
 	session_start();
 }
-$role = $_SESSION["ROLE"];
-$employee_id = $_SESSION["EMPLOYEE_ID"];
 
 $myobject= new \stdClass();
-$myobject->role=$role;
-$myobject->employee_id=$employee_id;
+$myobject->role=$_SESSION["ROLE"];
+$myobject->employee_id=$_SESSION["EMPLOYEE_ID"];
 
 echo json_encode($myobject);
 ?>

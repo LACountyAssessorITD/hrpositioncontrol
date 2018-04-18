@@ -10,14 +10,12 @@ with the SQL Server database username and password.
 
 
 
-include 'constants.php';
+include_once 'constants.php';
 
 $serverName = SQL_SERVER_NAME;
 $uid = SQL_SERVER_USERNAME;
 $pwd = SQL_SERVER_PASSWORD;
-//$serverName = "Assessor";
-//$uid = "zhdllwyc";
-//$pwd = "19960806Wyc";
+
 $connectionInfo = array(
     "UID"=>$uid,
     "PWD"=>$pwd,
@@ -29,17 +27,14 @@ $conn = sqlsrv_connect($serverName, $connectionInfo);
 if ($conn===false){
 	echo "unable to connect";
 	die(print_r(sqlsrv_errors(),true));
-
 }
 
-
-// $stmt_version="(SELECT * FROM dbo.VERSION_INFO)";
 $stmt_version="(SELECT * FROM dbo.VERSION_TABLE)";
 
 
 $stmt = sqlsrv_query( $conn, $stmt_version);
 if($stmt===false){
-   echo "sbsbssbsbbsbs";
+   echo "false";
 }else{
 
 
@@ -54,13 +49,6 @@ if($stmt===false){
     	$result[] = $myobject;
 	}
 	echo json_encode($result);
-
 }
-
-
-
-
-
-
 sqlsrv_close($conn);
 ?>

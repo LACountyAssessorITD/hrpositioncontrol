@@ -10,14 +10,12 @@ with the SQL Server database username and password.
 
 $position_id_initial=$_POST["position_id"];
 
-include 'constants.php';
+include_once 'constants.php';
 
 $serverName = SQL_SERVER_NAME;
 $uid = SQL_SERVER_USERNAME;
 $pwd = SQL_SERVER_PASSWORD;
-//$serverName = "Assessor";
-//$uid = "zhdllwyc";
-//$pwd = "19960806Wyc";
+
 $connectionInfo = array(
     "UID"=>$uid,
     "PWD"=>$pwd,
@@ -67,16 +65,9 @@ if($stmt===false){
 		sqlsrv_free_stmt($stmt_title);
 	}
 
-
-
 	echo json_encode($myobject);
 }
 
 sqlsrv_free_stmt($stmt);
-
-
-
-
-
 sqlsrv_close($conn);
 ?>
