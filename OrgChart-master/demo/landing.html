@@ -21,9 +21,37 @@
     </div>
   </div>
   <script type="text/javascript" src="js/jquery.min.js"></script>
-  <script type="text/javascript">
-  $(document).ready(function(){
 
+  <script type="text/javascript">
+	
+	
+
+  $(document).ready(function(){
+	
+	var role ;
+	var employee_id;
+	
+	 $.ajax({
+      url: "php/get_session.php",
+      data: null,
+      type: 'POST',
+      dataType: "json",
+      success: function(output) {
+        console.log ('get session:' + output);
+        role=output['role'];
+		employee_id=output['employee_id'];
+		
+		//alert('role=' + role + ' employee_id=' + employee_id);
+		//console.log('role=' + role + ' employee_id=' + employee_id);
+      },
+      error: function(xhr, status, error){
+        alert ('error: ' + error + '; status=' + status);
+      },
+      async:false
+    });
+	
+	
+	
     var versions;
     $.ajax({
       url: "php/pick_version.php",
@@ -84,13 +112,19 @@ $('#btn-extrac').on('click', function() {
   if (sessionStorage.getItem("sent")) {
     sessionStorage.removeItem("sent");
   }
-  window.open("http://localhost/hrpositioncontrol/OrgChart-master/demo/lacounty.html","_blank");
+  openPage();
 });
 $('#btn-open').on('click', function() {
   var version_id = document.getElementById("selectVersion").value;
   sessionStorage.setItem("sent", version_id);
-  window.open("http://localhost/hrpositioncontrol/OrgChart-master/demo/lacounty.html","_blank");
+  openPage();
 });
+
+function openPage() {
+	sessionStorage.setItem("role", role);
+	sessionStorage.setItem("username", employee_id);
+	window.open("lacounty.html","_blank");
+}
 
 $('#btn-delete').on('click', function() {
   var result = confirm("Are you sure you want to delete the selected version?");

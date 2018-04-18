@@ -403,7 +403,61 @@
       });
       return subObj;
     },
-    //
+    // ADDED for update org head
+	loopChartAndModify: function ($chart, id_to_delete) { 
+      var that = this;
+      var $tr = $chart.find('tr:first');
+	  var subObj;
+	  var employee_id = $tr.find('.node').first().find('.employee_id').text();
+	  if (employee_id == id_to_delete) {
+		// new head exists in chart, make it vacant
+		subObj = {
+			'id': $tr.find('.node')[0].id,
+			'employee_id': '',
+			'employee_name': '',
+			'relationship': '',
+			'title': '',
+			'unit_cd': '',
+			'hire': '',
+			'pay_lctn': '',
+			'position_id': $tr.find('.node').first().find('.position_id').text(),
+			'position_title': $tr.find('.node').first().find('.position_title').text(),
+			'salary': '',
+			'ordinance': $tr.find('.node').first().find('.ordinance').text(),
+			'budgeted_fte': $tr.find('.node').first().find('.budgeted_fte').text(),
+			'depth': ''
+		  };
+	  }
+	  else {
+		subObj = {
+			'id': $tr.find('.node')[0].id,
+			'employee_id': $tr.find('.node').first().find('.employee_id').text(),
+			'employee_name': $tr.find('.node').first().find('.employee_name').text(),
+			'relationship': '',
+			'title': $tr.find('.node').first().find('.title').text(),
+			'unit_cd': $tr.find('.node').first().find('.unit_code').text(),
+			'hire': $tr.find('.node').first().find('.hire').text(),
+			'pay_lctn': $tr.find('.node').first().find('.pay_lctn').text(),
+			'position_id': $tr.find('.node').first().find('.position_id').text(),
+			'position_title': $tr.find('.node').first().find('.position_title').text(),
+			'salary': '',
+			'ordinance': $tr.find('.node').first().find('.ordinance').text(),
+			'budgeted_fte': $tr.find('.node').first().find('.budgeted_fte').text(),
+			'depth': ''
+		  };
+	  }
+
+      // need to escape single quotes otherwise breaks SQL query.
+      subObj.title = escapeSingleQuotes(subObj.title);
+      subObj.position_title = escapeSingleQuotes(subObj.position_title);
+
+      $tr.siblings(':last').children().each(function() {
+        if (!subObj.children) { subObj.children = []; }
+        subObj.children.push(that.loopChartAndModify($(this), id_to_delete));
+      });
+      return subObj;
+	},
+	//
     getHierarchy: function () {
       if (typeof this.$chart === 'undefined') {
         return 'Error: orgchart does not exist'
@@ -424,6 +478,64 @@
         }
       }
       return this.loopChart(this.$chart);
+    },
+	// ADDED for update org head
+    getHierarchyAndModify: function (new_head, inChart) {
+      if (typeof this.$chart === 'undefined') {
+        return 'Error: orgchart does not exist'
+      } else {
+        if (!this.$chart.find('.node').length) {
+          return 'Error: nodes do not exist'
+        } else {
+          var valid = true;
+          this.$chart.find('.node').each(function () {
+            if (!this.id) {
+              valid = false;
+              return false;
+            }
+          });
+          if (!valid) {
+            return 'Error: All nodes of orghcart to be exported must have data-id attribute!';
+          }
+        }
+      }
+	  // replace new root
+	  var that = this;
+      var $tr = this.$chart.find('tr:first');
+      var new_root_node = {
+        'id': $tr.find('.node')[0].id,
+        'employee_id': new_head.employee_id,
+        'employee_name': new_head.employee_name,
+        'relationship': '',
+        'title': new_head.title,
+        'unit_cd': new_head.unit_cd,
+        'hire': new_head.hire,
+        'pay_lctn': new_head.pay_lctn,
+        'position_id': $tr.find('.node').first().find('.position_id').text(),
+        'position_title': $tr.find('.node').first().find('.position_title').text(),
+        'salary': '',
+        'ordinance': $tr.find('.node').first().find('.ordinance').text(),
+        'budgeted_fte': $tr.find('.node').first().find('.budgeted_fte').text(),
+        'depth': '',
+		'children': []
+      };
+      // need to escape single quotes otherwise breaks SQL query.
+      new_root_node.title = escapeSingleQuotes(new_root_node.title);
+      new_root_node.position_title = escapeSingleQuotes(new_root_node.position_title);
+
+	  // if new head exists in chart, make it vacant
+	  if (inChart) {
+		  var id_to_delete = new_head.employee_id;
+		  $tr.siblings(':last').children().each(function() {
+			new_root_node.children.push(that.loopChartAndModify($(this), id_to_delete));
+		  });
+	  }
+	  else {
+		  $tr.siblings(':last').children().each(function() {
+			new_root_node.children.push(that.loopChart($(this)));
+		  });
+	  }
+	  return new_root_node;
     },
     // detect the exist/display state of related node
     getNodeState: function ($node, relation) {

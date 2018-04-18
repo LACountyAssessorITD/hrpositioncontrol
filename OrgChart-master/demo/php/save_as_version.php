@@ -17,6 +17,20 @@ $time=$_POST["time"];
 
 include 'constants.php';
 
+$serverName = SQL_SERVER_NAME;
+$uid = SQL_SERVER_USERNAME;
+$pwd = SQL_SERVER_PASSWORD;
+//$serverName = "Assessor";
+//$uid = "zhdllwyc";
+//$pwd = "19960806Wyc";
+$connectionInfo = array(
+    "UID"=>$uid,
+    "PWD"=>$pwd,
+    "Database"=>"PositionControl",
+    "ReturnDatesAsStrings"=>true);
+
+$conn = sqlsrv_connect($serverName, $connectionInfo);
+
 
 if ($conn===false){
 	echo "unable to connect";
@@ -24,9 +38,9 @@ if ($conn===false){
 
 }
 
-$sql = "INSERT INTO dbo.VERSION_TABLE ( VERSION_NAME,TIME_MODIFIED,USER_CREATED,CONTENT)
+$sql = "INSERT INTO dbo.VERSION_TABLE ( VERSION_NAME,TIME_MODIFIED,USER_CREATED,CONTENT, TIME_CREATED, USER_MODIFIED)
 OUTPUT (INSERTED.VERSION_ID)
-VALUES ('$version_name','$time','$user','$content')";
+VALUES ('$version_name','$time','$user','$content','$time','$user')";
 
 if ($stmt = sqlsrv_query( $conn, $sql)) {
     // statement executed successfully

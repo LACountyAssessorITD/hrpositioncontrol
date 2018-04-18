@@ -9,12 +9,27 @@ with the SQL Server database username and password.
 $content=$_POST["content"];
 $version_id=$_POST["version_id"];
 $time=$_POST["time"];
+$user=$_POST["user"];
 
 
 // echo "$time";
 
 
 include 'constants.php';
+
+$serverName = SQL_SERVER_NAME;
+$uid = SQL_SERVER_USERNAME;
+$pwd = SQL_SERVER_PASSWORD;
+//$serverName = "Assessor";
+//$uid = "zhdllwyc";
+//$pwd = "19960806Wyc";
+$connectionInfo = array(
+    "UID"=>$uid,
+    "PWD"=>$pwd,
+    "Database"=>"PositionControl",
+    "ReturnDatesAsStrings"=>true);
+
+$conn = sqlsrv_connect($serverName, $connectionInfo);
 
 
 if ($conn===false){
@@ -24,7 +39,7 @@ if ($conn===false){
 }
 
 $sql = "UPDATE dbo.VERSION_TABLE
-SET CONTENT = '$content', TIME_MODIFIED = '$time'
+SET CONTENT = '$content', TIME_MODIFIED = '$time', USER_MODIFIED = '$user'
 WHERE VERSION_ID = '$version_id'";
 
 

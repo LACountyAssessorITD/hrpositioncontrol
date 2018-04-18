@@ -1,6 +1,9 @@
 var oc = null;
 var last_saved_datasource;
 var current_version_id;
+var current_role;
+var current_username;
+var current_head;
 
 function createUI(datasource) {
 
@@ -115,15 +118,16 @@ function createUI(datasource) {
     $('#btn-save').on('click', function() {
       last_saved_datasource = oc.getHierarchy();
       var json_string = JSON.stringify(last_saved_datasource);
-      saveVersion(json_string, current_version_id);
+      saveVersion(json_string, current_version_id, current_username);
       // console.log ('save: ' + JSON.stringify(last_saved_datasource));
     });
 
     $('#btn-save-as').on('click', function() {
+	  var version_name = prompt("Enter a name for the version:", "");
       last_saved_datasource = oc.getHierarchy();
       last_saved_datasource.maxDepth = maxDepth;
       var json_string = JSON.stringify(last_saved_datasource);
-      current_version_id = saveAsNewVersion(json_string);
+      current_version_id = saveAsNewVersion(json_string, current_username, version_name);
     });
 
     // Shows whether employee or position desired is found in database
@@ -557,11 +561,12 @@ function createUI(datasource) {
     // Verifies that newOrgHeadId is valid and replaces the original org head with the new.
     function verifyAndReplaceOrgHead() {
       // Check that an org head is selected
-      var oldOrgHeadId = $('#select-head').val();
-      if (!oldOrgHeadId) {
-        alert("An organization head must be selected.");
-        return;
-      }
+	  var oldOrgHeadId = current_head;
+      // var oldOrgHeadId = $('#select-head').val();
+      // if (!oldOrgHeadId) {
+        // alert("An organization head must be selected.");
+        // return;
+      // }
 
       var newOrgHeadId = $('#edited-org-head-id-input').val().trim();
       if (!newOrgHeadId) {
@@ -571,10 +576,63 @@ function createUI(datasource) {
 
       var result = confirm("Are you sure you want to update this org head?");
       if (result == true) {
-        updateOrgHead(oldOrgHeadId, newOrgHeadId);
+		var cur_datasource = oc.getHierarchy();
+		var result=getNewHead(newOrgHeadId, cur_datasource);
+		var new_orghead_datasource;
+		
+		if(result=="in current chart"){
+			var new_head;
+			var current_array=[];
+			current_array.push(cur_datasource);
+			var found=false;
+			while(!found & current_array.length>0){
+				for (var i = 0; i < current_array.length; i++) { 
+					if(newOrgHeadId.trim()==current_array[i].employee_id.trim()){
+						new_head=current_array[i];
+						found=true;
+						break;
+					}
+				}
+				if (!found) {
+					var next_array=[];
+					for (var i = 0; i < current_array.length; i++) {
+						if (typeof(current_array[i].children) !== 'undefined'){
+							
+							if(current_array[i].children.length>0){				
+								for (var j = 0; j < current_array[i].children.length; j++){
+									next_array.push(current_array[i].children[j]);	
+								}
+							}
+						}
+					}
+					current_array=next_array;
+						
+				}
+		
+			}
+			console.log('new_head=' + JSON.stringify(new_head));
+			new_orghead_datasource = oc.getHierarchyAndModify(new_head, true);
+			
+			
+			
+	
+		
+		}
+		else{
+			// not in current chart
+			var new_head = result;
+			new_orghead_datasource = oc.getHierarchyAndModify(new_head, false);
+			
+		}
+		  var opts = oc.opts;
+		  opts.data = new_orghead_datasource;
+		  oc.init(opts);
+		  updateLayout();
+        updateOrgHead(oldOrgHeadId, newOrgHeadId, current_username);
 
         // Reload head list
         setupHeadList();
+		// $('#select-head').attr('disabled', 'disabled');
       }
     }
 
@@ -611,6 +669,12 @@ function highlightNodesWithPayLocation(pay_location) {
   // .closest('table').parents('table').find('tr:first').find('.node').addClass('retained');
 }
 
+// set up user info 
+function setupUserInfo(role, username) {
+	current_role = role;
+	current_username = username;
+}
+
 // set up org head dropdown-list
 function setupHeadList() {
     var heads = getOrgHead();
@@ -636,24 +700,22 @@ function setupHeadList() {
     $('#select-head').on('change', function() {
       var result = confirm("Are you sure you want to change to new head?");
       if (result == true) {
-        updateOrgchart(oc, $('#select-head').val());
-        setupPayLocationList($('#select-head').val());
-         // alert("Please select a Pay Location.");
+		  var selectedHead = $('#select-head').val();
 
-         // Update label for selected org head
-        var selectedHead = $('#select-head').val().split(" ");
-        $('#edited-org-head-id-input').val(selectedHead[0]);
-        // console.log("Selected head id '" + selectedHead[0] + "'");
+		  current_head = selectedHead;
+		  updateOrgchart(oc, selectedHead);
+		  setupPayLocationList(selectedHead);
+
+		   // Update label for selected org head
+		  $('#selected-org-head-label').text(selectedHead);
+		  // $('#edited-org-head-id-input').val(selectedHead);
+
+		  // Show search div; hide position-employee-div and its inner divs
+		  $('#search-div').show();
+		  $('#position-employee-div').hide();
+		  $('#occupied-position-div').hide();
+		  $('#empty-position-div').hide();
       }
-
-      var orgHeadId = $('#select-head').val();
-      $('#selected-org-head-label').val(orgHeadId);
-
-      // Show search div; hide position-employee-div and its inner divs
-      $('#search-div').show();
-      $('#position-employee-div').hide();
-      $('#occupied-position-div').hide();
-      $('#empty-position-div').hide();
     });
 }
 
@@ -718,6 +780,12 @@ function updateLayout() {
     $('#btn-save').removeAttr('disabled');
     $('#btn-save-as').removeAttr('disabled');
   }
+  if (current_role == 0) {// not admin
+	$('#btn-save').attr('disabled','disabled');
+    $('#btn-save-as').attr('disabled','disabled');
+	$('#btn-update-org-head').attr('disabled','disabled');
+  } 
+  
   oc.init(opts);
 }
 
@@ -725,6 +793,8 @@ function openFromVersion(version_id) {
   current_version_id = version_id;
   var obj = getVersion(version_id);
   var version_datasource = JSON.parse(obj.content);
+  current_head = version_datasource.employee_id;
+  $('#edited-org-head-id-input').val(current_head);
   maxDepth = version_datasource.maxDepth;
   createUI(version_datasource);
 }

@@ -325,8 +325,68 @@ function getOrgHead() {
 function replaceOrgHead(oldOrgHead, newOrgHead) {
   // TODO
 }
+function getNewHead(newOrgHeadId, cur_datasource){
+	
+	var current_array=[];
+	current_array.push(cur_datasource);
+	var found=false;
+    while(!found & current_array.length>0){
+		for (var i = 0; i < current_array.length; i++) { 
+			if(newOrgHeadId.trim()==current_array[i].employee_id.trim()){
+				found=true;
+				break;
+			}
+		}
+		if(!found){
+			var next_array=[];
+			for (var i = 0; i < current_array.length; i++) {
+				if (typeof(current_array[i].children) !== 'undefined'){
+					
+					if(current_array[i].children.length>0){				
+						for (var j = 0; j < current_array[i].children.length; j++){
+							next_array.push(current_array[i].children[j]);	
+						}
+					}
+				}
+			}
+			current_array=next_array;
+				
+		}
+		
+	}
+	
+	if(!found){
+		var myData= {
+		  'employee_id': newOrgHeadId
+		};
 
-function updateOrgHead(old_id, new_id) {
+		var employee = null;
+
+		$.ajax({
+		  url: "php/pick_single_employee.php",
+		  data: myData,
+		  type: 'POST',
+		  dataType: "json",
+		  success: function(output) {
+				employee = output;
+			  },
+			  error: function(xhr, status, error){
+				alert ('error: error=' + error + '; status=' + status);
+			  },
+			  async:false
+			});	
+			
+		return employee;
+	}else{
+		
+		return "in current chart";
+		
+	}
+	
+}
+function updateOrgHead(old_id, new_id, username) {
+	
+	console.log(old_id + "  "+ new_id+ "  "+ username);
   var currentdate = new Date();
   var datetime = currentdate.getFullYear() + '-'
                 + (currentdate.getMonth()+1) + '-'
@@ -337,7 +397,7 @@ function updateOrgHead(old_id, new_id) {
   var myData = {
     'old_id': old_id,
     'new_id': new_id,
-    'user' : '12345',
+    'user' : username,
     'time' : datetime
   };
   $.ajax({
@@ -346,7 +406,7 @@ function updateOrgHead(old_id, new_id) {
     type: 'POST',
     dataType: 'text',
     success: function(output) {
-      console.log(output);
+      console.log('updateOrgHead output=' + output);
     },
     error: function(xhr, status, error){
       alert ('updateOrgHead error=' + error + '; status=' + status);
@@ -355,7 +415,7 @@ function updateOrgHead(old_id, new_id) {
   });
 }
 
-function saveAsNewVersion(json_string) {
+function saveAsNewVersion(json_string, username, version_name) {
   var currentdate = new Date();
   var datetime =(currentdate.getMonth()+1) + "/"
                 + (currentdate.getDate())  + "/"
@@ -365,8 +425,8 @@ function saveAsNewVersion(json_string) {
                 + currentdate.getSeconds();
   var myData = {
     'content': json_string,
-    'user' : '415748',
-    'version_name' : "Version_Test",
+    'user' : username,
+    'version_name' : version_name,
     'time' : datetime
   };
   var current_version_id;
@@ -387,7 +447,7 @@ function saveAsNewVersion(json_string) {
   return current_version_id;
 }
 
-function saveVersion(json_string,version_id) {
+function saveVersion(json_string,version_id, username) {
   alert("mlgb");
   var currentdate = new Date();
   var datetime =(currentdate.getMonth()+1) + "/"
@@ -399,7 +459,8 @@ function saveVersion(json_string,version_id) {
   var myData = {
     'content': json_string,
     'time' : datetime,
-    'version_id' : version_id
+    'version_id' : version_id,
+	'user' : username
   };
   $.ajax({
     url: "php/save_version.php",
