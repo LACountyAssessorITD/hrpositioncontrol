@@ -377,12 +377,12 @@
 
 .oc-export-btn {
   display: inline-block;
-  position: absolute;
+  float: left;
   right: 5px;
   top: 5px;
   padding: 6px 12px;
   margin-bottom: 0;
-  font-size: 14px;
+  font-size: 18px;
   font-weight: 400;
   line-height: 1.42857143;
   text-align: center;

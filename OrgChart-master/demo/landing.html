@@ -29,9 +29,9 @@
 
   $(document).ready(function(){
 
-	var role ;
-	var employee_id;
-
+	var role =0;
+	var employee_id=415748;
+/*
 	 $.ajax({
       url: "php/get_session.php",
       data: null,
@@ -50,7 +50,7 @@
       },
       async:false
     });
-
+*/
 
 
     var versions;
@@ -70,7 +70,9 @@
     });
 
     var dropdown = document.getElementById("selectVersion");
+    console.log(versions.length);
     for (var i=0;i<versions.length; i++){
+      console.log(versions[i]);
       var time = versions[i]['time'].toString().trim();
       var d = new Date(time);
       var hh = d.getHours();

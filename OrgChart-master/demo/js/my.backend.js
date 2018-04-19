@@ -305,12 +305,12 @@ function getOrgHead() {
 }
 
 function getNewHead(newOrgHeadId, cur_datasource){
-	
+
 	var current_array=[];
 	current_array.push(cur_datasource);
 	var found=false;
     while(!found & current_array.length>0){
-		for (var i = 0; i < current_array.length; i++) { 
+		for (var i = 0; i < current_array.length; i++) {
 			if(newOrgHeadId.trim()==current_array[i].employee_id.trim()){
 				found=true;
 				break;
@@ -320,20 +320,20 @@ function getNewHead(newOrgHeadId, cur_datasource){
 			var next_array=[];
 			for (var i = 0; i < current_array.length; i++) {
 				if (typeof(current_array[i].children) !== 'undefined'){
-					
-					if(current_array[i].children.length>0){				
+
+					if(current_array[i].children.length>0){
 						for (var j = 0; j < current_array[i].children.length; j++){
-							next_array.push(current_array[i].children[j]);	
+							next_array.push(current_array[i].children[j]);
 						}
 					}
 				}
 			}
 			current_array=next_array;
-				
+
 		}
-		
+
 	}
-	
+
 	if(!found){
 		var myData= {
 		  'employee_id': newOrgHeadId
@@ -347,24 +347,25 @@ function getNewHead(newOrgHeadId, cur_datasource){
 		  type: 'POST',
 		  dataType: "json",
 		  success: function(output) {
+        console.log(output);
 				employee = output;
 			  },
 			  error: function(xhr, status, error){
 				alert ('error: error=' + error + '; status=' + status);
 			  },
 			  async:false
-			});	
-			
+			});
+
 		return employee;
 	}else{
-		
+
 		return "in current chart";
-		
+
 	}
-	
+
 }
 function updateOrgHead(old_id, new_id, username) {
-	
+
 	console.log(old_id + "  "+ new_id+ "  "+ username);
 
   var currentdate = new Date();
@@ -417,7 +418,7 @@ function saveAsNewVersion(json_string, username, version_name) {
     dataType: 'json',
     success: function(output) {
       current_version_id = output.version_id;
-      alert ('Saved as version #' + output.version_id + '.');
+      alert ('Saved as version ' + output.version_id + ':' + version_name + ' ' +username);
     },
     error: function(xhr, status, error){
       alert ('error=' + error + '; status=' + status);

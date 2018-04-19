@@ -1,7 +1,13 @@
 <?php
+
+
+define("SQL_SERVER_USERNAME", "zhdllwyc");
+define("SQL_SERVER_PASSWORD", "19960806Wyc");
+define("SQL_SERVER_NAME", "Assessor");
 /*
 Define global constants here.
 */
+/*
 if (session_status() == PHP_SESSION_NONE) {
 	session_start();
 }
@@ -36,4 +42,5 @@ define("LOGIN_URL",				HTTP_PREFIX.DIR."index.php");
 
 // LDAP Info
 define("LDAP_SERVER_NAME", "ldap://laassessor.co.la.ca.us");
+*/
 ?>
