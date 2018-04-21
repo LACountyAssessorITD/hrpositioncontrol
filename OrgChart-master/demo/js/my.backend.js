@@ -82,7 +82,7 @@ function get_data(position,employee, relation){
  var position_head_id=get_position(head_id, relation).trim();
  var position_obj=get_position_object(position_head_id, position);
 
- var head_name=head_obj.first_name+' '+head_obj.last_name;
+ var head_name=head_obj.first_name.trim()+' '+head_obj.last_name.trim();
 
  var head_title=head_obj.title_cd.trim() + head_obj.sub_title_cd + ' ' + head_obj.titl_short_dd;
 
@@ -121,7 +121,7 @@ function get_data_helper(employee_id,position,employee, relation, depth){
  var position_current_id=get_position(employee_id, relation).trim();
  var position_obj=get_position_object(position_current_id, position);
 
- var current_name=employee_obj.first_name+" "+employee_obj.last_name;
+ var current_name=employee_obj.first_name.trim()+" "+employee_obj.last_name.trim();
 
  var current_title = employee_obj.title_cd.trim() + employee_obj.sub_title_cd + ' ' + employee_obj.titl_short_dd;
 

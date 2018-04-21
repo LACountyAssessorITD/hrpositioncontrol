@@ -379,6 +379,7 @@
     loopChart: function ($chart) {
       var that = this;
       var $tr = $chart.find('tr:first');
+      if ($tr.find('.node').length === 0) return null;
       var subObj = {
         'id': $tr.find('.node')[0].id,
         'employee_id': $tr.find('.node').first().find('.employee_id').text(),
@@ -401,7 +402,10 @@
 
       $tr.siblings(':last').children().each(function() {
         if (!subObj.children) { subObj.children = []; }
-        subObj.children.push(that.loopChart($(this)));
+        var nodeToPush = that.loopChart($(this));
+        if (nodeToPush) {
+          subObj.children.push(nodeToPush);
+        }
       });
       return subObj;
     },
@@ -1503,6 +1507,10 @@
         level = data.level;
       } else {
         level = data.level = $appendTo.parentsUntil('.orgchart', '.nodes').length + 1;
+      }
+      // ADDED: update verticalLevel
+      if (level > this.opts.verticalLevel) {
+        this.opts.verticalLevel = level;
       }
       // Construct the node
       var childrenData = data.children;

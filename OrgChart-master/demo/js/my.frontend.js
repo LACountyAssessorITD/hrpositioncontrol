@@ -62,6 +62,9 @@ function createUI(datasource) {
       }
     });
 
+    // to get the level for each node
+    oc.init(oc.opts);
+
     //console output for drag and drop
     oc.$chart.on('nodedrop.orgchart', function(event, extraParams) {
       console.log('draggedNode:' + extraParams.draggedNode.children().children().children('.title').text()
@@ -265,7 +268,6 @@ function createUI(datasource) {
           position_title = item.title_cd.trim() + item.sub_title_cd.trim() + ' ' + item.titl_short_dd;
         }
         var nodeToAdd = {
-          'id': (new Date().getTime()) * 1000 + Math.floor(Math.random() * 1001),
           'employee_id':'',
           'employee_name': '',
           'relationship': rel,
@@ -781,29 +783,35 @@ function updateLayout() {
   var opts = oc.opts;
   var nodeType = $('input[name="layout-type"]:checked');
   if (nodeType.val() === 'print') {
-    opts.data = oc.getHierarchy();//ADDED
-    opts.verticalLevel = maxDepth;
+    // Switch last layer to vertical
+    opts.verticalLevel--;
+    // Update edited data
+    opts.data = oc.getHierarchy();
+    //opts.verticalLevel = maxDepth;
     opts.draggable = false;
     $('#btn-save').attr('disabled','disabled');
     $('#btn-save-as').attr('disabled','disabled');
     $('#btn-export').removeAttr('disabled');
-
+    // buildHierarchy() calculates verticalLevel 
+    // (for future: can write a separate function to calculate)
+    oc.init(opts);
+    // Re-init according to new verticalLevel
+    oc.init(opts); // Do not delete! Need twice!
   }
   else {
-    opts.data = oc.getHierarchy();//ADDED
-    opts.verticalLevel = maxDepth + 10;
+    // Switch last layer to normal
+    opts.verticalLevel++; 
     opts.draggable = true;
     $('#btn-save').removeAttr('disabled');
     $('#btn-save-as').removeAttr('disabled');
     $('#btn-export').attr('disabled','disabled');
+    oc.init(opts);
   }
   if (current_role == 0) {// not admin
   $('#btn-save').attr('disabled','disabled');
     $('#btn-save-as').attr('disabled','disabled');
   $('#btn-update-org-head').attr('disabled','disabled');
   }
-
-  oc.init(opts);
 }
 
 function openFromVersion(version_id) {
