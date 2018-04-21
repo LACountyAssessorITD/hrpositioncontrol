@@ -39,7 +39,7 @@ function createUI(datasource) {
       'draggable': true,
       'parentNodeSymbol': 'fa-th-large',
       'chartClass': 'edit-state',
-      'verticalLevel': maxDepth + 1,
+      'verticalLevel': maxDepth,
 
 
       //only work in chrome
