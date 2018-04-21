@@ -818,10 +818,21 @@ function openFromVersion(version_id) {
 
 function FormatDate(datestring) {
   if (datestring) {
-    var day = datestring.substring(0, 2);
-    var month = datestring.substring(2, 4);
-    var year = datestring.substring(4);
-    var date = day + '/' + month + '/' + year;
+    var month, day, year;
+    var n = datestring.indexOf("/");
+    if (n == -1) { // date format is MMDDYYYY
+      month = datestring.substring(0, 2);
+      day = datestring.substring(2, 4);
+      year = datestring.substring(4);
+    }
+    else { // date format is MM/DD/YYYY
+      month = datestring.substring(0, n);
+      datestring = datestring.substring(n + 1);
+      n = datestring.indexOf("/");
+      day = datestring.substring(0, n);
+      year = datestring.substring(n + 1);
+    }
+    var date = month + '/' + day + '/' + year;
     return date;
   }
   else {
