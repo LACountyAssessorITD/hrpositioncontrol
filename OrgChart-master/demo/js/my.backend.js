@@ -272,6 +272,7 @@ function checkPositionExists(position_id) {
     dataType: "json",
     success: function(output) {
         position = output;
+        //console.log(position);
       },
       error: function(xhr, status, error){
         alert ('checkPositionExists error: =' + error + '; status=' + status);
@@ -347,7 +348,7 @@ function getNewHead(newOrgHeadId, cur_datasource){
 		  type: 'POST',
 		  dataType: "json",
 		  success: function(output) {
-        console.log(output);
+        //console.log(output);
 				employee = output;
 			  },
 			  error: function(xhr, status, error){
@@ -366,7 +367,7 @@ function getNewHead(newOrgHeadId, cur_datasource){
 }
 function updateOrgHead(old_id, new_id, username) {
 
-	console.log(old_id + "  "+ new_id+ "  "+ username);
+	//console.log(old_id + "  "+ new_id+ "  "+ username);
 
   var currentdate = new Date();
   var datetime = currentdate.getFullYear() + '-'
@@ -387,7 +388,7 @@ function updateOrgHead(old_id, new_id, username) {
     type: 'POST',
     dataType: 'text',
     success: function(output) {
-      console.log('updateOrgHead output=' + output);
+      //console.log('updateOrgHead output=' + output);
     },
     error: function(xhr, status, error){
       alert ('updateOrgHead error=' + error + '; status=' + status);
@@ -448,7 +449,7 @@ function saveVersion(json_string,version_id, username) {
     type: 'POST',
     dataType: 'text',
     success: function(output) {
-      alert (output);
+      alert ("Saved.");
     },
     error: function(xhr, status, error){
       alert ('error=' + error + '; status=' + status);

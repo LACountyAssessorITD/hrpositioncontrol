@@ -406,7 +406,7 @@
       return subObj;
     },
     // ADDED for update org head
-	loopChartAndModify: function ($chart, id_to_delete) { 
+	loopChartAndModify: function ($chart, id_to_delete) {
       var that = this;
       var $tr = $chart.find('tr:first');
 	  var subObj;
