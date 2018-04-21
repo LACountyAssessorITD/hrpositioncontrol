@@ -411,8 +411,9 @@
     },
     // ADDED for update org head
 	loopChartAndModify: function ($chart, id_to_delete) {
-      var that = this;
-      var $tr = $chart.find('tr:first');
+    var that = this;
+    var $tr = $chart.find('tr:first');
+    if ($tr.find('.node').length === 0) return null;
 	  var subObj;
 	  var employee_id = $tr.find('.node').first().find('.employee_id').text();
 	  if (employee_id == id_to_delete) {
@@ -459,7 +460,10 @@
 
       $tr.siblings(':last').children().each(function() {
         if (!subObj.children) { subObj.children = []; }
-        subObj.children.push(that.loopChartAndModify($(this), id_to_delete));
+        var nodeToPush = that.loopChartAndModify($(this), id_to_delete);
+        if (nodeToPush) {
+          subObj.children.push();
+        }
       });
       return subObj;
 	},
