@@ -82,7 +82,7 @@ function get_data(position,employee, relation){
  var position_head_id=get_position(head_id, relation).trim();
  var position_obj=get_position_object(position_head_id, position);
 
- var head_name=head_obj.first_name.trim()+' '+head_obj.last_name.trim();
+ var head_name=head_obj.first_name+' '+head_obj.last_name;
 
  var head_title=head_obj.title_cd.trim() + head_obj.sub_title_cd + ' ' + head_obj.titl_short_dd;
 
@@ -121,7 +121,7 @@ function get_data_helper(employee_id,position,employee, relation, depth){
  var position_current_id=get_position(employee_id, relation).trim();
  var position_obj=get_position_object(position_current_id, position);
 
- var current_name=employee_obj.first_name.trim()+" "+employee_obj.last_name.trim();
+ var current_name=employee_obj.first_name+" "+employee_obj.last_name;
 
  var current_title = employee_obj.title_cd.trim() + employee_obj.sub_title_cd + ' ' + employee_obj.titl_short_dd;
 
@@ -272,7 +272,6 @@ function checkPositionExists(position_id) {
     dataType: "json",
     success: function(output) {
         position = output;
-        //console.log(position);
       },
       error: function(xhr, status, error){
         alert ('checkPositionExists error: =' + error + '; status=' + status);
@@ -348,7 +347,7 @@ function getNewHead(newOrgHeadId, cur_datasource){
 		  type: 'POST',
 		  dataType: "json",
 		  success: function(output) {
-        //console.log(output);
+        console.log(output);
 				employee = output;
 			  },
 			  error: function(xhr, status, error){
@@ -367,7 +366,7 @@ function getNewHead(newOrgHeadId, cur_datasource){
 }
 function updateOrgHead(old_id, new_id, username) {
 
-	//console.log(old_id + "  "+ new_id+ "  "+ username);
+	console.log(old_id + "  "+ new_id+ "  "+ username);
 
   var currentdate = new Date();
   var datetime = currentdate.getFullYear() + '-'
@@ -388,7 +387,7 @@ function updateOrgHead(old_id, new_id, username) {
     type: 'POST',
     dataType: 'text',
     success: function(output) {
-      //console.log('updateOrgHead output=' + output);
+      console.log('updateOrgHead output=' + output);
     },
     error: function(xhr, status, error){
       alert ('updateOrgHead error=' + error + '; status=' + status);
@@ -449,7 +448,7 @@ function saveVersion(json_string,version_id, username) {
     type: 'POST',
     dataType: 'text',
     success: function(output) {
-      alert ("Saved.");
+      alert (output);
     },
     error: function(xhr, status, error){
       alert ('error=' + error + '; status=' + status);

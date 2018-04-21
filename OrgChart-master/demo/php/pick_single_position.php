@@ -54,7 +54,7 @@ if($stmt===false){
 		$param = $row["TITLE_CD"];
 		$sql_title = "SELECT *
 					FROM dbo.TITLE
-					WHERE TITLE_CD = '$param'";
+					WHERE TITLE_CD = $param";
 		if ($stmt_title = sqlsrv_query($conn, $sql_title)) {
 			$data = sqlsrv_fetch_array($stmt_title);
 		    $myobject->titl_short_dd = $data["TITL_SHORT_DD"];

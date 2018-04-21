@@ -379,7 +379,6 @@
     loopChart: function ($chart) {
       var that = this;
       var $tr = $chart.find('tr:first');
-      if ($tr.find('.node').length === 0) return null;
       var subObj = {
         'id': $tr.find('.node')[0].id,
         'employee_id': $tr.find('.node').first().find('.employee_id').text(),
@@ -402,18 +401,14 @@
 
       $tr.siblings(':last').children().each(function() {
         if (!subObj.children) { subObj.children = []; }
-        var nodeToPush = that.loopChart($(this));
-        if (nodeToPush) {
-          subObj.children.push(nodeToPush);
-        }
+        subObj.children.push(that.loopChart($(this)));
       });
       return subObj;
     },
     // ADDED for update org head
-	loopChartAndModify: function ($chart, id_to_delete) {
-    var that = this;
-    var $tr = $chart.find('tr:first');
-    if ($tr.find('.node').length === 0) return null;
+	loopChartAndModify: function ($chart, id_to_delete) { 
+      var that = this;
+      var $tr = $chart.find('tr:first');
 	  var subObj;
 	  var employee_id = $tr.find('.node').first().find('.employee_id').text();
 	  if (employee_id == id_to_delete) {
@@ -460,10 +455,7 @@
 
       $tr.siblings(':last').children().each(function() {
         if (!subObj.children) { subObj.children = []; }
-        var nodeToPush = that.loopChartAndModify($(this), id_to_delete);
-        if (nodeToPush) {
-          subObj.children.push();
-        }
+        subObj.children.push(that.loopChartAndModify($(this), id_to_delete));
       });
       return subObj;
 	},
@@ -1511,10 +1503,6 @@
         level = data.level;
       } else {
         level = data.level = $appendTo.parentsUntil('.orgchart', '.nodes').length + 1;
-      }
-      // ADDED: update verticalLevel
-      if (level > this.opts.verticalLevel) {
-        this.opts.verticalLevel = level;
       }
       // Construct the node
       var childrenData = data.children;

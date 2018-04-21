@@ -29,7 +29,7 @@
 
   $(document).ready(function(){
 
-	var role =1;
+	var role =0;
 	var employee_id=415748;
 /*
 	 $.ajax({
@@ -60,7 +60,7 @@
       type: 'POST',
       dataType: "json",
       success: function(output) {
-        //console.log ('getversion output:' + output);
+        console.log ('getversion output:' + output);
         versions = output;
       },
       error: function(xhr, status, error){
@@ -70,9 +70,9 @@
     });
 
     var dropdown = document.getElementById("selectVersion");
-    //console.log(versions.length);
+    console.log(versions.length);
     for (var i=0;i<versions.length; i++){
-      //console.log(versions[i]);
+      console.log(versions[i]);
       var time = versions[i]['time'].toString().trim();
       var d = new Date(time);
       var hh = d.getHours();

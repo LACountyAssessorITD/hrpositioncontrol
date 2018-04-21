@@ -39,7 +39,7 @@ function createUI(datasource) {
       'draggable': true,
       'parentNodeSymbol': 'fa-th-large',
       'chartClass': 'edit-state',
-      'verticalLevel': maxDepth,
+      'verticalLevel': maxDepth + 1,
 
 
       //only work in chrome
@@ -62,9 +62,6 @@ function createUI(datasource) {
       }
     });
 
-    // to get the level for each node
-    oc.init(oc.opts);
-
     //console output for drag and drop
     oc.$chart.on('nodedrop.orgchart', function(event, extraParams) {
       console.log('draggedNode:' + extraParams.draggedNode.children().children().children('.title').text()
@@ -82,12 +79,12 @@ function createUI(datasource) {
       var $chart = oc.$chart;
       var scale = $container.width()/$chart.outerWidth(true);
       if(scale<1){
-        var x = ($container.width() - $chart.outerWidth(true))/2*(1/scale);
-        var y = ($container.height() - $chart.outerHeight(true))/2*(1+scale);
-        oc.setChartScale($chart, scale);
-        var val = $chart.css('transform');
-        $chart.css('transform', val + ' translate(' + x + 'px,' + y + 'px)');
-      }
+	      var x = ($container.width() - $chart.outerWidth(true))/2*(1/scale);
+	      var y = ($container.height() - $chart.outerHeight(true))/2*(1+scale);
+	      oc.setChartScale($chart, scale);
+	      var val = $chart.css('transform');
+	      $chart.css('transform', val + ' translate(' + x + 'px,' + y + 'px)');
+ 	 }
     });
 
     $('#btn_fitv').on('click', function () {
@@ -127,10 +124,10 @@ function createUI(datasource) {
     });
 
     $('#btn-save-as').on('click', function() {
-      var version_name = prompt("Enter a name for the version:", "");
-      var cur_datasource = oc.getHierarchy();
-      cur_datasource.maxDepth = maxDepth;
-      var json_string = JSON.stringify(cur_datasource);
+	  var version_name = prompt("Enter a name for the version:", "");
+	  var cur_datasource = oc.getHierarchy();
+	  cur_datasource.maxDepth = maxDepth;
+	  var json_string = JSON.stringify(cur_datasource);
       current_version_id = saveAsNewVersion(json_string, current_username, version_name);
     });
 
@@ -553,7 +550,7 @@ function createUI(datasource) {
     // Verifies that newOrgHeadId is valid and replaces the original org head with the new.
     function verifyAndReplaceOrgHead() {
       // Check that an org head is selected
-      var oldOrgHeadId = current_head;
+	  var oldOrgHeadId = current_head;
       // var oldOrgHeadId = $('#select-head').val();
       // if (!oldOrgHeadId) {
         // alert("An organization head must be selected.");
@@ -574,79 +571,79 @@ function createUI(datasource) {
       var result = confirm("Changes for the current Org Head will be lost if not saved. Do you still want to update this Org Head?");
 
       if (result == true) {
-    var cur_datasource = oc.getHierarchy();
-    var result=getNewHead(newOrgHeadId, cur_datasource);
-    var new_orghead_datasource;
+		var cur_datasource = oc.getHierarchy();
+		var result=getNewHead(newOrgHeadId, cur_datasource);
+		var new_orghead_datasource;
 
-    if(result=="in current chart"){
-      var new_head;
-      var current_array=[];
-      current_array.push(cur_datasource);
-      var found=false;
-      while(!found & current_array.length>0){
-        for (var i = 0; i < current_array.length; i++) {
-          if(newOrgHeadId.trim()==current_array[i].employee_id.trim()){
-            new_head=current_array[i];
-            found=true;
-            break;
-          }
-        }
-        if (!found) {
-          var next_array=[];
-          for (var i = 0; i < current_array.length; i++) {
-            if (typeof(current_array[i].children) !== 'undefined'){
+		if(result=="in current chart"){
+			var new_head;
+			var current_array=[];
+			current_array.push(cur_datasource);
+			var found=false;
+			while(!found & current_array.length>0){
+				for (var i = 0; i < current_array.length; i++) {
+					if(newOrgHeadId.trim()==current_array[i].employee_id.trim()){
+						new_head=current_array[i];
+						found=true;
+						break;
+					}
+				}
+				if (!found) {
+					var next_array=[];
+					for (var i = 0; i < current_array.length; i++) {
+						if (typeof(current_array[i].children) !== 'undefined'){
 
-              if(current_array[i].children.length>0){
-                for (var j = 0; j < current_array[i].children.length; j++){
-                  next_array.push(current_array[i].children[j]);
-                }
-              }
-            }
-          }
-          current_array=next_array;
+							if(current_array[i].children.length>0){
+								for (var j = 0; j < current_array[i].children.length; j++){
+									next_array.push(current_array[i].children[j]);
+								}
+							}
+						}
+					}
+					current_array=next_array;
 
-        }
+				}
 
-      }
-      console.log('new_head=' + JSON.stringify(new_head));
-      new_orghead_datasource = oc.getHierarchyAndModify(new_head, true);
-
-
+			}
+			console.log('new_head=' + JSON.stringify(new_head));
+			new_orghead_datasource = oc.getHierarchyAndModify(new_head, true);
 
 
 
-    }
-    else{
-      // not in current chart
-      var new_head = result;
-      var employee_id=new_head.employee_id;
-      var current_name=new_head.first_name+" "+new_head.last_name;
-      var current_title = new_head.title_cd.trim() + new_head.sub_title_cd + ' ' + new_head.titl_short_dd;
 
-      var current_employee={
-          'employee_id':employee_id,
-          'employee_name':current_name,
-          'title':current_title,
-          'unit_cd': new_head.home_unit_cd,
-          'hire': new_head.orig_hire_dt,
-          'pay_lctn': new_head.pay_lctn_cd,
-       };
 
-      new_head=current_employee;
-      new_orghead_datasource = oc.getHierarchyAndModify(new_head, false);
+		}
+		else{
+			// not in current chart
+			var new_head = result;
+			var employee_id=new_head.employee_id;
+			var current_name=new_head.first_name+" "+new_head.last_name;
+			var current_title = new_head.title_cd.trim() + new_head.sub_title_cd + ' ' + new_head.titl_short_dd;
 
-    }
-      var opts = oc.opts;
-      opts.data = new_orghead_datasource;
-      oc.init(opts);
-      updateLayout();
+			var current_employee={
+			    'employee_id':employee_id,
+			    'employee_name':current_name,
+			    'title':current_title,
+			    'unit_cd': new_head.home_unit_cd,
+			    'hire': new_head.orig_hire_dt,
+			    'pay_lctn': new_head.pay_lctn_cd,
+			 };
+
+			new_head=current_employee;
+			new_orghead_datasource = oc.getHierarchyAndModify(new_head, false);
+
+		}
+		  var opts = oc.opts;
+		  opts.data = new_orghead_datasource;
+		  oc.init(opts);
+		  updateLayout();
         updateOrgHead(oldOrgHeadId, newOrgHeadId, current_username);
 
         var index = $("#select-head option:selected").index();
 
         // Reload head list
         setupHeadList();
-    // $('#select-head').attr('disabled', 'disabled');
+		// $('#select-head').attr('disabled', 'disabled');
 
         // Reload orgchart
         //$('#select-head option:eq(' + index + ')').attr('selected', 'selected');
@@ -685,8 +682,8 @@ function highlightNodesWithPayLocation(pay_location) {
 
 // set up user info
 function setupUserInfo(role, username) {
-  current_role = role;
-  current_username = username;
+	current_role = role;
+	current_username = username;
 }
 
 // set up org head dropdown-list
@@ -783,35 +780,27 @@ function updateLayout() {
   var opts = oc.opts;
   var nodeType = $('input[name="layout-type"]:checked');
   if (nodeType.val() === 'print') {
-    // Switch last layer to vertical
-    opts.verticalLevel--;
-    // Update edited data
-    opts.data = oc.getHierarchy();
-    //opts.verticalLevel = maxDepth;
+    opts.verticalLevel = maxDepth;
     opts.draggable = false;
     $('#btn-save').attr('disabled','disabled');
     $('#btn-save-as').attr('disabled','disabled');
     $('#btn-export').removeAttr('disabled');
-    // buildHierarchy() calculates verticalLevel 
-    // (for future: can write a separate function to calculate)
-    oc.init(opts);
-    // Re-init according to new verticalLevel
-    oc.init(opts); // Do not delete! Need twice!
+
   }
   else {
-    // Switch last layer to normal
-    opts.verticalLevel++; 
+    opts.verticalLevel = maxDepth + 10;
     opts.draggable = true;
     $('#btn-save').removeAttr('disabled');
     $('#btn-save-as').removeAttr('disabled');
     $('#btn-export').attr('disabled','disabled');
-    oc.init(opts);
   }
   if (current_role == 0) {// not admin
-  $('#btn-save').attr('disabled','disabled');
+	$('#btn-save').attr('disabled','disabled');
     $('#btn-save-as').attr('disabled','disabled');
-  $('#btn-update-org-head').attr('disabled','disabled');
+	$('#btn-update-org-head').attr('disabled','disabled');
   }
+
+  oc.init(opts);
 }
 
 function openFromVersion(version_id) {
@@ -826,21 +815,10 @@ function openFromVersion(version_id) {
 
 function FormatDate(datestring) {
   if (datestring) {
-    var month, day, year;
-    var n = datestring.indexOf("/");
-    if (n == -1) { // date format is MMDDYYYY
-      month = datestring.substring(0, 2);
-      day = datestring.substring(2, 4);
-      year = datestring.substring(4);
-    }
-    else { // date format is MM/DD/YYYY
-      month = datestring.substring(0, n);
-      datestring = datestring.substring(n + 1);
-      n = datestring.indexOf("/");
-      day = datestring.substring(0, n);
-      year = datestring.substring(n + 1);
-    }
-    var date = month + '/' + day + '/' + year;
+    var day = datestring.substring(0, 2);
+    var month = datestring.substring(2, 4);
+    var year = datestring.substring(4);
+    var date = day + '/' + month + '/' + year;
     return date;
   }
   else {
