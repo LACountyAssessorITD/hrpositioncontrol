@@ -775,6 +775,9 @@ function updateLayout() {
   var opts = oc.opts;
   var nodeType = $('input[name="layout-type"]:checked');
   if (nodeType.val() === 'print') {
+    // Update edited data
+    opts.data = oc.getHierarchy();
+
     opts.verticalLevel = maxDepth;
     opts.draggable = false;
     $('#btn-save').attr('disabled','disabled');
@@ -783,16 +786,16 @@ function updateLayout() {
 
   }
   else {
-    opts.verticalLevel = maxDepth + 10;
+    opts.verticalLevel = maxDepth + 1; 
     opts.draggable = true;
     $('#btn-save').removeAttr('disabled');
     $('#btn-save-as').removeAttr('disabled');
     $('#btn-export').attr('disabled','disabled');
   }
   if (current_role == 0) {// not admin
-	$('#btn-save').attr('disabled','disabled');
+    $('#btn-save').attr('disabled','disabled');
     $('#btn-save-as').attr('disabled','disabled');
-	$('#btn-update-org-head').attr('disabled','disabled');
+    $('#btn-update-org-head').attr('disabled','disabled');
   }
 
   oc.init(opts);
