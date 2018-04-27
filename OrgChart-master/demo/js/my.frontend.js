@@ -84,7 +84,7 @@ function createUI(datasource) {
 	      oc.setChartScale($chart, scale);
 	      var val = $chart.css('transform');
 	      $chart.css('transform', val + ' translate(' + x + 'px,' + y + 'px)');
- 	 }
+ 	    }
     });
 
     $('#btn_fitv').on('click', function () {
@@ -550,7 +550,7 @@ function createUI(datasource) {
     // Verifies that newOrgHeadId is valid and replaces the original org head with the new.
     function verifyAndReplaceOrgHead() {
       // Check that an org head is selected
-	  var oldOrgHeadId = current_head;
+      var oldOrgHeadId = current_head;
       // var oldOrgHeadId = $('#select-head').val();
       // if (!oldOrgHeadId) {
         // alert("An organization head must be selected.");
@@ -571,79 +571,74 @@ function createUI(datasource) {
       var result = confirm("Changes for the current Org Head will be lost if not saved. Do you still want to update this Org Head?");
 
       if (result == true) {
-		var cur_datasource = oc.getHierarchy();
-		var result=getNewHead(newOrgHeadId, cur_datasource);
-		var new_orghead_datasource;
+    		var cur_datasource = oc.getHierarchy();
+    		var result=getNewHead(newOrgHeadId, cur_datasource);
+    		var new_orghead_datasource;
 
-		if(result=="in current chart"){
-			var new_head;
-			var current_array=[];
-			current_array.push(cur_datasource);
-			var found=false;
-			while(!found & current_array.length>0){
-				for (var i = 0; i < current_array.length; i++) {
-					if(newOrgHeadId.trim()==current_array[i].employee_id.trim()){
-						new_head=current_array[i];
-						found=true;
-						break;
-					}
-				}
-				if (!found) {
-					var next_array=[];
-					for (var i = 0; i < current_array.length; i++) {
-						if (typeof(current_array[i].children) !== 'undefined'){
+    		if(result=="in current chart"){
+    			var new_head;
+    			var current_array=[];
+    			current_array.push(cur_datasource);
+    			var found=false;
+    			while(!found & current_array.length>0){
+    				for (var i = 0; i < current_array.length; i++) {
+    					if(newOrgHeadId.trim()==current_array[i].employee_id.trim()){
+    						new_head=current_array[i];
+    						found=true;
+    						break;
+    					}
+    				}
+    				if (!found) {
+    					var next_array=[];
+    					for (var i = 0; i < current_array.length; i++) {
+    						if (typeof(current_array[i].children) !== 'undefined'){
 
-							if(current_array[i].children.length>0){
-								for (var j = 0; j < current_array[i].children.length; j++){
-									next_array.push(current_array[i].children[j]);
-								}
-							}
-						}
-					}
-					current_array=next_array;
+    							if(current_array[i].children.length>0){
+    								for (var j = 0; j < current_array[i].children.length; j++){
+    									next_array.push(current_array[i].children[j]);
+    								}
+    							}
+    						}
+    					}
+    					current_array=next_array;
 
-				}
+    				}
 
-			}
-			console.log('new_head=' + JSON.stringify(new_head));
-			new_orghead_datasource = oc.getHierarchyAndModify(new_head, true);
+    			}
+    			console.log('new_head=' + JSON.stringify(new_head));
+    			new_orghead_datasource = oc.getHierarchyAndModify(new_head, true);
+    		}
+    		else{
+    			// not in current chart
+    			var new_head = result;
+    			var employee_id=new_head.employee_id;
+    			var current_name=new_head.first_name+" "+new_head.last_name;
+    			var current_title = new_head.title_cd.trim() + new_head.sub_title_cd + ' ' + new_head.titl_short_dd;
 
+    			var current_employee={
+    			    'employee_id':employee_id,
+    			    'employee_name':current_name,
+    			    'title':current_title,
+    			    'unit_cd': new_head.home_unit_cd,
+    			    'hire': new_head.orig_hire_dt,
+    			    'pay_lctn': new_head.pay_lctn_cd,
+    			 };
 
+    			new_head=current_employee;
+    			new_orghead_datasource = oc.getHierarchyAndModify(new_head, false);
 
-
-
-		}
-		else{
-			// not in current chart
-			var new_head = result;
-			var employee_id=new_head.employee_id;
-			var current_name=new_head.first_name+" "+new_head.last_name;
-			var current_title = new_head.title_cd.trim() + new_head.sub_title_cd + ' ' + new_head.titl_short_dd;
-
-			var current_employee={
-			    'employee_id':employee_id,
-			    'employee_name':current_name,
-			    'title':current_title,
-			    'unit_cd': new_head.home_unit_cd,
-			    'hire': new_head.orig_hire_dt,
-			    'pay_lctn': new_head.pay_lctn_cd,
-			 };
-
-			new_head=current_employee;
-			new_orghead_datasource = oc.getHierarchyAndModify(new_head, false);
-
-		}
-		  var opts = oc.opts;
-		  opts.data = new_orghead_datasource;
-		  oc.init(opts);
-		  updateLayout();
+    		}
+  		  var opts = oc.opts;
+  		  opts.data = new_orghead_datasource;
+  		  oc.init(opts);
+  		  updateLayout();
         updateOrgHead(oldOrgHeadId, newOrgHeadId, current_username);
 
         var index = $("#select-head option:selected").index();
 
         // Reload head list
         setupHeadList();
-		// $('#select-head').attr('disabled', 'disabled');
+		    // $('#select-head').attr('disabled', 'disabled');
 
         // Reload orgchart
         //$('#select-head option:eq(' + index + ')').attr('selected', 'selected');
@@ -688,36 +683,36 @@ function setupUserInfo(role, username) {
 
 // set up org head dropdown-list
 function setupHeadList() {
-    var heads = getOrgHead();
-    if (!heads) {
-      alert ('List of org heads is empty');
-      return;
-    }
+  var heads = getOrgHead();
+  if (!heads) {
+    alert ('List of org heads is empty');
+    return;
+  }
 
-    var $dropdown = $('#select-head');
-    $dropdown.empty();
-    for (var i=0;i<heads.length; i++){
-      var employee_id = heads[i]['employee_id'].toString().trim();
-      var first_name = heads[i]['first_name'].toString().trim();
-      var last_name = heads[i]['last_name'].toString().trim();
-      var option = '<option value="' + employee_id + '">'
-      + heads[i]['employee_id'] + ' ' + first_name + ' ' + last_name
-      + '</option>';
-      $dropdown.append(option);
-    }
+  var $dropdown = $('#select-head');
+  $dropdown.empty();
+  for (var i=0;i<heads.length; i++){
+    var employee_id = heads[i]['employee_id'].toString().trim();
+    var first_name = heads[i]['first_name'].toString().trim();
+    var last_name = heads[i]['last_name'].toString().trim();
+    var option = '<option value="' + employee_id + '">'
+    + heads[i]['employee_id'] + ' ' + first_name + ' ' + last_name
+    + '</option>';
+    $dropdown.append(option);
+  }
 
-    // change listener for select head drop-down list
-    $('#select-head').on('change', function() {
-      var result = confirm("Changes for the current Org Head will be lost if not saved. Do you still want to update this Org Head?");
-      if (result == true) {
-        changeOrgHead();
-      }
-    });
+  // change listener for select head drop-down list
+  $('#select-head').on('change', function() {
+    var result = confirm("Changes for the current Org Head will be lost if not saved. Do you still want to update this Org Head?");
+    if (result == true) {
+      changeOrgHead();
+    }
+  });
 }
 
 function changeOrgHead() {
-    var selectedHead = $('#select-head').val();
-    current_head = selectedHead;
+  var selectedHead = $('#select-head').val();
+  current_head = selectedHead;
 
   updateOrgchart(oc, selectedHead);
   setupPayLocationList(selectedHead);
