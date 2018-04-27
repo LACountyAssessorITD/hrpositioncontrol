@@ -783,11 +783,10 @@ function updateLayout() {
   var opts = oc.opts;
   var nodeType = $('input[name="layout-type"]:checked');
   if (nodeType.val() === 'print') {
-    // Switch last layer to vertical
-    opts.verticalLevel--;
     // Update edited data
     opts.data = oc.getHierarchy();
-    //opts.verticalLevel = maxDepth;
+
+    opts.verticalLevel = maxDepth;
     opts.draggable = false;
     $('#btn-save').attr('disabled','disabled');
     $('#btn-save-as').attr('disabled','disabled');
@@ -799,8 +798,7 @@ function updateLayout() {
     oc.init(opts); // Do not delete! Need twice!
   }
   else {
-    // Switch last layer to normal
-    opts.verticalLevel++; 
+    opts.verticalLevel = maxDepth + 1; 
     opts.draggable = true;
     $('#btn-save').removeAttr('disabled');
     $('#btn-save-as').removeAttr('disabled');
@@ -808,9 +806,9 @@ function updateLayout() {
     oc.init(opts);
   }
   if (current_role == 0) {// not admin
-  $('#btn-save').attr('disabled','disabled');
+    $('#btn-save').attr('disabled','disabled');
     $('#btn-save-as').attr('disabled','disabled');
-  $('#btn-update-org-head').attr('disabled','disabled');
+    $('#btn-update-org-head').attr('disabled','disabled');
   }
 }
 
